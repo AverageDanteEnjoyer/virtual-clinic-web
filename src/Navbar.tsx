@@ -1,4 +1,5 @@
 import React from "react";
+import {Menu} from 'antd'
 import {
   BrowserRouter,
   Routes,
@@ -9,16 +10,14 @@ import {
 const Navbar: React.FC = () => {
   return (
     <BrowserRouter>
-      <nav>
-        <ul>
-          <li>
-            <Link to={`/`}>go to home</Link>
-          </li>
-          <li>
-            <Link to={`/test`}>go to test</Link>
-          </li>
-        </ul>
-      </nav>
+      <Menu>
+        <Menu.Item key={1}>
+          <Link to={`/`}>go to home</Link>
+        </Menu.Item>
+        <Menu.Item key={2}>
+          <Link to={`/test`}>go to test</Link>
+        </Menu.Item>
+      </Menu>
       <Routes>
         <Route path="/" element={<p>home</p>}></Route>
         <Route path="/test" element={<p>test</p>}></Route>
