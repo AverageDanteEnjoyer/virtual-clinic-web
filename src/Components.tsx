@@ -2,9 +2,9 @@ import React from "react";
 import Spinner from "./common/Spinner";
 import AppointmentTable from "./common/AppointmentTable";
 import { Alert, Typography, Button, Space, Input } from "antd";
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined } from "@ant-design/icons";
 
-import {  } from 'antd';
+import {} from "antd";
 const { Title, Paragraph } = Typography;
 
 const content1: string =
@@ -49,7 +49,13 @@ const Components: React.FC = () => {
         <Button type="primary">{buttonContent}</Button>
       </Space>
 
-      
+      <>
+        <Input
+          size="large"
+          placeholder="enter email"
+          prefix={<UserOutlined />}
+        />
+      </>
     </div>
   );
 };
