@@ -1,0 +1,7 @@
+.default_item{
+    float:right;
+}
+.logo{
+    float:left;
+    pointer-events: none;
+}
