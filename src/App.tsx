@@ -1,11 +1,13 @@
 import React from "react";
-import './App.css';
+import "./App.css";
 import Navbar from "./common/Navbar";
+import Components from "./Components";
 
 function App() {
   return (
     <header>
-        <Navbar/>
+      <Navbar />
+      <Components />
     </header>
   );
 }
