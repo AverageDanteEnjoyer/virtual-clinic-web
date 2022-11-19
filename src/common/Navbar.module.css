@@ -1,3 +1,6 @@
+.menu{
+    display: block;
+}
 .default_item{
     float:right;
 }

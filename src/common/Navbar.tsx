@@ -14,6 +14,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import menuStyles from './Navbar.module.css'
+import Components from "../Components";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -21,7 +22,7 @@ function getItem(
   label: React.ReactNode,
   key: React.Key,
   children?: MenuItem[],
-  className:string=menuStyles.default_item, //enables different styling for specific menu items if needed
+  className: string = menuStyles.default_item, //enables different styling for specific menu items if needed
 ): MenuItem {
   return {
     label,
@@ -31,35 +32,36 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuItem[] = [
-  getItem(<QuestionOutlined/>, 'logo', undefined, menuStyles.logo), //an area for logo
-  getItem(<UserOutlined/>, 'user',[
-    getItem('Option 1', '1'),
-    getItem('Option 2', '2'),
-  ]),
-  getItem(<Link to={'/'}>home</Link>, '3'),
-  getItem(<Link to={'/test'}>test</Link>, '4'),
-];
-
 const Navbar: React.FC = () => {
+  const loggedIn = 1; //used for testing, change manually
+  const items: MenuItem[] = [
+    getItem(<QuestionOutlined/>, 'logo', undefined, menuStyles.logo), //an area for logo
+    (loggedIn ?
+      getItem(<UserOutlined/>, 'user', [
+        getItem('Edit profile', '1'),
+        getItem('Appointments', '2'),
+      ]) :
+      getItem(<Link to={'log-in'}><UserOutlined/></Link>, 'user')),
+    getItem(<Link to={'/'}>home</Link>, '3'),
+    getItem(<Link to={'/components'}>components</Link>, '4'),
+  ];
   return (
-    <div style={{ height: 256}}>
-      <BrowserRouter>
-        <nav>
-          <Menu
-            style={{display:"block"}}
-            defaultSelectedKeys={['1']}
-            mode="horizontal"
-            theme="light"
-            items={items}>
-          </Menu>
-        </nav>
-        <Routes>
-          <Route path={'/'} element={<p>home</p>}></Route>
-          <Route path={'/test'} element={<p>test</p>}></Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <nav>
+        <Menu
+          className={menuStyles.menu}
+          defaultSelectedKeys={['1']}
+          mode="horizontal"
+          theme="light"
+          items={items}>
+        </Menu>
+      </nav>
+      <Routes>
+        <Route path={'/'}></Route>
+        <Route path={'/components'} element={<Components/>}></Route>
+        <Route path={'/log-in'} element={<p>sign up</p>}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 
