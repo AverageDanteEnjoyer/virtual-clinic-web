@@ -3,21 +3,27 @@ import { SyncOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 
 interface SpinnerProps{
-  size?:number;
+  tip?:string,
   content?:ReactNode;
   spinning?:boolean;
+  style?:React.CSSProperties;
 }
 const Spinner: React.FC<SpinnerProps> = (props:SpinnerProps) => {
   return (
-      <Spin spinning={props.spinning} indicator={<SyncOutlined style={{ fontSize: props.size }} spin />}>
+      <Spin
+        spinning={props.spinning}
+        indicator={<SyncOutlined style={props.style} spin />}
+        tip={props.tip}
+      >
         {props.content}
       </Spin>
       );
 }
 Spinner.defaultProps={
-  size : 24,
+  tip : "",
   content : [],
   spinning : true,
+  style : {fontSize:22}
 }
 
 export default Spinner;
