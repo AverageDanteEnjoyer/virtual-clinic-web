@@ -1,37 +1,37 @@
 import React from "react";
 import { Col, Row } from 'antd';
 
-import CarouselComponent from "./Carousel/CarouselComponent";
-import Spinner from "./common/Spinner";
-import TableExample from "./examples/TableExample";
-import AlertExample from "./examples/AlertExample";
-import TypographyExample from "./examples/TypographyExample";
-import ButtonExample from "./examples/ButtonExample";
-import InputExample from "./examples/InputExample";
+import CarouselComponent from "../Carousel/CarouselComponent";
+import Spinner from "../common/Spinner";
+import TableExample from "../examples/TableExample";
+import AlertExample from "../examples/AlertExample";
+import TypographyExample from "../examples/TypographyExample";
+import ButtonExample from "../examples/ButtonExample";
+import InputExample from "../examples/InputExample";
+import ComponentsStyles from "./ComponentsComponent.module.css"
 
 const Components: React.FC = () => {
   return (
-    <div className="wrapper">
-      <Row style={{marginTop:10, height:405}}>
-        <Col className="gutter-row" span={11}>
+    <div className={ComponentsStyles.wrapper}>
+      <Row gutter={[14, 12]}>
+        <Col className="gutter-row" span={12}>
           <TypographyExample/>
         </Col>
-        <Col className="gutter-row" span={2}/>
-        <Col className="gutter-row" span={11}>
+        <Col className="gutter-row" span={12}>
           <CarouselComponent/>
         </Col>
       </Row>
-      <Row>
+      <Row gutter={[0, 12]}>
         <Col className="gutter-row" span={24}>
           <TableExample/>
         </Col>
       </Row>
-      <Row style={{marginTop:10}}>
+      <Row gutter={[0, 12]}>
         <Col className="gutter-row" span={24}>
           <InputExample/>
         </Col>
       </Row>
-      <Row style={{marginTop:10}}>
+      <Row gutter={[12, 12]}>
         <Col className="gutter-row" span={2}/>
         <Col className="gutter-row" span={4}>
           <ButtonExample/>

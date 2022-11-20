@@ -14,7 +14,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import menuStyles from './Navbar.module.css'
-import Components from "../Components";
+import Components from "../ComponentsComponent/Components";
 
 type MenuItem = Required<MenuProps>['items'][number];
 

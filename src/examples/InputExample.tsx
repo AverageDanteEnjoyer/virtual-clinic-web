@@ -4,13 +4,11 @@ import { UserOutlined } from "@ant-design/icons";
 
 const InputExample:React.FC=()=>{
   return (
-    <>
-      <Input
-        size="large"
-        placeholder="enter email"
-        prefix={<UserOutlined />}
-      />
-    </>
+    <Input
+      size="large"
+      placeholder="enter email"
+      prefix={<UserOutlined/>}
+    />
   );
 }
 

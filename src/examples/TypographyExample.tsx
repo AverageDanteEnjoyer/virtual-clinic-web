@@ -1,8 +1,8 @@
 import React from "react";
 import {Typography} from "antd";
 
-const TypographyExample:React.FC=()=>{
-  const { Title, Paragraph } = Typography;
+const TypographyExample: React.FC = () => {
+  const {Title, Paragraph} = Typography;
 
   const content1: string =
     "In the process of internal desktop applications development, many different design specs and\n" +
@@ -21,11 +21,11 @@ const TypographyExample:React.FC=()=>{
       <Title level={1} underline={true}>
         Introduction
       </Title>
-      <Paragraph strong={true} copyable={{ text: content1, tooltips: true }}>
+      <Paragraph strong={true} copyable={{text: content1, tooltips: true}}>
         {content1}
       </Paragraph>
 
-      <Paragraph strong={true} copyable={{ text: content2, tooltips: true }}>
+      <Paragraph strong={true} copyable={{text: content2, tooltips: true}}>
         {content2}
       </Paragraph>
     </Typography>

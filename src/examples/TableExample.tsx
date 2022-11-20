@@ -1,13 +1,13 @@
 import React from 'react';
-import { Space, Table} from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import {Space, Table} from 'antd';
+import type {ColumnsType} from 'antd/es/table';
 
 interface DataType {
   key: React.Key;
-  id:number;
+  id: number;
   name: string;
   age: number;
-  date:Date,
+  date: Date,
 }
 
 const columns: ColumnsType<DataType> = [
@@ -70,6 +70,6 @@ const data: DataType[] = [
   },
 ];
 
-const TableExample: React.FC = () => <Table columns={columns} dataSource={data} />;
+const TableExample: React.FC = () => <Table columns={columns} dataSource={data}/>;
 
 export default TableExample;
