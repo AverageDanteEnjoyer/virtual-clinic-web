@@ -9,39 +9,48 @@ import TypographyExample from '../components/TypographyExample';
 import StyledButton from '../components/StyledButton';
 import StyledInput from '../components/StyledInput';
 import ComponentsStyles from './Routes.module.css';
+import StyledSelect from "../components/StyledSelect";
 
 const ComponentsRoute: React.FC = () => {
   return (
     <div className={ComponentsStyles.wrapper}>
       <Row gutter={[14, 12]}>
         <Col className="gutter-row" span={12}>
-          <TypographyExample />
+          <TypographyExample/>
         </Col>
         <Col className="gutter-row" span={12}>
-          <StyledCarousel />
+          <StyledCarousel/>
         </Col>
       </Row>
       <Row gutter={[0, 12]}>
         <Col className="gutter-row" span={24}>
-          <TableExample />
+          <TableExample/>
         </Col>
       </Row>
       <Row gutter={[0, 12]}>
         <Col className="gutter-row" span={24}>
-          <StyledInput />
+          <StyledInput/>
         </Col>
       </Row>
       <Row gutter={[12, 12]}>
-        <Col className="gutter-row" span={2} />
+        <Col className="gutter-row" span={2}/>
         <Col className="gutter-row" span={4}>
-          <StyledButton />
+          <StyledButton/>
         </Col>
         <Col className="gutter-row" span={9}>
-          <StyledAlert />
+          <StyledAlert/>
         </Col>
         <Col className="gutter-row" span={9}>
-          <StyledSpin tip="loading" children={<StyledAlert />} size="small" />
+          <StyledSpin tip='loading' children={<StyledAlert/>} size='small'/>
         </Col>
+      </Row>
+      <Row gutter={[0, 12]}>
+        <StyledSelect
+          mode="multiple"
+          customOptions={[{label:'gr1', children:[{label:'item1', value:'item1'}, {label:'item2', value:'item2'}]}]}
+          defaultValue={['item1', 'item2']}
+        >
+        </StyledSelect>
       </Row>
     </div>
   );
