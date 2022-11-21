@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
       getItem(<UserOutlined/>, 'user', [
         getItem('Edit profile', '1'),
         getItem('Appointments', '2'),
-      ]) :
+      ], menuStyles.rightPanel) :
       getItem(<Link to={'log-in'}><UserOutlined/></Link>, 'user')),
     getItem(<Link to={'/'}>home</Link>, '3'),
     getItem(<Link to={'/components'}>components</Link>, '4'),
