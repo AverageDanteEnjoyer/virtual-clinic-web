@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
           'user'
         ),
     getItem(<Link to={'/'}>home</Link>, '3'),
-    getItem(<Link to={'/components'}>components</Link>, '4'),
+    getItem(<Link to={'/Components'}>components</Link>, '4'),
   ];
   return (
     <BrowserRouter>

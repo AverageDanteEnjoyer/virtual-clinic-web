@@ -1,15 +1,15 @@
 import React from 'react';
 import { Col, Row } from 'antd';
 
-import StyledCarousel from '../Carousel/StyledCarousel';
-import StyledSpin from '../components/StyledSpin';
-import TableExample from '../components/TableExample';
-import StyledAlert from '../components/StyledAlert';
-import TypographyExample from '../components/TypographyExample';
-import StyledButton from '../components/StyledButton';
-import StyledInput from '../components/StyledInput';
+import StyledCarousel from '../Components/Carousel/StyledCarousel';
+import StyledSpin from '../Components/StyledSpin';
+import TableExample from '../Components/TableExample';
+import StyledAlert from '../Components/StyledAlert';
+import TypographyExample from '../Components/TypographyExample';
+import StyledButton from '../Components/StyledButton';
+import StyledInput from '../Components/StyledInput';
 import ComponentsStyles from './Routes.module.css';
-import StyledSelect from '../components/StyledSelect';
+import StyledSelect from '../Components/StyledSelect';
 
 const ComponentsRoute: React.FC = () => {
   return (

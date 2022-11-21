@@ -6,7 +6,7 @@ import ComponentsRoute from './ComponentsRoute';
 const AppRoutes = (
   <Routes>
     <Route path={'/'}></Route>
-    <Route path={'/components'} element={<ComponentsRoute />}></Route>
+    <Route path={'/Components'} element={<ComponentsRoute />}></Route>
     <Route path={'/log-in'} element={<p>sign up</p>}></Route>
   </Routes>
 );
