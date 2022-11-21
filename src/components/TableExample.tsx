@@ -1,13 +1,13 @@
 import React from 'react';
-import {Space, Table} from 'antd';
-import type {ColumnsType} from 'antd/es/table';
+import { Space, Table } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 
 interface DataType {
   key: React.Key;
   id: number;
   name: string;
   age: number;
-  date: Date,
+  date: Date;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -15,13 +15,13 @@ const columns: ColumnsType<DataType> = [
     title: 'Id',
     dataIndex: 'id',
     key: 'id',
-    render: text => <p>{text}</p>,
+    render: (text) => <p>{text}</p>,
   },
   {
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
-    render: text => <p>{text}</p>,
+    render: (text) => <p>{text}</p>,
   },
   {
     title: 'Age',
@@ -32,7 +32,7 @@ const columns: ColumnsType<DataType> = [
     title: 'Date',
     dataIndex: 'date',
     key: 'date',
-    render: date => <p>{date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}</p>
+    render: (date) => <p>{date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}</p>,
   },
   {
     title: 'Action',
@@ -70,6 +70,6 @@ const data: DataType[] = [
   },
 ];
 
-const TableExample: React.FC = () => <Table columns={columns} dataSource={data}/>;
+const TableExample: React.FC = () => <Table columns={columns} dataSource={data} />;
 
 export default TableExample;

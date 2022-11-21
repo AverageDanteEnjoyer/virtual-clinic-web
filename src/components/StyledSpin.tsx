@@ -2,17 +2,26 @@ import React from 'react';
 import { SyncOutlined } from '@ant-design/icons';
 import { Spin, SpinProps } from 'antd';
 
-interface StyledSpinProps extends SpinProps{
-  indicatorStyle?:React.CSSProperties;
+interface StyledSpinProps extends SpinProps {
+  indicatorStyle?: React.CSSProperties;
 }
 
-const StyledSpin: React.FC<StyledSpinProps> = ({delay, size, spinning, tip, indicatorStyle, className, wrapperClassName, children}: StyledSpinProps) => (
+const StyledSpin: React.FC<StyledSpinProps> = ({
+  delay,
+  size,
+  spinning,
+  tip,
+  indicatorStyle,
+  className,
+  wrapperClassName,
+  children,
+}: StyledSpinProps) => (
   <Spin
     delay={delay}
     size={size}
     spinning={spinning}
     tip={tip}
-    indicator={<SyncOutlined style={indicatorStyle} spin/>}
+    indicator={<SyncOutlined style={indicatorStyle} spin />}
     className={className}
     wrapperClassName={wrapperClassName}
   >
@@ -20,8 +29,8 @@ const StyledSpin: React.FC<StyledSpinProps> = ({delay, size, spinning, tip, indi
   </Spin>
 );
 
-StyledSpin.defaultProps={
-  indicatorStyle : {fontSize:22},
-}
+StyledSpin.defaultProps = {
+  indicatorStyle: { fontSize: 22 },
+};
 
 export default StyledSpin;

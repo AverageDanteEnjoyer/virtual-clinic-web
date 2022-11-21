@@ -1,46 +1,46 @@
-import React from "react";
+import React from 'react';
 import { Col, Row } from 'antd';
 
-import StyledCarousel from "../Carousel/StyledCarousel";
-import StyledSpin from "../components/StyledSpin";
-import TableExample from "../components/TableExample";
-import StyledAlert from "../components/StyledAlert";
-import TypographyExample from "../components/TypographyExample";
-import StyledButton from "../components/StyledButton";
-import StyledInput from "../components/StyledInput";
-import ComponentsStyles from "./Routes.module.css"
+import StyledCarousel from '../Carousel/StyledCarousel';
+import StyledSpin from '../components/StyledSpin';
+import TableExample from '../components/TableExample';
+import StyledAlert from '../components/StyledAlert';
+import TypographyExample from '../components/TypographyExample';
+import StyledButton from '../components/StyledButton';
+import StyledInput from '../components/StyledInput';
+import ComponentsStyles from './Routes.module.css';
 
 const ComponentsRoute: React.FC = () => {
   return (
     <div className={ComponentsStyles.wrapper}>
       <Row gutter={[14, 12]}>
         <Col className="gutter-row" span={12}>
-          <TypographyExample/>
+          <TypographyExample />
         </Col>
         <Col className="gutter-row" span={12}>
-          <StyledCarousel/>
+          <StyledCarousel />
         </Col>
       </Row>
       <Row gutter={[0, 12]}>
         <Col className="gutter-row" span={24}>
-          <TableExample/>
+          <TableExample />
         </Col>
       </Row>
       <Row gutter={[0, 12]}>
         <Col className="gutter-row" span={24}>
-          <StyledInput/>
+          <StyledInput />
         </Col>
       </Row>
       <Row gutter={[12, 12]}>
-        <Col className="gutter-row" span={2}/>
+        <Col className="gutter-row" span={2} />
         <Col className="gutter-row" span={4}>
-          <StyledButton/>
+          <StyledButton />
         </Col>
         <Col className="gutter-row" span={9}>
-          <StyledAlert/>
+          <StyledAlert />
         </Col>
         <Col className="gutter-row" span={9}>
-          <StyledSpin tip='loading' children={<StyledAlert/>} size='small'/>
+          <StyledSpin tip="loading" children={<StyledAlert />} size="small" />
         </Col>
       </Row>
     </div>

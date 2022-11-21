@@ -1,13 +1,13 @@
-.menu{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+.menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 .rightPanel {
-    margin-left: auto !important;
+  margin-left: auto !important;
 }
 
-.logo{
-    pointer-events: none;
+.logo {
+  pointer-events: none;
 }
