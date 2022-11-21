@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Link } from 'react-router-dom';
 import { Menu, MenuProps } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
+import AppRoutes from '../Routes/AppRoutes';
 import menuStyles from './Navbar.module.css';
-import ComponentsRoute from '../Routes/ComponentsRoute';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -53,11 +53,7 @@ const Navbar: React.FC = () => {
           items={items}
         ></Menu>
       </nav>
-      <Routes>
-        <Route path={'/'}></Route>
-        <Route path={'/components'} element={<ComponentsRoute />}></Route>
-        <Route path={'/log-in'} element={<p>sign up</p>}></Route>
-      </Routes>
+      {AppRoutes}
     </BrowserRouter>
   );
 };
