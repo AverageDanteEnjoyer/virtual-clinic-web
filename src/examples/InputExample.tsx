@@ -2,11 +2,11 @@ import React from "react";
 import {Input, InputProps} from "antd";
 import {UserOutlined, LockOutlined} from "@ant-design/icons";
 
-export interface InputExampleProps extends InputProps {
+interface InputExampleProps extends InputProps {
   password?: boolean,
 }
 
-const InputExample: React.FC = ({size, placeholder, prefix, password}: InputExampleProps) => {
+const InputExample: React.FC<InputExampleProps> = ({size, placeholder, prefix, password}: InputExampleProps) => {
   const DefaultInput = (
     <Input
       size={size}

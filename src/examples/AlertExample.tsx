@@ -8,7 +8,7 @@ interface AlertExampleProps {
   closable?: boolean;
 }
 
-const AlertExample: React.FC = ({message, type, showIcon, closable}: AlertExampleProps) => (
+const AlertExample: React.FC<AlertExampleProps> = ({message, type, showIcon, closable}: AlertExampleProps) => (
   <Alert
     message={message}
     type={type}
