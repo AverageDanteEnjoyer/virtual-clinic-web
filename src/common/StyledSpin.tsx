@@ -6,17 +6,17 @@ interface StyledSpinProps extends SpinProps{
   indicatorStyle?:React.CSSProperties;
 }
 
-const StyledSpin: React.FC<StyledSpinProps> = (props: StyledSpinProps) => (
+const StyledSpin: React.FC<StyledSpinProps> = ({delay, size, spinning, tip, indicatorStyle, className, wrapperClassName, children}: StyledSpinProps) => (
   <Spin
-    delay={props.delay}
-    size={props.size}
-    spinning={props.spinning}
-    tip={props.tip}
-    indicator={<SyncOutlined style={props.indicatorStyle} spin/>}
-    className={props.className}
-    wrapperClassName={props.wrapperClassName}
+    delay={delay}
+    size={size}
+    spinning={spinning}
+    tip={tip}
+    indicator={<SyncOutlined style={indicatorStyle} spin/>}
+    className={className}
+    wrapperClassName={wrapperClassName}
   >
-    {props.children}
+    {children}
   </Spin>
 );
 

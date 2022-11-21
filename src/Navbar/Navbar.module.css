@@ -1,12 +1,12 @@
 .menu{
-    display: block;
+    display:block;
 }
 
 .default_item{
-    float:right;
+    float: right;
 }
 
 .logo{
-    float:left;
+    float: left;
     pointer-events: none;
 }
