@@ -1,8 +1,8 @@
 import React from "react";
 import { Col, Row } from 'antd';
 
-import CarouselComponent from "../Carousel/CarouselComponent";
-import Spinner from "../common/Spinner";
+import StyledCarousel from "../Carousel/StyledCarousel";
+import StyledSpin from "../common/StyledSpin";
 import TableExample from "../examples/TableExample";
 import AlertExample from "../examples/AlertExample";
 import TypographyExample from "../examples/TypographyExample";
@@ -18,7 +18,7 @@ const Components: React.FC = () => {
           <TypographyExample/>
         </Col>
         <Col className="gutter-row" span={12}>
-          <CarouselComponent/>
+          <StyledCarousel/>
         </Col>
       </Row>
       <Row gutter={[0, 12]}>
@@ -40,7 +40,7 @@ const Components: React.FC = () => {
           <AlertExample/>
         </Col>
         <Col className="gutter-row" span={9}>
-          <Spinner tip={'loading'} content={<AlertExample/>}></Spinner>
+          <StyledSpin tip='loading' children={<AlertExample/>}></StyledSpin>
         </Col>
       </Row>
     </div>

@@ -1,13 +1,13 @@
-/* eslint-disable jsx-a11y/heading-has-content */
 import React from "react";
 import { Carousel, Image } from "antd";
-import CarouselStyles from "./Carousel.module.css";
 
-const CarouselComponent: React.FC = () => (
+import CarouselStyles from "./StyledCarousel.module.css";
+
+const StyledCarousel: React.FC = () => (
     <Carousel
       effect="fade"
-      autoplay={true}
       className={CarouselStyles.sliderContainer}
+      autoplay
     >
       <div className={CarouselStyles.sliderContainer}>
         <Image
@@ -36,4 +36,4 @@ const CarouselComponent: React.FC = () => (
     </Carousel>
 );
 
-export default CarouselComponent;
+export default StyledCarousel;
