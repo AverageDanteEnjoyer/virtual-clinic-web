@@ -7,7 +7,7 @@ interface ButtonExampleProps {
   disabled?: boolean,
 }
 
-const ButtonExample: React.FC = ({type, content, disabled}: ButtonExampleProps) => (
+const ButtonExample: React.FC<ButtonExampleProps> = ({type, content, disabled}: ButtonExampleProps) => (
   <Button
     type={type}
     disabled={disabled}
