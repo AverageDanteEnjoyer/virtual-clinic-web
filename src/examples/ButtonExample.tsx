@@ -1,13 +1,23 @@
 import React from "react";
-import {Button, Space} from "antd";
+import {Button} from "antd";
 
-const ButtonExample: React.FC = () => {
-  const buttonContent: string = "Click me!";
-  return (
-    <Space wrap>
-      <Button type="primary">{buttonContent}</Button>
-    </Space>
-  );
+interface ButtonExampleProps {
+  type?: "primary" | "ghost" | "dashed" | "link" | "text" | "default",
+  content?: string,
+  disabled?: boolean,
+}
+
+const ButtonExample: React.FC = ({type, content, disabled}: ButtonExampleProps) => (
+  <Button
+    type={type}
+    disabled={disabled}
+  >{content}</Button>
+)
+
+ButtonExample.defaultProps = {
+  type: "primary",
+  content: " ",
+  disabled: false
 }
 
 export default ButtonExample
