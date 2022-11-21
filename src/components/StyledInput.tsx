@@ -2,11 +2,11 @@ import React from "react";
 import {Input, InputProps} from "antd";
 import {UserOutlined, LockOutlined} from "@ant-design/icons";
 
-interface InputExampleProps extends InputProps {
+interface StyledInputProps extends InputProps {
   password?: boolean,
 }
 
-const InputExample: React.FC<InputExampleProps> = ({size, placeholder, prefix, password}: InputExampleProps) => {
+const StyledInput: React.FC<StyledInputProps> = ({size, placeholder, prefix, password}: StyledInputProps) => {
   const DefaultInput = (
     <Input
       size={size}
@@ -26,11 +26,11 @@ const InputExample: React.FC<InputExampleProps> = ({size, placeholder, prefix, p
   return password ? PasswordInput : DefaultInput
 }
 
-InputExample.defaultProps = {
+StyledInput.defaultProps = {
   size: "middle",
   placeholder: " ",
   prefix: <UserOutlined/>,
   password: true
 }
 
-export default InputExample
+export default StyledInput

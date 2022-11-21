@@ -1,14 +1,14 @@
 import React from "react";
 import {Alert} from "antd";
 
-interface AlertExampleProps {
+interface StyledAlertProps {
   message?: string,
   type?: "success" | "info" | "warning" | "error",
   showIcon?: boolean;
   closable?: boolean;
 }
 
-const AlertExample: React.FC<AlertExampleProps> = ({message, type, showIcon, closable}: AlertExampleProps) => (
+const StyledAlert: React.FC<StyledAlertProps> = ({message, type, showIcon, closable}: StyledAlertProps) => (
   <Alert
     message={message}
     type={type}
@@ -17,11 +17,11 @@ const AlertExample: React.FC<AlertExampleProps> = ({message, type, showIcon, clo
   />
 )
 
-AlertExample.defaultProps = {
+StyledAlert.defaultProps = {
   message: " ",
   type: "info",
   showIcon: true,
   closable: true
 }
 
-export default AlertExample
+export default StyledAlert

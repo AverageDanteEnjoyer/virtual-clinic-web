@@ -1,23 +1,23 @@
 import React from "react";
 import {Button} from "antd";
 
-interface ButtonExampleProps {
+interface StyledButtonProps {
   type?: "primary" | "ghost" | "dashed" | "link" | "text" | "default",
   content?: string,
   disabled?: boolean,
 }
 
-const ButtonExample: React.FC<ButtonExampleProps> = ({type, content, disabled}: ButtonExampleProps) => (
+const StyledButton: React.FC<StyledButtonProps> = ({type, content, disabled}: StyledButtonProps) => (
   <Button
     type={type}
     disabled={disabled}
   >{content}</Button>
 )
 
-ButtonExample.defaultProps = {
+StyledButton.defaultProps = {
   type: "primary",
   content: " ",
   disabled: false
 }
 
-export default ButtonExample
+export default StyledButton

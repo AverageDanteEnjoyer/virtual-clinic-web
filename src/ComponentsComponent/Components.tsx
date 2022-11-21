@@ -2,12 +2,12 @@ import React from "react";
 import { Col, Row } from 'antd';
 
 import StyledCarousel from "../Carousel/StyledCarousel";
-import StyledSpin from "../common/StyledSpin";
-import TableExample from "../examples/TableExample";
-import AlertExample from "../examples/AlertExample";
-import TypographyExample from "../examples/TypographyExample";
-import ButtonExample from "../examples/ButtonExample";
-import InputExample from "../examples/InputExample";
+import StyledSpin from "../components/StyledSpin";
+import TableExample from "../components/TableExample";
+import StyledAlert from "../components/StyledAlert";
+import TypographyExample from "../components/TypographyExample";
+import StyledButton from "../components/StyledButton";
+import StyledInput from "../components/StyledInput";
 import ComponentsStyles from "./ComponentsComponent.module.css"
 
 const Components: React.FC = () => {
@@ -28,19 +28,19 @@ const Components: React.FC = () => {
       </Row>
       <Row gutter={[0, 12]}>
         <Col className="gutter-row" span={24}>
-          <InputExample/>
+          <StyledInput/>
         </Col>
       </Row>
       <Row gutter={[12, 12]}>
         <Col className="gutter-row" span={2}/>
         <Col className="gutter-row" span={4}>
-          <ButtonExample/>
+          <StyledButton/>
         </Col>
         <Col className="gutter-row" span={9}>
-          <AlertExample/>
+          <StyledAlert/>
         </Col>
         <Col className="gutter-row" span={9}>
-          <StyledSpin tip='loading' children={<AlertExample/>}></StyledSpin>
+          <StyledSpin tip='loading' children={<StyledAlert/>} size='small'/>
         </Col>
       </Row>
     </div>
