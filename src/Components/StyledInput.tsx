@@ -7,11 +7,11 @@ interface StyledInputProps extends InputProps {
 }
 
 const StyledInput: React.FC<StyledInputProps> = ({ size, placeholder, prefix, password }: StyledInputProps) => {
-  const DefaultInput = <Input size={size} placeholder={placeholder} prefix={prefix} />;
-
-  const PasswordInput = <Input.Password size={size} placeholder="password" prefix={<LockOutlined />} />;
-
-  return password ? PasswordInput : DefaultInput;
+return password ? (
+  <Input.Password size={size} placeholder="password" prefix={<LockOutlined />} />
+) : (
+  <Input size={size} placeholder={placeholder} prefix={prefix} />
+);
 };
 
 StyledInput.defaultProps = {
