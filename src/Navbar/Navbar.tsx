@@ -15,7 +15,7 @@ import {
 } from '@ant-design/icons';
 
 import menuStyles from './Navbar.module.css'
-import Components from "../ComponentsComponent/Components";
+import ComponentsRoute from "../Routes/ComponentsRoute";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
       </nav>
       <Routes>
         <Route path={'/'}></Route>
-        <Route path={'/components'} element={<Components/>}></Route>
+        <Route path={'/components'} element={<ComponentsRoute/>}></Route>
         <Route path={'/log-in'} element={<p>sign up</p>}></Route>
       </Routes>
     </BrowserRouter>

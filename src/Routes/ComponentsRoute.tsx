@@ -8,9 +8,9 @@ import StyledAlert from "../components/StyledAlert";
 import TypographyExample from "../components/TypographyExample";
 import StyledButton from "../components/StyledButton";
 import StyledInput from "../components/StyledInput";
-import ComponentsStyles from "./ComponentsComponent.module.css"
+import ComponentsStyles from "./Routes.module.css"
 
-const Components: React.FC = () => {
+const ComponentsRoute: React.FC = () => {
   return (
     <div className={ComponentsStyles.wrapper}>
       <Row gutter={[14, 12]}>
@@ -47,4 +47,4 @@ const Components: React.FC = () => {
   );
 };
 
-export default Components;
+export default ComponentsRoute;
