@@ -7,16 +7,11 @@ interface StyledButtonProps {
   disabled?: boolean;
 }
 
-const StyledButton: React.FC<StyledButtonProps> = ({ type, content, disabled }: StyledButtonProps) => (
+const StyledButton = ({ type = 'primary', content = '', disabled = false }: StyledButtonProps) => (
   <Button type={type} disabled={disabled}>
     {content}
   </Button>
 );
 
-StyledButton.defaultProps = {
-  type: 'primary',
-  content: ' ',
-  disabled: false,
-};
-
 export default StyledButton;
+
