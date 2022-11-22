@@ -3,7 +3,7 @@ import { BrowserRouter, Link } from 'react-router-dom';
 import { Menu, MenuProps } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
-import AppRoutes from '../Routes/AppRoutes';
+import AppRoutes from '../../Routes/AppRoutes';
 import menuStyles from './Navbar.module.css';
 
 type MenuItem = Required<MenuProps>['items'][number];
