@@ -13,22 +13,10 @@ interface StyledCarouselProps {
 
 const StyledCarousel = ({ autoplay, dotPosition, dots, easing, effect, className }: StyledCarouselProps) => {
   const CarouselData = [
-    {
-      id: 1,
-      src: '/assets/Carousel/img1.jpg',
-    },
-    {
-      id: 2,
-      src: 'assets/Carousel/img2.jpg',
-    },
-    {
-      id: 3,
-      src: 'assets/Carousel/img3.jpg',
-    },
-    {
-      id: 4,
-      src: 'assets/Carousel/img4.jpg',
-    },
+    'assets/Carousel/img1.jpg',
+    'assets/Carousel/img2.jpg',
+    'assets/Carousel/img3.jpg',
+    'assets/Carousel/img4.jpg',
   ];
 
   return (
@@ -40,8 +28,8 @@ const StyledCarousel = ({ autoplay, dotPosition, dots, easing, effect, className
       effect={effect}
       className={className}
     >
-      {CarouselData.map((img) => {
-        return <Image src={img.src} className={CarouselStyles.img} />;
+      {CarouselData.map((img, idx) => {
+        return <Image key={idx} src={img} className={CarouselStyles.img} />;
       })}
     </Carousel>
   );
