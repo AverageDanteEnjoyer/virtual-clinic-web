@@ -1,15 +1,15 @@
 import React from 'react';
 import { Col, Row } from 'antd';
 
-import StyledCarousel from '../../Components/Carousel/index.';
-import StyledSpin from '../../Components/Spin/index.';
-import TableExample from '../../Components/Table/index.';
+import StyledCarousel from '../../Components/Carousel';
+import StyledSpin from '../../Components/Spin';
+import TableExample from '../../Components/Table';
 import StyledAlert from '../../Components/Alert';
-import TypographyExample from '../../Components/Typography/index.';
+import TypographyExample from '../../Components/Typography';
 import StyledButton from '../../Components/Button';
-import StyledInput from '../../Components/Input/index.';
+import StyledInput from '../../Components/Input';
 import ComponentsStyles from './Components.module.css';
-import StyledSelect from '../../Components/Select/index.';
+import StyledSelect from '../../Components/Select';
 
 const ComponentsPage = () => {
   return (
