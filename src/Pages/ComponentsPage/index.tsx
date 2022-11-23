@@ -1,17 +1,17 @@
 import React from 'react';
 import { Col, Row } from 'antd';
 
-import StyledCarousel from '../Components/Carousel/StyledCarousel';
-import StyledSpin from '../Components/Spin/StyledSpin';
-import TableExample from '../Components/Table/TableExample';
-import StyledAlert from '../Components/Alert/StyledAlert';
-import TypographyExample from '../Components/Typography/TypographyExample';
-import StyledButton from '../Components/Button/StyledButton';
-import StyledInput from '../Components/Input/StyledInput';
-import ComponentsStyles from './Routes.module.css';
-import StyledSelect from '../Components/Select/StyledSelect';
+import StyledCarousel from '../../Components/Carousel/index.';
+import StyledSpin from '../../Components/Spin/index.';
+import TableExample from '../../Components/Table/index.';
+import StyledAlert from '../../Components/Alert';
+import TypographyExample from '../../Components/Typography/index.';
+import StyledButton from '../../Components/Button';
+import StyledInput from '../../Components/Input/index.';
+import ComponentsStyles from './Components.module.css';
+import StyledSelect from '../../Components/Select/index.';
 
-const ComponentsRoute: React.FC = () => {
+const ComponentsPage = () => {
   return (
     <div className={ComponentsStyles.wrapper}>
       <Row gutter={[14, 12]}>
@@ -63,4 +63,4 @@ const ComponentsRoute: React.FC = () => {
   );
 };
 
-export default ComponentsRoute;
+export default ComponentsPage;

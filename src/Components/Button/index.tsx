@@ -7,11 +7,10 @@ interface StyledButtonProps {
   disabled?: boolean;
 }
 
-const StyledButton = ({ type = 'primary', content = '', disabled = false }: StyledButtonProps) => (
+const StyledButton = ({ type = 'primary', content, disabled }: StyledButtonProps) => (
   <Button type={type} disabled={disabled}>
     {content}
   </Button>
 );
 
 export default StyledButton;
-

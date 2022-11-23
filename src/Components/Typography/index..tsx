@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from 'antd';
 
-const TypographyExample: React.FC = () => {
+const TypographyExample = () => {
   const { Title, Paragraph } = Typography;
 
   const content1: string =

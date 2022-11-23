@@ -6,7 +6,7 @@ interface StyledSpinProps extends SpinProps {
   indicatorStyle?: React.CSSProperties;
 }
 
-const StyledSpin: React.FC<StyledSpinProps> = ({
+const StyledSpin = ({
   delay,
   size,
   spinning,

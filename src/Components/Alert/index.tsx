@@ -8,13 +8,11 @@ interface StyledAlertProps {
   closable?: boolean;
 }
 
-const StyledAlert: React.FC<StyledAlertProps> = ({ message, type, showIcon, closable }: StyledAlertProps) => (
+const StyledAlert = ({ message, type, showIcon, closable }: StyledAlertProps) => (
   <Alert message={message} type={type} showIcon={showIcon} closable={closable} />
 );
 
 StyledAlert.defaultProps = {
-  message: ' ',
-  type: 'info',
   showIcon: true,
   closable: true,
 };

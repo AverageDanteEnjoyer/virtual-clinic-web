@@ -8,13 +8,7 @@ interface StyledSelectProps extends SelectProps {
   }[];
 }
 
-const StyledSelect: React.FC<StyledSelectProps> = ({
-  customOptions,
-  defaultValue,
-  mode,
-  style,
-  options,
-}: StyledSelectProps) => {
+const StyledSelect = ({ customOptions, defaultValue, mode, style, options }: StyledSelectProps) => {
   const { Option, OptGroup } = Select;
   const groups = customOptions?.map((group) => {
     const options = group.children.map((option) => (
@@ -36,7 +30,6 @@ const StyledSelect: React.FC<StyledSelectProps> = ({
 };
 
 StyledSelect.defaultProps = {
-  customOptions: [],
   style: { width: '30%' },
 };
 

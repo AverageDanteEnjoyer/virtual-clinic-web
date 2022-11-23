@@ -1,59 +1,54 @@
 import React from 'react';
-import { BrowserRouter, Link } from 'react-router-dom';
-import { Menu, MenuProps } from 'antd';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
-import AppRoutes from '../../Routes/AppRoutes';
-import menuStyles from './Navbar.module.css';
+import ComponentsPage from '../../Pages/ComponentsPage';
+
+import routes from '../../routes';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  children?: MenuItem[],
-  className: string = menuStyles.default_item //enables different styling for specific menu items if needed
-): MenuItem {
+function getItem(label: React.ReactNode, key: React.Key, children?: MenuItem[]): MenuItem {
   return {
     label,
     key,
     children,
-    className,
   } as MenuItem;
 }
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const loggedIn = 1; //used for testing, change manually
   const items: MenuItem[] = [
-    getItem(<QuestionOutlined />, 'logo', undefined, menuStyles.logo), //an area for logo
+    getItem(<Link to={routes.components}>components</Link>, '1'),
+    getItem(<Link to={routes.home}>home</Link>, '2'),
     loggedIn
-      ? getItem(
-          <UserOutlined />,
-          'user',
-          [getItem('Edit profile', '1'), getItem('Appointments', '2')],
-          menuStyles.rightPanel
-        )
+      ? getItem(<UserOutlined />, 'user', [getItem('Edit profile', '3'), getItem('Appointments', '4')])
       : getItem(
-          <Link to={'log-in'}>
+          <Link to={routes.logIn}>
             <UserOutlined />
           </Link>,
           'user'
         ),
-    getItem(<Link to={'/'}>home</Link>, '3'),
-    getItem(<Link to={'/Components'}>components</Link>, '4'),
   ];
   return (
     <BrowserRouter>
-      <nav>
-        <Menu
-          className={menuStyles.menu}
-          defaultSelectedKeys={['1']}
-          mode="horizontal"
-          theme="light"
-          items={items}
-        ></Menu>
-      </nav>
-      {AppRoutes}
+      <Row align="middle" justify="end">
+        <Col flex={1}>
+          {/*A place for logo*/}
+          <QuestionOutlined />
+        </Col>
+        <Col>
+          <nav>
+            <Menu defaultSelectedKeys={['1']} mode="horizontal" theme="light" items={items} />
+          </nav>
+        </Col>
+      </Row>
+      <Routes>
+        <Route path={routes.home}></Route>
+        <Route path={routes.components} element={<ComponentsPage />}></Route>
+        <Route path={routes.logIn} element={<p>sign up</p>}></Route>
+      </Routes>
     </BrowserRouter>
   );
 };

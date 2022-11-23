@@ -70,6 +70,6 @@ const data: DataType[] = [
   },
 ];
 
-const TableExample: React.FC = () => <Table columns={columns} dataSource={data} />;
+const TableExample = () => <Table columns={columns} dataSource={data} />;
 
 export default TableExample;
