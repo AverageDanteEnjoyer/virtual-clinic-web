@@ -7,11 +7,11 @@ interface StyledSpinProps extends SpinProps {
 }
 
 const StyledSpin = ({
+  indicatorStyle = { fontSize: 22 },
   delay,
   size,
   spinning,
   tip,
-  indicatorStyle,
   className,
   wrapperClassName,
   children,
@@ -28,9 +28,5 @@ const StyledSpin = ({
     {children}
   </Spin>
 );
-
-StyledSpin.defaultProps = {
-  indicatorStyle: { fontSize: 22 },
-};
 
 export default StyledSpin;

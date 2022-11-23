@@ -29,7 +29,7 @@ const ComponentsPage = () => {
       </Row>
       <Row gutter={[0, 12]}>
         <Col className="gutter-row" span={24}>
-          <StyledInput />
+          <StyledInput password={true} />
         </Col>
       </Row>
       <Row gutter={[12, 12]}>

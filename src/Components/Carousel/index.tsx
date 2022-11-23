@@ -11,7 +11,14 @@ interface StyledCarouselProps {
   className?: string;
 }
 
-const StyledCarousel = ({ autoplay, dotPosition, dots, easing, effect, className }: StyledCarouselProps) => {
+const StyledCarousel = ({
+  autoplay = true,
+  effect = 'fade',
+  className = CarouselStyles.sliderContainer,
+  dotPosition,
+  dots,
+  easing,
+}: StyledCarouselProps) => {
   const CarouselData = [
     'assets/Carousel/img1.jpg',
     'assets/Carousel/img2.jpg',
@@ -33,12 +40,6 @@ const StyledCarousel = ({ autoplay, dotPosition, dots, easing, effect, className
       })}
     </Carousel>
   );
-};
-
-StyledCarousel.defaultProps = {
-  autoplay: true,
-  effect: 'fade',
-  className: CarouselStyles.sliderContainer,
 };
 
 export default StyledCarousel;
