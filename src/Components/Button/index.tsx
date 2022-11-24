@@ -3,14 +3,14 @@ import { Button } from 'antd';
 
 interface CustomButtonProps {
   type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
-  content?: string;
+  children?: React.ReactNode;
   disabled?: boolean;
   className?: string;
 }
 
-const CustomButton = ({ type = 'primary', content, disabled, className }: CustomButtonProps) => (
+const CustomButton = ({ type = 'primary', children, disabled, className }: CustomButtonProps) => (
   <Button className={className} type={type} disabled={disabled}>
-    {content}
+    {children}
   </Button>
 );
 

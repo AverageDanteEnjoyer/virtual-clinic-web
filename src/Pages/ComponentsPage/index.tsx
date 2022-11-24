@@ -35,7 +35,7 @@ const ComponentsPage = () => {
       <Row gutter={[12, 12]}>
         <Col className="gutter-row" span={2} />
         <Col className="gutter-row" span={4}>
-          <StyledButton content="123"></StyledButton>
+          <StyledButton>Button</StyledButton>
         </Col>
         <Col className="gutter-row" span={9}>
           <StyledAlert />
