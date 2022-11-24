@@ -1,16 +1,17 @@
 import React from 'react';
 import { Button } from 'antd';
 
-interface StyledButtonProps {
+interface CustomButtonProps {
   type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
   content?: string;
   disabled?: boolean;
+  className?: string;
 }
 
-const StyledButton = ({ type = 'primary', content, disabled }: StyledButtonProps) => (
-  <Button type={type} disabled={disabled}>
+const CustomButton = ({ type = 'primary', content, disabled, className }: CustomButtonProps) => (
+  <Button className={className} type={type} disabled={disabled}>
     {content}
   </Button>
 );
 
-export default StyledButton;
+export default CustomButton;

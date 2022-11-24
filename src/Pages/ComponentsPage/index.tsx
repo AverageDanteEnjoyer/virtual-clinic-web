@@ -6,10 +6,10 @@ import StyledSpin from '../../Components/Spin';
 import TableExample from '../../Components/Table';
 import StyledAlert from '../../Components/Alert';
 import TypographyExample from '../../Components/Typography';
-import StyledButton from '../../Components/Button';
 import StyledInput from '../../Components/Input';
 import ComponentsStyles from './Components.module.css';
 import StyledSelect from '../../Components/Select';
+import StyledButton from '../../Components/Button/StyledButton';
 
 const ComponentsPage = () => {
   return (
@@ -35,7 +35,7 @@ const ComponentsPage = () => {
       <Row gutter={[12, 12]}>
         <Col className="gutter-row" span={2} />
         <Col className="gutter-row" span={4}>
-          <StyledButton />
+          <StyledButton content="123"></StyledButton>
         </Col>
         <Col className="gutter-row" span={9}>
           <StyledAlert />
