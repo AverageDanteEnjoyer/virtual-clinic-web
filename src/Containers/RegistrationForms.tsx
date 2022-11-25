@@ -38,7 +38,7 @@ const RegistrationForms = () => {
     };
     const response = await register(credentials);
     if (response.ok) {
-      setAlert({ type: 'success', message: 'Account has been created! Redirecting the login page' });
+      setAlert({ type: 'success', message: 'Account has been created! Redirecting to the login page' });
       setTimeout(() => {
         navigate(routes.logIn);
       }, 3000);
