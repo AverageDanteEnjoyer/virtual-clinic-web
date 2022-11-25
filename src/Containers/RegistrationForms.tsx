@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, FormItemProps } from 'antd';
+import { Col, Form, FormItemProps, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import StyledInput from '../Components/Input';
@@ -83,26 +83,27 @@ const RegistrationForms = () => {
       rules: [{ required: true, message: 'Please input your password' }],
     },
   ];
-  const fItems = [
-    items.map((item, idx) => (
-      <Form.Item key={idx} label={item.label} name={item.name} rules={item.rules}>
-        <StyledInput type={item.type} placeholder={'Enter your ' + item.label} password={item.name === 'password'} />
-      </Form.Item>
-    )),
-    <Form.Item key="submitButton" wrapperCol={{ offset: 5, span: 12 }}>
-      <StyledButton htmlType="submit">Submit</StyledButton>
-    </Form.Item>,
-  ];
+  const fItems = items.map((item, idx) => (
+    <Form.Item key={idx} label={item.label} name={item.name} rules={item.rules}>
+      <StyledInput type={item.type} placeholder={'Enter your ' + item.label} password={item.name === 'password'} />
+    </Form.Item>
+  ));
 
   const [alert, setAlert] = useState<{ type: 'success' | 'warning' | 'error' | 'info' | undefined; message: string }>();
   const alertComponent = alert ? <StyledAlert type={alert.type} message={alert.message} /> : undefined;
 
   return (
     <div>
-      <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onFinish={onFinish} onFinishFailed={onFinishFailed}>
+      <Form labelCol={{ span: 6 }} wrapperCol={{ span: 12 }} onFinish={onFinish} onFinishFailed={onFinishFailed}>
         {fItems}
+        <Row>
+          <Col span={6} />
+          <Col span={4}>
+            <StyledButton htmlType="submit">Submit</StyledButton>
+          </Col>
+          <Col span={8}>{alertComponent}</Col>
+        </Row>
       </Form>
-      {alertComponent}
     </div>
   );
 };
