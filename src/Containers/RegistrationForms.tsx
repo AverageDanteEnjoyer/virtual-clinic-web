@@ -92,7 +92,9 @@ const RegistrationForms = () => {
   const [alerts, setAlerts] = useState<
     { type: 'success' | 'warning' | 'error' | 'info' | undefined; message: string }[]
   >([]);
-  const alertComponents = alerts.map((alert) => <StyledAlert type={alert.type} message={alert.message} />);
+  const alertComponents = alerts.map((alert) => (
+    <StyledAlert key={alerts.length} type={alert.type} message={alert.message} />
+  ));
 
   return (
     <div>
