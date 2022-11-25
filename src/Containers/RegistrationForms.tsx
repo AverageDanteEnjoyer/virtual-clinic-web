@@ -38,23 +38,28 @@ const RegistrationForms = () => {
     };
     const response = await register(credentials);
     if (response.ok) {
-      setAlerts([...alerts, { type: 'success', message: 'Account has been created! Redirecting the login page' }]);
+      setAlert({ type: 'success', message: 'Account has been created! Redirecting the login page' });
       setTimeout(() => {
         navigate(routes.logIn);
       }, 3000);
     }
     if (response.status === 422) {
-      setAlerts([...alerts, { type: 'info', message: 'Account already exists' }]);
+      setAlert({ type: 'info', message: 'Account already exists' });
     } else if (response.status === 500) {
-      setAlerts([...alerts, { type: 'error', message: 'Internal server problem occured, please come back later' }]);
+      setAlert({ type: 'error', message: 'Internal server problem occured, please come back later' });
     }
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    setAlerts([
-      ...alerts,
-      { type: 'error', message: 'Please input: ' + errorInfo.errorFields.map((field: any) => field.name) },
-    ]);
+    setAlert({
+      type: 'error',
+      message:
+        'Please input: ' +
+        errorInfo.errorFields
+          .map((field: any) => field.name)
+          .toString()
+          .replace(/,/g, ', '),
+    });
   };
 
   const items: formItem[] = [
@@ -89,19 +94,15 @@ const RegistrationForms = () => {
     </Form.Item>,
   ];
 
-  const [alerts, setAlerts] = useState<
-    { type: 'success' | 'warning' | 'error' | 'info' | undefined; message: string }[]
-  >([]);
-  const alertComponents = alerts.map((alert) => (
-    <StyledAlert key={alerts.length} type={alert.type} message={alert.message} />
-  ));
+  const [alert, setAlert] = useState<{ type: 'success' | 'warning' | 'error' | 'info' | undefined; message: string }>();
+  const alertComponent = alert ? <StyledAlert type={alert.type} message={alert.message} /> : undefined;
 
   return (
     <div>
       <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onFinish={onFinish} onFinishFailed={onFinishFailed}>
         {fItems}
       </Form>
-      {alertComponents}
+      {alertComponent}
     </div>
   );
 };
