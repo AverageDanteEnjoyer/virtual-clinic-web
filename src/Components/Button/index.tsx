@@ -3,13 +3,14 @@ import { Button } from 'antd';
 
 interface StyledButtonProps {
   type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
-  content?: string;
   disabled?: boolean;
+  children?: React.ReactNode;
+  htmlType?: 'button' | 'submit' | 'reset' | undefined;
 }
 
-const StyledButton = ({ type = 'primary', content, disabled }: StyledButtonProps) => (
-  <Button type={type} disabled={disabled}>
-    {content}
+const StyledButton = ({ type = 'primary', disabled, children, htmlType }: StyledButtonProps) => (
+  <Button type={type} disabled={disabled} htmlType={htmlType}>
+    {children}
   </Button>
 );
 

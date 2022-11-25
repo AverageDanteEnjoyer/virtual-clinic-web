@@ -4,6 +4,7 @@ import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
 import ComponentsPage from '../../Pages/ComponentsPage';
+import RegistrationPage from '../../Pages/RegistrationPage';
 
 import routes from '../../routes';
 
@@ -18,14 +19,14 @@ function getItem(label: React.ReactNode, key: React.Key, children?: MenuItem[]):
 }
 
 const Navbar = () => {
-  const loggedIn = 1; //used for testing, change manually
+  const loggedIn = 0; //used for testing, change manually
   const items: MenuItem[] = [
     getItem(<Link to={routes.components}>components</Link>, '1'),
     getItem(<Link to={routes.home}>home</Link>, '2'),
     loggedIn
       ? getItem(<UserOutlined />, 'user', [getItem('Edit profile', '3'), getItem('Appointments', '4')])
       : getItem(
-          <Link to={routes.logIn}>
+          <Link to={routes.register}>
             <UserOutlined />
           </Link>,
           'user'
@@ -47,7 +48,8 @@ const Navbar = () => {
       <Routes>
         <Route path={routes.home}></Route>
         <Route path={routes.components} element={<ComponentsPage />}></Route>
-        <Route path={routes.logIn} element={<p>sign up</p>}></Route>
+        <Route path={routes.logIn} element={<p />}></Route>
+        <Route path={routes.register} element={<RegistrationPage />}></Route>
       </Routes>
     </BrowserRouter>
   );
