@@ -1,5 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'antd';
+import { InfoCircleFilled } from '@ant-design/icons';
 
 import StyledCarousel from '../../Components/Carousel';
 import StyledSpin from '../../Components/Spin';
@@ -38,7 +39,11 @@ const ComponentsPage = () => {
           <Button shape="round">Button</Button>
         </Col>
         <Col className="gutter-row" span={9}>
-          <StyledAlert />
+          <StyledAlert
+            message={'Our website uses cookies to improve your experience'}
+            type={'info'}
+            icon={<InfoCircleFilled style={{ color: 'white' }} />}
+          />
         </Col>
         <Col className="gutter-row" span={9}>
           <StyledSpin tip="loading" children={<StyledAlert />} size="small" />
