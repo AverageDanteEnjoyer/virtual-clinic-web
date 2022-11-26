@@ -9,7 +9,7 @@ import TypographyExample from '../../Components/Typography';
 import StyledInput from '../../Components/Input';
 import ComponentsStyles from './Components.module.css';
 import StyledSelect from '../../Components/Select';
-import StyledButton from '../../Components/Button/StyledButton';
+import Button from '../../Components/Button';
 
 const ComponentsPage = () => {
   return (
@@ -35,7 +35,7 @@ const ComponentsPage = () => {
       <Row gutter={[12, 12]}>
         <Col className="gutter-row" span={2} />
         <Col className="gutter-row" span={4}>
-          <StyledButton>Button</StyledButton>
+          <Button shape="round">Button</Button>
         </Col>
         <Col className="gutter-row" span={9}>
           <StyledAlert />
