@@ -113,7 +113,7 @@ const RegistrationForms = () => {
   ));
 
   const alertComponent = alert ? (
-    <Alert type={alert.type} message={alert.message} description={alert.description} />
+    <Alert closable={false} type={alert.type} message={alert.message} description={alert.description} />
   ) : undefined;
 
   return (
