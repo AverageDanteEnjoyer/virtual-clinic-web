@@ -20,13 +20,13 @@ type user_info = {
   last_name: string;
   email: string;
   password: string;
+  account_type: string;
 };
 
 const RegistrationForms = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const [accountType, setAccountType] = useState('patient');
   const [alert, setAlert] = useState<{
     type: 'success' | 'warning' | 'error' | 'info' | undefined;
     message: string;
@@ -46,9 +46,9 @@ const RegistrationForms = () => {
 
   const onFinish = async (values: user_info) => {
     const credentials = {
-      user: { ...values, account_type: accountType },
+      user: values,
     };
-
+    console.log(credentials);
     const response = await register(credentials);
     setLoading(false);
 
@@ -85,20 +85,20 @@ const RegistrationForms = () => {
 
   const items: formItem[] = [
     {
-      label: 'firstname',
+      label: 'Firstname',
       name: 'first_name',
       type: 'text',
       rules: [{ required: true, message: 'Please input your firstname' }],
     },
     {
-      label: 'lastname',
+      label: 'Lastname',
       name: 'last_name',
       type: 'text',
       rules: [{ required: true, message: 'Please input your lastname' }],
     },
     { label: 'email', name: 'email', type: 'email', rules: [{ required: true, message: 'Please input your email' }] },
     {
-      label: 'password',
+      label: 'Password',
       name: 'password',
       type: 'password',
       rules: [{ required: true, message: 'Please input your password' }],
@@ -125,15 +125,16 @@ const RegistrationForms = () => {
       >
         {fItems}
         <Row gutter={[0, 12]}>
-          <Col span={6} offset={6}>
-            <Select
-              defaultValue="patient"
-              onChange={(value) => setAccountType(value)}
-              options={[
-                { value: 'patient', label: 'patient' },
-                { value: 'doctor', label: 'doctor' },
-              ]}
-            ></Select>
+          <Col span={8} offset={6}>
+            <Form.Item label="Account type" name="account_type" initialValue="patient">
+              <Select
+                defaultValue="patient"
+                options={[
+                  { value: 'patient', label: 'patient' },
+                  { value: 'doctor', label: 'doctor' },
+                ]}
+              />
+            </Form.Item>
           </Col>
           <Col span={4}>
             <Button htmlType="submit" size="large">
