@@ -126,7 +126,7 @@ const RegistrationForms = () => {
         autoComplete="false"
       >
         {fItems}
-        <Row>
+        <Row gutter={[0, 12]}>
           <Col span={6} offset={6}>
             <Select
               defaultValue="patient"
@@ -142,8 +142,6 @@ const RegistrationForms = () => {
               Submit
             </Button>
           </Col>
-        </Row>
-        <Row>
           <Col span={8} offset={6}>
             {alertComponent}
           </Col>
