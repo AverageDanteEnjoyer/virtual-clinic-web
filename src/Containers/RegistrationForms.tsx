@@ -9,6 +9,7 @@ import Select from '../Components/Select';
 import Spin from '../Components/Spin';
 
 import routes from '../routes';
+import API_URL from '../API_URL';
 
 interface formItem extends FormItemProps {
   type: string;
@@ -34,7 +35,7 @@ const RegistrationForms = () => {
 
   const register = async (credentials: { user: user_info }) => {
     setLoading(true);
-    return await fetch('https://innowacja-2022.herokuapp.com/users/', {
+    return await fetch(`${API_URL}/users/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -78,10 +79,7 @@ const RegistrationForms = () => {
       message: 'Error',
       description:
         'Please input: ' +
-        errorInfo.errorFields
-          .map((field: any) => field.name.toString().replaceAll('_', ''))
-          .toString()
-          .replace(/,/g, ', '),
+        errorInfo.errorFields.map((field: any) => field.name.toString().replaceAll('_', '')).join(', '),
     });
   };
 
