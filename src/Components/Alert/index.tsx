@@ -6,10 +6,11 @@ interface StyledAlertProps {
   type?: 'success' | 'info' | 'warning' | 'error';
   showIcon?: boolean;
   closable?: boolean;
+  description?: string;
 }
 
-const StyledAlert = ({ showIcon = true, closable = true, message, type }: StyledAlertProps) => (
-  <Alert message={message} type={type} showIcon={showIcon} closable={closable} />
+const StyledAlert = ({ showIcon = true, closable = true, message, type, description }: StyledAlertProps) => (
+  <Alert message={message} type={type} showIcon={showIcon} closable={closable} description={description} />
 );
 
 export default StyledAlert;

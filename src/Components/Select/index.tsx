@@ -8,7 +8,14 @@ interface StyledSelectProps extends SelectProps {
   }[];
 }
 
-const StyledSelect = ({ style = { width: '30%' }, customOptions, defaultValue, mode, options }: StyledSelectProps) => {
+const StyledSelect = ({
+  style = { width: '30%' },
+  customOptions,
+  defaultValue,
+  mode,
+  options,
+  onChange,
+}: StyledSelectProps) => {
   const { Option, OptGroup } = Select;
   const groups = customOptions?.map((group) => {
     const options = group.children.map((option) => (
@@ -23,7 +30,7 @@ const StyledSelect = ({ style = { width: '30%' }, customOptions, defaultValue, m
     );
   });
   return (
-    <Select mode={mode} defaultValue={defaultValue} style={style} options={options}>
+    <Select mode={mode} defaultValue={defaultValue} style={style} options={options} onChange={onChange}>
       {groups}
     </Select>
   );

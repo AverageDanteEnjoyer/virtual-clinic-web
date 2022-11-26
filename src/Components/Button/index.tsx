@@ -6,10 +6,11 @@ interface StyledButtonProps {
   disabled?: boolean;
   children?: React.ReactNode;
   htmlType?: 'button' | 'submit' | 'reset' | undefined;
+  size?: 'middle' | 'large';
 }
 
-const StyledButton = ({ type = 'primary', disabled, children, htmlType }: StyledButtonProps) => (
-  <Button type={type} disabled={disabled} htmlType={htmlType}>
+const StyledButton = ({ type = 'primary', disabled, children, htmlType, size }: StyledButtonProps) => (
+  <Button type={type} disabled={disabled} htmlType={htmlType} size={size}>
     {children}
   </Button>
 );
