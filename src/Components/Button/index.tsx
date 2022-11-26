@@ -1,16 +1,18 @@
 import React from 'react';
-import { Button } from 'antd';
+import Button from './styles';
 
-interface StyledButtonProps {
+interface CustomButtonProps {
   type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
-  content?: string;
+  children?: React.ReactNode;
   disabled?: boolean;
+  className?: string;
+  shape?: 'default' | 'round';
 }
 
-const StyledButton = ({ type = 'primary', content, disabled }: StyledButtonProps) => (
-  <Button type={type} disabled={disabled}>
-    {content}
+const CustomButton = ({ type = 'primary', children, disabled, className, shape }: CustomButtonProps) => (
+  <Button className={className} type={type} disabled={disabled} shape={shape}>
+    {children}
   </Button>
 );
 
-export default StyledButton;
+export default CustomButton;
