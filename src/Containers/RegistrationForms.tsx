@@ -47,8 +47,10 @@ const RegistrationForms = () => {
     const credentials = {
       user: { ...values, account_type: accountType },
     };
+
     const response = await register(credentials);
     setLoading(false);
+
     if (response.ok) {
       setAlert({
         type: 'success',
@@ -77,7 +79,7 @@ const RegistrationForms = () => {
       description:
         'Please input: ' +
         errorInfo.errorFields
-          .map((field: any) => field.name)
+          .map((field: any) => field.name.toString().replaceAll('_', ''))
           .toString()
           .replace(/,/g, ', '),
     });
