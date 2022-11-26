@@ -142,7 +142,7 @@ const RegistrationForms = () => {
               Submit
             </Button>
           </Col>
-          <Col span={8} offset={6}>
+          <Col span={12} offset={6}>
             {alertComponent}
           </Col>
         </Row>
