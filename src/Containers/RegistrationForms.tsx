@@ -116,7 +116,13 @@ const RegistrationForms = () => {
 
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      <Form labelCol={{ span: 6 }} wrapperCol={{ span: 12 }} onFinish={onFinish} onFinishFailed={onFinishFailed}>
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 12 }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="false"
+      >
         {fItems}
         <Row>
           <Col span={6} offset={6}>
