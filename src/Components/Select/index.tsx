@@ -1,5 +1,7 @@
 import React from 'react';
-import { Select, SelectProps } from 'antd';
+import { SelectProps } from 'antd';
+
+import Select from './styles';
 
 interface StyledSelectProps extends SelectProps {
   customOptions?: {
