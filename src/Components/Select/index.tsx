@@ -18,14 +18,14 @@ const StyledSelect = ({
   placeholder,
 }: StyledSelectProps) => {
   const { Option, OptGroup } = Select;
-  const groups = customOptions?.map((group) => {
-    const options = group.children.map((option) => (
-      <Option className={option.className} key={option.value} value={option.value}>
-        {option.label}
+  const groups = customOptions?.map(({ children, label }) => {
+    const options = children.map(({ className, value, label }) => (
+      <Option className={className} key={value} value={value}>
+        {label}
       </Option>
     ));
     return (
-      <OptGroup key={group.label} label={group.label}>
+      <OptGroup key={label} label={label}>
         {options}
       </OptGroup>
     );
