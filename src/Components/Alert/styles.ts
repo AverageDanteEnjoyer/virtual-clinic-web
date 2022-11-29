@@ -3,7 +3,7 @@ import { Alert } from 'antd';
 
 import colors from '../../palette';
 
-const StyledAlert = styled(Alert)`
+export const StyledAlert = styled(Alert)`
   ${(StyledAlertProps) =>
     StyledAlertProps.type === 'info' &&
     css`
@@ -16,5 +16,3 @@ const StyledAlert = styled(Alert)`
       color: ${colors.white};
     `}
 `;
-
-export default StyledAlert;

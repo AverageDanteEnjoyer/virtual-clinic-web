@@ -3,7 +3,7 @@ import { Button } from 'antd';
 
 import colors from '../../palette';
 
-const StyledButton = styled(Button)`
+export const StyledButton = styled(Button)`
   background-color: ${colors.dodgerBlue};
   background-image: ${colors.dodgerBlueGradient};
   background-size: calc(100% + 20px) calc(100% + 20px);
@@ -34,5 +34,3 @@ const StyledButton = styled(Button)`
     box-shadow: rgba(40, 170, 255, 0.25) 0 0 0 0.125em;
   }
 `;
-
-export default StyledButton;

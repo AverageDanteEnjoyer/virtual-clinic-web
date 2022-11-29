@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './styles';
+import { StyledButton } from './styles';
 
 interface CustomButtonProps {
   type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
@@ -9,10 +9,10 @@ interface CustomButtonProps {
   shape?: 'default' | 'round';
 }
 
-const CustomButton = ({ type = 'primary', children, disabled, className, shape }: CustomButtonProps) => (
-  <Button className={className} type={type} disabled={disabled} shape={shape}>
+const Button = ({ type = 'primary', children, disabled, className, shape }: CustomButtonProps) => (
+  <StyledButton className={className} type={type} disabled={disabled} shape={shape}>
     {children}
-  </Button>
+  </StyledButton>
 );
 
-export default CustomButton;
+export default Button;

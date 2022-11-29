@@ -30,7 +30,7 @@ const ComponentsPage = () => {
       </Row>
       <Row gutter={[0, 12]}>
         <Col className="gutter-row" span={24}>
-          <Input password={true} />
+          <Input password />
         </Col>
       </Row>
       <Row gutter={[12, 12]}>
@@ -40,13 +40,15 @@ const ComponentsPage = () => {
         </Col>
         <Col className="gutter-row" span={9}>
           <Alert
-            message={'Our website uses cookies to improve your experience'}
+            message="Our website uses cookies to improve your experience"
             type="info"
             icon={<InfoCircleFilled style={{ color: 'white' }} />}
           />
         </Col>
         <Col className="gutter-row" span={9}>
-          <Spin tip="loading" children={<Alert />} size="small" />
+          <Spin tip="loading" size="small">
+            <Alert />
+          </Spin>
         </Col>
       </Row>
       <Row gutter={[0, 12]}>
