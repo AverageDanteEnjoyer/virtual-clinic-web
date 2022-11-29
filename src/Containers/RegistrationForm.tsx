@@ -116,8 +116,8 @@ const RegistrationForm = () => {
     </Form.Item>
   ));
 
-  const alertsJSX = alerts?.map(({ type, message, description }, key) => (
-    <Alert key={key} closable={false} type={type} message={message} description={description} />
+  const alertsJSX = alerts?.map(({ type, message, description }, idx) => (
+    <Alert key={idx} closable={false} type={type} message={message} description={description} />
   ));
 
   return (
