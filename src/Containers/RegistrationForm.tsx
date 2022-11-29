@@ -84,7 +84,7 @@ const RegistrationForm = () => {
         message: 'Error',
         description:
           'Please input: ' +
-          errorInfo.errorFields.map((field: any) => field.name.toString().replaceAll('_', '')).join(', '),
+          errorInfo.errorFields.map((field: any) => field.name.toString().replaceAll('_', ' ')).join(', '),
       },
     ]);
   };
