@@ -27,11 +27,13 @@ const RegistrationForms = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const [alert, setAlert] = useState<{
-    type: 'success' | 'warning' | 'error' | 'info' | undefined;
-    message: string;
-    description?: string;
-  }>();
+  const [alerts, setAlerts] = useState<
+    {
+      type: 'success' | 'warning' | 'error' | 'info' | undefined;
+      message: string;
+      description?: string;
+    }[]
+  >();
 
   const register = async (credentials: { user: user_info }) => {
     setLoading(true);
@@ -48,39 +50,43 @@ const RegistrationForms = () => {
     const credentials = {
       user: values,
     };
-    console.log(credentials);
+
     const response = await register(credentials);
+    const responseDetails = await response.json();
+
     setLoading(false);
 
     if (response.ok) {
-      setAlert({
-        type: 'success',
-        message: 'Success',
-        description: 'Account has been created! Redirecting to the login page',
-      });
+      setAlerts([
+        {
+          type: 'success',
+          message: 'Success',
+          description: 'Account has been created! Redirecting to the login page',
+        },
+      ]);
       setTimeout(() => {
         navigate(routes.logIn);
       }, 3000);
-    }
-    if (response.status === 422) {
-      setAlert({ type: 'info', message: 'Account already exists' });
-    } else if (response.status >= 500) {
-      setAlert({
-        type: 'error',
-        message: 'Error',
-        description: 'Internal server problem occured, please come back later',
-      });
+    } else {
+      setAlerts(
+        Object.entries(responseDetails.errors).map((error) => ({
+          type: 'info',
+          message: error.join(': '),
+        }))
+      );
     }
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    setAlert({
-      type: 'error',
-      message: 'Error',
-      description:
-        'Please input: ' +
-        errorInfo.errorFields.map((field: any) => field.name.toString().replaceAll('_', '')).join(', '),
-    });
+    setAlerts([
+      {
+        type: 'error',
+        message: 'Error',
+        description:
+          'Please input: ' +
+          errorInfo.errorFields.map((field: any) => field.name.toString().replaceAll('_', '')).join(', '),
+      },
+    ]);
   };
 
   const items: formItem[] = [
@@ -110,9 +116,9 @@ const RegistrationForms = () => {
     </Form.Item>
   ));
 
-  const alertComponent = alert ? (
-    <Alert closable={false} type={alert.type} message={alert.message} description={alert.description} />
-  ) : undefined;
+  const alertsComponent = alerts?.map((alert, key) => (
+    <Alert key={key} closable={false} type={alert.type} message={alert.message} description={alert.description} />
+  ));
 
   return (
     <Spin spinning={loading} tip="waiting for server response...">
@@ -140,7 +146,7 @@ const RegistrationForms = () => {
             </Button>
           </Col>
           <Col span={12} offset={6}>
-            {alertComponent}
+            {alertsComponent}
           </Col>
         </Row>
       </Form>
