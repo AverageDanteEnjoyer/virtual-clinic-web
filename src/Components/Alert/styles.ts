@@ -4,8 +4,8 @@ import { Alert } from 'antd';
 import colors from '../../palette';
 
 export const StyledAlert = styled(Alert)`
-  ${(StyledAlertProps) =>
-    StyledAlertProps.type === 'info' &&
+  ${({ type }) =>
+    type === 'info' &&
     css`
       background-color: ${colors.dodgerBlue};
       background-image: ${colors.dodgerBlueGradient};
