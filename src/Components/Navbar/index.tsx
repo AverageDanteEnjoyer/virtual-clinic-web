@@ -19,7 +19,7 @@ function getItem(label: React.ReactNode, key: React.Key, children?: MenuItem[]):
 }
 
 const Navbar = () => {
-  const loggedIn = 0; //used for testing, change manually
+  const loggedIn = false; //used for testing, change manually
   const items: MenuItem[] = [
     getItem(<Link to={routes.components}>components</Link>, '1'),
     getItem(<Link to={routes.home}>home</Link>, '2'),

@@ -135,7 +135,7 @@ const RegistrationForms = () => {
         </Form.Item>
         <Row gutter={[0, 12]}>
           <Col span={4} offset={6}>
-            <Button htmlType="submit" size="large">
+            <Button htmlType="submit" size="large" loading={loading}>
               Submit
             </Button>
           </Col>
