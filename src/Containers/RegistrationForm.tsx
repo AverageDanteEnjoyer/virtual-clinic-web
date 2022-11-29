@@ -15,7 +15,7 @@ interface formItem extends FormItemProps {
   type: string;
 }
 
-type user_info = {
+type userInfo = {
   first_name: string;
   last_name: string;
   email: string;
@@ -35,7 +35,7 @@ const RegistrationForm = () => {
     }[]
   >();
 
-  const register = async (credentials: { user: user_info }) => {
+  const register = async (credentials: { user: userInfo }) => {
     setLoading(true);
     return await fetch(`${API_URL}/users/`, {
       method: 'POST',
@@ -46,7 +46,7 @@ const RegistrationForm = () => {
     });
   };
 
-  const onFinish = async (values: user_info) => {
+  const onFinish = async (values: userInfo) => {
     const credentials = {
       user: values,
     };
