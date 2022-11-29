@@ -1,15 +1,17 @@
 import React from 'react';
-import { Alert } from 'antd';
+
+import { StyledAlert } from './styles';
 
 interface StyledAlertProps {
   message?: string;
   type?: 'success' | 'info' | 'warning' | 'error';
+  icon?: React.ReactNode;
   showIcon?: boolean;
   closable?: boolean;
 }
 
-const StyledAlert = ({ showIcon = true, closable = true, message, type }: StyledAlertProps) => (
-  <Alert message={message} type={type} showIcon={showIcon} closable={closable} />
+const Alert = ({ showIcon = true, closable = true, message, type, icon }: StyledAlertProps) => (
+  <StyledAlert message={message} type={type} icon={icon} showIcon={showIcon} closable={closable} />
 );
 
-export default StyledAlert;
+export default Alert;
