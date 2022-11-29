@@ -116,8 +116,8 @@ const RegistrationForms = () => {
     </Form.Item>
   ));
 
-  const alertsComponent = alerts?.map((alert, key) => (
-    <Alert key={key} closable={false} type={alert.type} message={alert.message} description={alert.description} />
+  const alertsJSX = alerts?.map(({ type, message, description }, key) => (
+    <Alert key={key} closable={false} type={type} message={message} description={description} />
   ));
 
   return (
@@ -146,7 +146,7 @@ const RegistrationForms = () => {
             </Button>
           </Col>
           <Col span={12} offset={6}>
-            {alertsComponent}
+            {alertsJSX}
           </Col>
         </Row>
       </Form>
