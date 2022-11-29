@@ -69,9 +69,9 @@ const RegistrationForms = () => {
       }, 3000);
     } else {
       setAlerts(
-        Object.entries(responseDetails.errors).map((error) => ({
+        Object.entries(responseDetails.errors).map(([key, message]) => ({
           type: 'info',
-          message: error.join(': '),
+          message: key + ' ' + message,
         }))
       );
     }
