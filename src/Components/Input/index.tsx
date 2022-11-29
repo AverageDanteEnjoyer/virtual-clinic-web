@@ -15,11 +15,25 @@ const Input = ({
   placeholder,
   type,
   onChange,
+  className,
 }: StyledInputProps) => {
   return password ? (
-    <StyledInputPassword size={size} placeholder={placeholder} prefix={<LockOutlined />} />
+    <StyledInputPassword
+      className={className}
+      onChange={onChange}
+      size={size}
+      placeholder={placeholder}
+      prefix={<LockOutlined />}
+    />
   ) : (
-    <StyledInput size={size} placeholder={placeholder} prefix={prefix} type={type} onChange={onChange} />
+    <StyledInput
+      className={className}
+      size={size}
+      placeholder={placeholder}
+      prefix={prefix}
+      type={type}
+      onChange={onChange}
+    />
   );
 };
 

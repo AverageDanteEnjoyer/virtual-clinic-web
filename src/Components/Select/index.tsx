@@ -10,7 +10,15 @@ interface StyledSelectProps extends SelectProps {
   }[];
 }
 
-const Select = ({customOptions, defaultValue, mode, options, placeholder }: StyledSelectProps) => {
+const Select = ({
+  customOptions,
+  defaultValue,
+  mode,
+  options,
+  placeholder,
+  className,
+  onChange,
+}: StyledSelectProps) => {
   const { Option, OptGroup } = StyledSelect;
   const groups = customOptions?.map(({ children, label }) => {
     const options = children.map(({ className, value, label }) => (
@@ -30,6 +38,8 @@ const Select = ({customOptions, defaultValue, mode, options, placeholder }: Styl
       defaultValue={defaultValue}
       options={options}
       placeholder={placeholder}
+      className={className}
+      onChange={onChange}
     >
       {groups}
     </StyledSelect>
