@@ -110,9 +110,9 @@ const RegistrationForms = () => {
       rules: [{ required: true, message: 'Please input your password' }],
     },
   ];
-  const fItems = items.map((item, idx) => (
-    <Form.Item key={idx} label={item.label} name={item.name} rules={item.rules}>
-      <Input type={item.type} placeholder={'Enter your ' + item.label} password={item.name === 'password'} />
+  const fItems = items.map(({ label, name, rules, type }, idx) => (
+    <Form.Item key={idx} label={label} name={name} rules={rules}>
+      <Input type={type} placeholder={'Enter your ' + label} password={name === 'password'} />
     </Form.Item>
   ));
 
