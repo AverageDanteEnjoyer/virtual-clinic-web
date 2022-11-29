@@ -3,7 +3,7 @@ import { Select } from 'antd';
 
 import colors from '../../palette';
 
-const StyledSelect = styled(Select)`
+export const StyledSelect = styled(Select)`
   border-radius: 20px;
   width: 50%;
   font-family: CircularStd, sans-serif;
@@ -11,12 +11,10 @@ const StyledSelect = styled(Select)`
 
   .ant-select-selector {
     border-radius: 20px;
-    color: ${colors.blue1};
+    color: ${colors.dodgerBlue};
   }
 
   .ant-select-selection-item {
     border-radius: 20px;
   }
 `;
-
-export default StyledSelect;

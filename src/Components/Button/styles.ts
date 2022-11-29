@@ -4,8 +4,8 @@ import { Button } from 'antd';
 import colors from '../../palette';
 
 const StyledButton = styled(Button)`
-  background-color: ${colors.blue1};
-  background-image: ${colors.blue2};
+  background-color: ${colors.dodgerBlue};
+  background-image: ${colors.dodgerBlueGradient};
   background-size: calc(100% + 20px) calc(100% + 20px);
   cursor: pointer;
   display: inline-flex;

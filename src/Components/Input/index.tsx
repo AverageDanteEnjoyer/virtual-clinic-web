@@ -8,7 +8,7 @@ interface StyledInputProps extends InputProps {
   password?: boolean;
 }
 
-const CustomInput = ({ prefix = <UserOutlined />, password = false, size, placeholder }: StyledInputProps) => {
+const Input = ({ prefix = <UserOutlined />, password = false, size, placeholder }: StyledInputProps) => {
   return password ? (
     <StyledInputPassword size={size} placeholder={placeholder} prefix={<LockOutlined />} />
   ) : (
@@ -16,4 +16,4 @@ const CustomInput = ({ prefix = <UserOutlined />, password = false, size, placeh
   );
 };
 
-export default CustomInput;
+export default Input;

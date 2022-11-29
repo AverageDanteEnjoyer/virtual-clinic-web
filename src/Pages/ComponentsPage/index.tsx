@@ -2,14 +2,14 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 
-import StyledCarousel from '../../Components/Carousel';
-import StyledSpin from '../../Components/Spin';
-import TableExample from '../../Components/Table';
-import StyledAlert from '../../Components/Alert';
-import TypographyExample from '../../Components/Typography';
-import StyledInput from '../../Components/Input';
+import Carousel from '../../Components/Carousel';
+import Spin from '../../Components/Spin';
+import Table from '../../Components/Table';
+import Alert from '../../Components/Alert';
+import Typography from '../../Components/Typography';
+import Input from '../../Components/Input';
 import ComponentsStyles from './Components.module.css';
-import StyledSelect from '../../Components/Select';
+import Select from '../../Components/Select';
 import Button from '../../Components/Button';
 
 const ComponentsPage = () => {
@@ -17,20 +17,20 @@ const ComponentsPage = () => {
     <div className={ComponentsStyles.wrapper}>
       <Row gutter={[14, 12]}>
         <Col className="gutter-row" span={12}>
-          <TypographyExample />
+          <Typography />
         </Col>
         <Col className="gutter-row" span={12}>
-          <StyledCarousel />
+          <Carousel />
         </Col>
       </Row>
       <Row gutter={[0, 12]}>
         <Col className="gutter-row" span={24}>
-          <TableExample />
+          <Table />
         </Col>
       </Row>
       <Row gutter={[0, 12]}>
         <Col className="gutter-row" span={24}>
-          <StyledInput password={true} />
+          <Input password={true} />
         </Col>
       </Row>
       <Row gutter={[12, 12]}>
@@ -39,18 +39,18 @@ const ComponentsPage = () => {
           <Button shape="round">Button</Button>
         </Col>
         <Col className="gutter-row" span={9}>
-          <StyledAlert
+          <Alert
             message={'Our website uses cookies to improve your experience'}
-            type={'info'}
+            type="info"
             icon={<InfoCircleFilled style={{ color: 'white' }} />}
           />
         </Col>
         <Col className="gutter-row" span={9}>
-          <StyledSpin tip="loading" children={<StyledAlert />} size="small" />
+          <Spin tip="loading" children={<Alert />} size="small" />
         </Col>
       </Row>
       <Row gutter={[0, 12]}>
-        <StyledSelect
+        <Select
           mode="multiple"
           customOptions={[
             {
@@ -62,7 +62,7 @@ const ComponentsPage = () => {
             },
           ]}
           defaultValue={['item1', 'item2']}
-        ></StyledSelect>
+        ></Select>
       </Row>
     </div>
   );
