@@ -48,8 +48,8 @@ const Navbar = () => {
       <Routes>
         <Route path={routes.home}></Route>
         <Route path={routes.components} element={<ComponentsPage />}></Route>
-        <Route path={routes.logIn} element={<p />}></Route>
-        <Route path={routes.register} element={<RegistrationPage />}></Route>
+        <Route path={routes.logIn} element={<p />} />
+        <Route path={routes.register} element={<RegistrationPage />} />
       </Routes>
     </BrowserRouter>
   );
