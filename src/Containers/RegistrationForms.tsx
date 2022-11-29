@@ -85,18 +85,18 @@ const RegistrationForms = () => {
 
   const items: formItem[] = [
     {
-      label: 'Firstname',
+      label: 'Name',
       name: 'first_name',
       type: 'text',
       rules: [{ required: true, message: 'Please input your firstname' }],
     },
     {
-      label: 'Lastname',
+      label: 'Last name',
       name: 'last_name',
       type: 'text',
       rules: [{ required: true, message: 'Please input your lastname' }],
     },
-    { label: 'email', name: 'email', type: 'email', rules: [{ required: true, message: 'Please input your email' }] },
+    { label: 'Email', name: 'email', type: 'email', rules: [{ required: true, message: 'Please input your email' }] },
     {
       label: 'Password',
       name: 'password',
@@ -124,19 +124,17 @@ const RegistrationForms = () => {
         autoComplete="false"
       >
         {fItems}
+        <Form.Item label="Account type" name="account_type" initialValue="patient" wrapperCol={{ offset: 0, span: 12 }}>
+          <Select
+            defaultValue="patient"
+            options={[
+              { value: 'patient', label: 'patient' },
+              { value: 'doctor', label: 'doctor' },
+            ]}
+          />
+        </Form.Item>
         <Row gutter={[0, 12]}>
-          <Col span={8} offset={6}>
-            <Form.Item label="Account type" name="account_type" initialValue="patient">
-              <Select
-                defaultValue="patient"
-                options={[
-                  { value: 'patient', label: 'patient' },
-                  { value: 'doctor', label: 'doctor' },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
+          <Col span={4} offset={6}>
             <Button htmlType="submit" size="large">
               Submit
             </Button>
