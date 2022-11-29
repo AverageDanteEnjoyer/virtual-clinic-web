@@ -5,7 +5,7 @@ interface StyledButtonProps {
   type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
   disabled?: boolean;
   children?: React.ReactNode;
-  htmlType?: 'button' | 'submit' | 'reset' | undefined;
+  htmlType?: 'button' | 'submit' | 'reset';
   size?: 'middle' | 'large';
 }
 
