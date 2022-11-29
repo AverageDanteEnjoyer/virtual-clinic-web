@@ -1,6 +1,6 @@
 import React from 'react';
 import { InputProps } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 import { StyledInput, StyledInputPassword } from './styles';
 

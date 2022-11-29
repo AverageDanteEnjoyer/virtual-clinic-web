@@ -8,6 +8,7 @@ interface StyledSelectProps extends SelectProps {
     label: string;
     children: { label: string; value: string; disabled?: boolean; className?: string }[];
   }[];
+  onChange?: any;
 }
 
 const Select = ({

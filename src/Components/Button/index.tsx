@@ -12,8 +12,25 @@ interface CustomButtonProps {
   className?: string;
 }
 
-const Button = ({ type = 'primary', className, disabled, children, shape, htmlType, size, loading }: CustomButtonProps) => (
-  <StyledButton className={className} type={type} disabled={disabled} shape={shape} htmlType={htmlType} size={size} loading={loading}>
+const Button = ({
+  type = 'primary',
+  className,
+  disabled,
+  children,
+  shape,
+  htmlType,
+  size,
+  loading,
+}: CustomButtonProps) => (
+  <StyledButton
+    className={className}
+    type={type}
+    disabled={disabled}
+    shape={shape}
+    htmlType={htmlType}
+    size={size}
+    loading={loading}
+  >
     {children}
   </StyledButton>
 );

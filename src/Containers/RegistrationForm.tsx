@@ -137,7 +137,6 @@ const RegistrationForm = () => {
           rules={[{ required: true, message: 'Please select your account type' }]}
         >
           <Select
-            onChange={() => console.log(1)}
             placeholder="Select your account type"
             options={[
               { value: 'patient', label: 'patient' },
