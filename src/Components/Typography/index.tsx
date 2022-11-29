@@ -1,9 +1,7 @@
 import React from 'react';
-import { Typography } from 'antd';
+import { StyledTypography, StyledTitle, StyledParagraph } from './styles';
 
 const TypographyExample = () => {
-  const { Title, Paragraph } = Typography;
-
   const content1: string =
     'In the process of internal desktop applications development, many different design specs and\n' +
     '            implementations would be involved, which might cause designers and developers difficulties and\n' +
@@ -17,18 +15,16 @@ const TypographyExample = () => {
     '            front-end development.';
 
   return (
-    <Typography>
-      <Title level={1} underline={true}>
-        Introduction
-      </Title>
-      <Paragraph strong={true} copyable={{ text: content1, tooltips: true }}>
+    <StyledTypography>
+      <StyledTitle>Introduction</StyledTitle>
+      <StyledParagraph strong={true} copyable={{ text: content1, tooltips: true }}>
         {content1}
-      </Paragraph>
+      </StyledParagraph>
 
-      <Paragraph strong={true} copyable={{ text: content2, tooltips: true }}>
+      <StyledParagraph strong={true} copyable={{ text: content2, tooltips: true }}>
         {content2}
-      </Paragraph>
-    </Typography>
+      </StyledParagraph>
+    </StyledTypography>
   );
 };
 

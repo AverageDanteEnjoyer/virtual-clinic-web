@@ -1,12 +1,14 @@
 import React from 'react';
-import { Input, InputProps } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { InputProps } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+
+import { StyledInput, StyledInputPassword } from './styles';
 
 interface StyledInputProps extends InputProps {
   password?: boolean;
 }
 
-const StyledInput = ({
+const Input = ({
   prefix = <UserOutlined />,
   password = false,
   size,
@@ -15,10 +17,10 @@ const StyledInput = ({
   onChange,
 }: StyledInputProps) => {
   return password ? (
-    <Input.Password size={size} placeholder={placeholder} type={type} prefix={<LockOutlined />} onChange={onChange} />
+    <StyledInputPassword size={size} placeholder={placeholder} prefix={<LockOutlined />} />
   ) : (
-    <Input size={size} placeholder={placeholder} type={type} prefix={prefix} onChange={onChange} />
+    <StyledInput size={size} placeholder={placeholder} prefix={prefix} type={type} onChange={onChange} />
   );
 };
 
-export default StyledInput;
+export default Input;

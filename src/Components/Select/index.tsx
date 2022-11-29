@@ -1,5 +1,7 @@
 import React from 'react';
-import { Select, SelectProps } from 'antd';
+import { SelectProps } from 'antd';
+
+import { StyledSelect } from './styles';
 
 interface StyledSelectProps extends SelectProps {
   customOptions?: {
@@ -8,16 +10,8 @@ interface StyledSelectProps extends SelectProps {
   }[];
 }
 
-const StyledSelect = ({
-  style,
-  customOptions,
-  defaultValue,
-  mode,
-  options,
-  onChange,
-  placeholder,
-}: StyledSelectProps) => {
-  const { Option, OptGroup } = Select;
+const Select = ({customOptions, defaultValue, mode, options, placeholder }: StyledSelectProps) => {
+  const { Option, OptGroup } = StyledSelect;
   const groups = customOptions?.map(({ children, label }) => {
     const options = children.map(({ className, value, label }) => (
       <Option className={className} key={value} value={value}>
@@ -31,17 +25,15 @@ const StyledSelect = ({
     );
   });
   return (
-    <Select
+    <StyledSelect
       mode={mode}
       defaultValue={defaultValue}
-      style={style}
       options={options}
-      onChange={onChange}
       placeholder={placeholder}
     >
       {groups}
-    </Select>
+    </StyledSelect>
   );
 };
 
-export default StyledSelect;
+export default Select;
