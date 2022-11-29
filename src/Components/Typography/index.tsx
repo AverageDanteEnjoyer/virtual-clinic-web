@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledTypography, StyledTitle, StyledParagraph } from './styles';
+import { StyledParagraph, StyledTitle, StyledTypography } from './styles';
 
 const TypographyExample = () => {
   const content1: string =

@@ -3,14 +3,34 @@ import { StyledButton } from './styles';
 
 interface CustomButtonProps {
   type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
-  children?: React.ReactNode;
   disabled?: boolean;
-  className?: string;
+  children?: React.ReactNode;
+  htmlType?: 'button' | 'submit' | 'reset';
+  size?: 'middle' | 'large';
+  loading?: boolean;
   shape?: 'default' | 'round';
+  className?: string;
 }
 
-const Button = ({ type = 'primary', children, disabled, className, shape }: CustomButtonProps) => (
-  <StyledButton className={className} type={type} disabled={disabled} shape={shape}>
+const Button = ({
+  type = 'primary',
+  className,
+  disabled,
+  children,
+  shape,
+  htmlType,
+  size,
+  loading,
+}: CustomButtonProps) => (
+  <StyledButton
+    className={className}
+    type={type}
+    disabled={disabled}
+    shape={shape}
+    htmlType={htmlType}
+    size={size}
+    loading={loading}
+  >
     {children}
   </StyledButton>
 );
