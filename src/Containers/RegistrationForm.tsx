@@ -29,7 +29,7 @@ const RegistrationForm = () => {
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<
     {
-      type: 'success' | 'warning' | 'error' | 'info' | undefined;
+      type: 'success' | 'warning' | 'error' | 'info';
       message: string;
       description?: string;
     }[]
@@ -89,7 +89,7 @@ const RegistrationForm = () => {
     ]);
   };
 
-  const items: formItem[] = [
+  const formItems: formItem[] = [
     {
       label: 'Name',
       name: 'first_name',
@@ -110,7 +110,7 @@ const RegistrationForm = () => {
       rules: [{ required: true, message: 'Please input your password' }],
     },
   ];
-  const fItems = items.map(({ label, name, rules, type }, idx) => (
+  const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
     <Form.Item key={idx} label={label} name={name} rules={rules}>
       <Input type={type} placeholder={'Enter your ' + label} password={name === 'password'} />
     </Form.Item>
@@ -129,7 +129,7 @@ const RegistrationForm = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="false"
       >
-        {fItems}
+        {formItemsJSX}
         <Form.Item
           label="Account type"
           name="account_type"
