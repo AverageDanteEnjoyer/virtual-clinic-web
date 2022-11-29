@@ -71,7 +71,7 @@ const RegistrationForm = () => {
       setAlerts(
         Object.entries(responseDetails.errors).map(([key, message]) => ({
           type: 'info',
-          message: key + ' ' + message,
+          message: `${key} ${message}`,
         }))
       );
     }
@@ -82,9 +82,9 @@ const RegistrationForm = () => {
       {
         type: 'error',
         message: 'Error',
-        description:
-          'Please input: ' +
-          errorInfo.errorFields.map((field: any) => field.name.toString().replaceAll('_', ' ')).join(', '),
+        description: `Please input: ${errorInfo.errorFields
+          .map((field: any) => field.name.toString().replaceAll('_', ' '))
+          .join(', ')}`,
       },
     ]);
   };
@@ -112,7 +112,7 @@ const RegistrationForm = () => {
   ];
   const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
     <Form.Item key={idx} label={label} name={name} rules={rules}>
-      <Input type={type} placeholder={'Enter your ' + label} password={name === 'password'} />
+      <Input type={type} placeholder={`Enter your ${label}`} password={name === 'password'} />
     </Form.Item>
   ));
 
