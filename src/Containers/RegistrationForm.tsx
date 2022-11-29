@@ -23,7 +23,7 @@ type user_info = {
   account_type: string;
 };
 
-const RegistrationForms = () => {
+const RegistrationForm = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -130,9 +130,14 @@ const RegistrationForms = () => {
         autoComplete="false"
       >
         {fItems}
-        <Form.Item label="Account type" name="account_type" initialValue="patient" wrapperCol={{ offset: 0, span: 12 }}>
+        <Form.Item
+          label="Account type"
+          name="account_type"
+          wrapperCol={{ offset: 0, span: 12 }}
+          rules={[{ required: true, message: 'Please select your account type' }]}
+        >
           <Select
-            defaultValue="patient"
+            placeholder="Select your account type"
             options={[
               { value: 'patient', label: 'patient' },
               { value: 'doctor', label: 'doctor' },
@@ -154,4 +159,4 @@ const RegistrationForms = () => {
   );
 };
 
-export default RegistrationForms;
+export default RegistrationForm;
