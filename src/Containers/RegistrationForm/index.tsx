@@ -11,7 +11,7 @@ import Spin from '../../Components/Spin';
 import routes from '../../routes';
 import { API_URL } from '../../api';
 
-interface formItem extends FormItemProps {
+export interface formItem extends FormItemProps {
   type: string;
 }
 
