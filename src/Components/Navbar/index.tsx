@@ -5,6 +5,7 @@ import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
 import ComponentsPage from '../../Pages/ComponentsPage';
 import RegistrationPage from '../../Pages/RegistrationPage';
+import LoginPage from '../../Pages/LoginPage';
 
 import routes from '../../routes';
 
@@ -23,14 +24,16 @@ const Navbar = () => {
   const items: MenuItem[] = [
     getItem(<Link to={routes.components}>components</Link>, '1'),
     getItem(<Link to={routes.home}>home</Link>, '2'),
-    loggedIn
-      ? getItem(<UserOutlined />, 'user', [getItem('Edit profile', '3'), getItem('Appointments', '4')])
-      : getItem(
-          <Link to={routes.register}>
-            <UserOutlined />
-          </Link>,
-          'user'
-        ),
+    getItem(
+      <UserOutlined />,
+      'user',
+      loggedIn
+        ? [getItem('Edit profile', '3'), getItem('Appointments', '4')]
+        : [
+            getItem(<Link to={routes.logIn}>log in</Link>, '3'),
+            getItem(<Link to={routes.register}>register</Link>, '3'),
+          ]
+    ),
   ];
   return (
     <BrowserRouter>
@@ -48,7 +51,7 @@ const Navbar = () => {
       <Routes>
         <Route path={routes.home}></Route>
         <Route path={routes.components} element={<ComponentsPage />}></Route>
-        <Route path={routes.logIn} element={<p />} />
+        <Route path={routes.logIn} element={<LoginPage />} />
         <Route path={routes.register} element={<RegistrationPage />} />
       </Routes>
     </BrowserRouter>

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import Input from '../Components/Input';
-import Alert from '../Components/Alert';
-import Button from '../Components/Button';
-import Select from '../Components/Select';
-import Spin from '../Components/Spin';
+import Input from '../../Components/Input';
+import Alert from '../../Components/Alert';
+import Button from '../../Components/Button';
+import Select from '../../Components/Select';
+import Spin from '../../Components/Spin';
 
-import routes from '../routes';
-import { API_URL } from '../api';
+import routes from '../../routes';
+import { API_URL } from '../../api';
 
 interface formItem extends FormItemProps {
   type: string;
@@ -146,7 +146,7 @@ const RegistrationForm = () => {
         </Form.Item>
         <Row gutter={[0, 12]}>
           <Col span={4} offset={6}>
-            <Button htmlType="submit" size="large" loading={loading}>
+            <Button shape="round" htmlType="submit" size="large" loading={loading}>
               Submit
             </Button>
           </Col>
