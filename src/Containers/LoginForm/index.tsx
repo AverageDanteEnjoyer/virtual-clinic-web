@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
 import { API_URL } from '../../api';
-import useToken from '../../useToken';
+import { TokenContext } from '../../TokenContext';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -24,7 +24,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const { setToken } = useToken();
+  const { setToken } = useContext(TokenContext);
   const [alerts, setAlerts] = useState<
     {
       type: 'success' | 'warning' | 'error' | 'info';

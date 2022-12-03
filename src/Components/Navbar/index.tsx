@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
@@ -8,7 +8,7 @@ import RegistrationPage from '../../Pages/RegistrationPage';
 import LoginPage from '../../Pages/LoginPage';
 
 import routes from '../../routes';
-import useToken from '../../useToken';
+import { TokenContext } from '../../TokenContext';
 import { API_URL } from '../../api';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -22,10 +22,10 @@ function getItem(label: React.ReactNode, key: React.Key, children?: MenuItem[]):
 }
 
 const Navbar = () => {
-  const { token, setToken } = useToken();
-  console.log('Hi, i rerendered');
+  const { token, setToken } = useContext(TokenContext);
 
   const logOut = async () => {
+    if (!token) return;
     await fetch(`${API_URL}/users/sign_out/`, {
       method: 'DELETE',
       headers: {

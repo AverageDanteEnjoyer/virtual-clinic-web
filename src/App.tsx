@@ -1,22 +1,24 @@
-import React, { useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import './App.css';
 import Navbar from './Components/Navbar';
-import useToken from './useToken';
+import { TokenContext, TokenContextProvider } from './TokenContext';
 import jwtDecode from 'jwt-decode';
 
 function App() {
-  const { token, setToken } = useToken();
+  const { token, setToken } = useContext(TokenContext);
   useMemo(() => {
     if (!token) return;
     let sessionInfo = jwtDecode<{ exp: number }>(token);
 
-    const expDate = new Date(0);
-    expDate.setUTCSeconds(sessionInfo.exp);
-    if (expDate < new Date()) setToken(null); //removes token from localStorage when it expires
+    const exp_date = new Date(0);
+    exp_date.setUTCSeconds(sessionInfo.exp);
+    if (exp_date < new Date()) setToken(null); //removes token from localStorage when it expires
   }, []);
   return (
     <header>
-      <Navbar />
+      <TokenContextProvider>
+        <Navbar />
+      </TokenContextProvider>
     </header>
   );
 }
