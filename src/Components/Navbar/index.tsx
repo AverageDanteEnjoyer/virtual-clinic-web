@@ -45,7 +45,16 @@ const Navbar = () => {
       <UserOutlined />,
       'user',
       isLogged
-        ? [getItem('Edit profile', '3'), getItem('Appointments', '4'), getItem(<a onClick={logOut}>log out</a>, '5')]
+        ? [
+            getItem('Edit profile', '3'),
+            getItem('Appointments', '4'),
+            getItem(
+              <Link to={routes.home} onClick={logOut}>
+                log out
+              </Link>,
+              '5'
+            ),
+          ]
         : [
             getItem(<Link to={routes.logIn}>log in</Link>, '3'),
             getItem(<Link to={routes.register}>register</Link>, '4'),
