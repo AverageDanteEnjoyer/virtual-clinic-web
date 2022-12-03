@@ -67,12 +67,12 @@ const LoginForm = () => {
         navigate(routes.home);
       }, 2000);
     } else {
-      setAlerts(
-        Object.entries(responseDetails.errors).map(([key, message]) => ({
+      setAlerts([
+        {
           type: 'info',
-          message: `${key} ${message}`,
-        }))
-      );
+          message: responseDetails.error,
+        },
+      ]);
     }
   };
 
