@@ -8,6 +8,8 @@ import RegistrationPage from '../../Pages/RegistrationPage';
 import LoginPage from '../../Pages/LoginPage';
 
 import routes from '../../routes';
+import useToken from '../../useToken';
+import { API_URL } from '../../api';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -20,18 +22,31 @@ function getItem(label: React.ReactNode, key: React.Key, children?: MenuItem[]):
 }
 
 const Navbar = () => {
-  const loggedIn = false; //used for testing, change manually
+  const { token, setToken } = useToken();
+  console.log('Hi, i rerendered');
+
+  const logOut = async () => {
+    await fetch(`${API_URL}/users/sign_out/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    });
+    setToken(null);
+  };
+
   const items: MenuItem[] = [
     getItem(<Link to={routes.components}>components</Link>, '1'),
     getItem(<Link to={routes.home}>home</Link>, '2'),
     getItem(
       <UserOutlined />,
       'user',
-      loggedIn
-        ? [getItem('Edit profile', '3'), getItem('Appointments', '4')]
+      token
+        ? [getItem('Edit profile', '3'), getItem('Appointments', '4'), getItem(<a onClick={logOut}>log out</a>, '5')]
         : [
             getItem(<Link to={routes.logIn}>log in</Link>, '3'),
-            getItem(<Link to={routes.register}>register</Link>, '3'),
+            getItem(<Link to={routes.register}>register</Link>, '4'),
           ]
     ),
   ];

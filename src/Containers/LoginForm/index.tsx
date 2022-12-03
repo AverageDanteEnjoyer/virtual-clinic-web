@@ -9,6 +9,7 @@ import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
 import { API_URL } from '../../api';
+import useToken from '../../useToken';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -23,6 +24,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const { setToken } = useToken();
   const [alerts, setAlerts] = useState<
     {
       type: 'success' | 'warning' | 'error' | 'info';
@@ -31,7 +33,46 @@ const LoginForm = () => {
     }[]
   >();
 
-  const onFinish = async (values: loginInfo) => {};
+  const requestLogin = async (credentials: { user: loginInfo }) => {
+    setLoading(true);
+    return await fetch(`${API_URL}/users/sign_in/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+  };
+
+  const onFinish = async (values: loginInfo) => {
+    const credentials = {
+      user: values,
+    };
+
+    const response = await requestLogin(credentials);
+    const responseDetails = await response.json();
+    setLoading(false);
+
+    if (response.ok) {
+      setToken(response.headers.get('Authorization'));
+      setAlerts([
+        {
+          type: 'success',
+          message: 'Success',
+        },
+      ]);
+      setTimeout(() => {
+        navigate(routes.home);
+      }, 2000);
+    } else {
+      setAlerts(
+        Object.entries(responseDetails.errors).map(([key, message]) => ({
+          type: 'info',
+          message: `${key} ${message}`,
+        }))
+      );
+    }
+  };
 
   const onFinishFailed = (errorInfo: any) => {
     setAlerts([
