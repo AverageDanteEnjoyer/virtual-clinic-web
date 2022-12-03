@@ -26,11 +26,10 @@ const Navbar = () => {
   const { isLogged, setIsLogged } = useContext(SessionInfoContext);
 
   useMemo(() => {
-    let token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (!token) return;
 
-    let tokenDecoded = jwtDecode<{ exp: number }>(token);
-
+    const tokenDecoded = jwtDecode<{ exp: number }>(token);
     const exp_date = new Date(0);
     exp_date.setUTCSeconds(tokenDecoded.exp);
 
@@ -42,7 +41,7 @@ const Navbar = () => {
   }, []);
 
   const logOut = async () => {
-    let token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (!token) return;
     await fetch(`${API_URL}/users/sign_out/`, {
       method: 'DELETE',
