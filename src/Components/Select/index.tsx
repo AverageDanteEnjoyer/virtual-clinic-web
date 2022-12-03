@@ -1,4 +1,3 @@
-import React from 'react';
 import { SelectProps } from 'antd';
 
 import { StyledSelect } from './styles';

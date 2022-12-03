@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { ReactNode, Key, useContext, useMemo } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
@@ -10,10 +10,11 @@ import LoginPage from '../../Pages/LoginPage';
 import routes from '../../routes';
 import { SessionInfoContext } from '../../SessionInfoContext';
 import { API_URL } from '../../api';
+import jwtDecode from 'jwt-decode';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-function getItem(label: React.ReactNode, key: React.Key, children?: MenuItem[]): MenuItem {
+function getItem(label: ReactNode, key: Key, children?: MenuItem[]): MenuItem {
   return {
     label,
     key,
@@ -23,6 +24,22 @@ function getItem(label: React.ReactNode, key: React.Key, children?: MenuItem[]):
 
 const Navbar = () => {
   const { isLogged, setIsLogged } = useContext(SessionInfoContext);
+
+  useMemo(() => {
+    let token = localStorage.getItem('token');
+    if (!token) return;
+
+    let tokenDecoded = jwtDecode<{ exp: number }>(token);
+
+    const exp_date = new Date(0);
+    exp_date.setUTCSeconds(tokenDecoded.exp);
+
+    if (exp_date < new Date()) {
+      localStorage.removeItem('token'); //removes token from localStorage when it expires
+    } else {
+      setIsLogged(true);
+    }
+  }, []);
 
   const logOut = async () => {
     let token = localStorage.getItem('token');
@@ -70,7 +87,7 @@ const Navbar = () => {
         </Col>
         <Col>
           <nav>
-            <Menu defaultSelectedKeys={['1']} mode="horizontal" theme="light" items={items} />
+            <Menu defaultSelectedKeys={['2']} mode="horizontal" theme="light" items={items} />
           </nav>
         </Col>
       </Row>

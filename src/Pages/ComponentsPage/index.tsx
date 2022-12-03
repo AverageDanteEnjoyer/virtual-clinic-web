@@ -1,4 +1,3 @@
-import React from 'react';
 import { Col, Row } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 
@@ -8,9 +7,9 @@ import Table from '../../Components/Table';
 import Alert from '../../Components/Alert';
 import Typography from '../../Components/Typography';
 import Input from '../../Components/Input';
-import ComponentsStyles from './Components.module.css';
 import Select from '../../Components/Select';
 import Button from '../../Components/Button';
+import ComponentsStyles from './Components.module.css';
 
 const ComponentsPage = () => {
   return (

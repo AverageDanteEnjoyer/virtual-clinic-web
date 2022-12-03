@@ -1,5 +1,3 @@
-import React from 'react';
-
 import RegistrationForm from '../../Containers/RegistrationForm';
 
 const RegistrationPage = () => {

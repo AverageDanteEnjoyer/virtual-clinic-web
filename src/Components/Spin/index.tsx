@@ -1,9 +1,9 @@
-import React from 'react';
+import { CSSProperties } from 'react';
 import { SyncOutlined } from '@ant-design/icons';
 import { Spin, SpinProps } from 'antd';
 
 interface StyledSpinProps extends SpinProps {
-  indicatorStyle?: React.CSSProperties;
+  indicatorStyle?: CSSProperties;
 }
 
 const StyledSpin = ({

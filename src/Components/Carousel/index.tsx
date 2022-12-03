@@ -1,4 +1,3 @@
-import React from 'react';
 import { Carousel, Image } from 'antd';
 import CarouselStyles from './StyledCarousel.module.css';
 

@@ -1,11 +1,11 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 import { StyledAlert } from './styles';
 
 interface StyledAlertProps {
   message?: string;
   type?: 'success' | 'info' | 'warning' | 'error';
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   showIcon?: boolean;
   closable?: boolean;
   description?: string;

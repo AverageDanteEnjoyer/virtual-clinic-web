@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 
 type SessionInfoContextType = {
   isLogged: boolean;
@@ -11,11 +11,11 @@ export const SessionInfoContext = React.createContext<SessionInfoContextType>({
 });
 
 export const SessionInfoContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [isLogged, setIsLogged] = React.useState<boolean>(false);
 
   return (
     <SessionInfoContext.Provider
-      value={useMemo(() => ({ isLogged: isLogged, setIsLogged: setIsLogged }), [isLogged, setIsLogged])}
+      value={React.useMemo(() => ({ isLogged: isLogged, setIsLogged: setIsLogged }), [isLogged, setIsLogged])}
     >
       {children}
     </SessionInfoContext.Provider>

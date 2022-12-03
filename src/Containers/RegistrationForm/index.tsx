@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
