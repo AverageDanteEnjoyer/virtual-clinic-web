@@ -9,7 +9,7 @@ import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
 import { API_URL } from '../../api';
-import { TokenContext } from '../../TokenContext';
+import { SessionInfoContext } from '../../SessionInfoContext';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -24,7 +24,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const { setToken } = useContext(TokenContext);
+  const { setIsLogged } = useContext(SessionInfoContext);
   const [alerts, setAlerts] = useState<
     {
       type: 'success' | 'warning' | 'error' | 'info';
@@ -54,7 +54,9 @@ const LoginForm = () => {
     setLoading(false);
 
     if (response.ok) {
-      setToken(response.headers.get('Authorization'));
+      localStorage.setItem('token', JSON.stringify({ token: response.headers.get('Authorization') }));
+      setIsLogged(true);
+
       setAlerts([
         {
           type: 'success',

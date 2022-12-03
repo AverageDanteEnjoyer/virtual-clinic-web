@@ -8,7 +8,7 @@ import RegistrationPage from '../../Pages/RegistrationPage';
 import LoginPage from '../../Pages/LoginPage';
 
 import routes from '../../routes';
-import { TokenContext } from '../../TokenContext';
+import { SessionInfoContext } from '../../SessionInfoContext';
 import { API_URL } from '../../api';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -22,9 +22,10 @@ function getItem(label: React.ReactNode, key: React.Key, children?: MenuItem[]):
 }
 
 const Navbar = () => {
-  const { token, setToken } = useContext(TokenContext);
+  const { isLogged, setIsLogged } = useContext(SessionInfoContext);
 
   const logOut = async () => {
+    let token = localStorage.getItem('token');
     if (!token) return;
     await fetch(`${API_URL}/users/sign_out/`, {
       method: 'DELETE',
@@ -33,7 +34,8 @@ const Navbar = () => {
         Authorization: token,
       },
     });
-    setToken(null);
+    localStorage.removeItem('token');
+    setIsLogged(false);
   };
 
   const items: MenuItem[] = [
@@ -42,7 +44,7 @@ const Navbar = () => {
     getItem(
       <UserOutlined />,
       'user',
-      token
+      isLogged
         ? [getItem('Edit profile', '3'), getItem('Appointments', '4'), getItem(<a onClick={logOut}>log out</a>, '5')]
         : [
             getItem(<Link to={routes.logIn}>log in</Link>, '3'),
