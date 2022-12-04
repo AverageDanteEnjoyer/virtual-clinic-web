@@ -15,7 +15,7 @@ export const SessionInfoContextProvider: React.FC<{ children: React.ReactNode }>
 
   return (
     <SessionInfoContext.Provider
-      value={React.useMemo(() => ({ isLogged: isLogged, setIsLogged: setIsLogged }), [isLogged, setIsLogged])}
+      value={{ isLogged: isLogged, setIsLogged: setIsLogged }}
     >
       {children}
     </SessionInfoContext.Provider>
