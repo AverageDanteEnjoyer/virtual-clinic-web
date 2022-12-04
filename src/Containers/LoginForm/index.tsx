@@ -8,6 +8,7 @@ import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
+import { set_token } from '../../token_api';
 import { API_URL } from '../../api';
 import { SessionInfoContext } from '../../SessionInfoContext';
 
@@ -54,9 +55,9 @@ const LoginForm = () => {
     setLoading(false);
 
     if (response.ok) {
-      localStorage.setItem('token', JSON.stringify({ token: response.headers.get('Authorization') }));
-      setIsLogged(true);
+      set_token(response.headers.get('Authorization'));
 
+      setIsLogged(true);
       setAlerts([
         {
           type: 'success',
