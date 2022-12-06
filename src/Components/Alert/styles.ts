@@ -14,6 +14,7 @@ export const StyledAlert = styled(Alert)`
       padding: 6px;
       border-radius: 20px;
       color: ${colors.white};
+
       .anticon {
         color: ${colors.white};
       }

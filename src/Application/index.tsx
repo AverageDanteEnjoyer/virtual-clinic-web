@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
+
 import routes from '../routes';
 import { getToken, removeToken } from '../tokenApi';
 import { SessionInfoContext } from '../SessionInfoContext';
@@ -31,8 +32,8 @@ const Application = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={routes.home} element={<HomePage />}></Route>
-        <Route path={routes.components} element={<ComponentsPage />}></Route>
+        <Route path={routes.home} element={<HomePage />} />
+        <Route path={routes.components} element={<ComponentsPage />} />
         <Route path={routes.logIn} element={<LoginPage />} />
         <Route path={routes.register} element={<RegistrationPage />} />
       </Routes>

@@ -14,9 +14,7 @@ export const SessionInfoContextProvider: React.FC<{ children: React.ReactNode }>
   const [isLogged, setIsLogged] = React.useState<boolean>(false);
 
   return (
-    <SessionInfoContext.Provider
-      value={{ isLogged: isLogged, setIsLogged: setIsLogged }}
-    >
+    <SessionInfoContext.Provider value={{ isLogged: isLogged, setIsLogged: setIsLogged }}>
       {children}
     </SessionInfoContext.Provider>
   );
