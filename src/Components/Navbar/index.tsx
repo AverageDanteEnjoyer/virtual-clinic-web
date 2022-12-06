@@ -2,16 +2,15 @@ import { ReactNode, Key, useContext, useEffect } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
+import jwtDecode from 'jwt-decode';
+import routes from '../../routes';
+import { getToken, removeToken } from '../../tokenApi';
+import { SessionInfoContext } from '../../SessionInfoContext';
+import { API_URL } from '../../api';
 
 import ComponentsPage from '../../Pages/ComponentsPage';
 import RegistrationPage from '../../Pages/RegistrationPage';
 import LoginPage from '../../Pages/LoginPage';
-
-import routes from '../../routes';
-import { get_token, remove_token } from '../../token_api';
-import { SessionInfoContext } from '../../SessionInfoContext';
-import { API_URL } from '../../api';
-import jwtDecode from 'jwt-decode';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -27,7 +26,7 @@ const Navbar = () => {
   const { isLogged, setIsLogged } = useContext(SessionInfoContext);
 
   useEffect(() => {
-    const token = get_token();
+    const token = getToken();
     if (!token) return;
 
     const tokenDecoded = jwtDecode<{ exp: number }>(token);
@@ -35,14 +34,14 @@ const Navbar = () => {
     exp_date.setUTCSeconds(tokenDecoded.exp);
 
     if (exp_date < new Date()) {
-      remove_token(); //removes token from localStorage when it expires
+      removeToken(); //removes token from localStorage when it expires
     } else {
       setIsLogged(true);
     }
   }, []);
 
   const logOut = async () => {
-    const token = get_token();
+    const token = getToken();
     if (!token) return;
     await fetch(`${API_URL}/users/sign_out/`, {
       method: 'DELETE',
@@ -51,7 +50,7 @@ const Navbar = () => {
         Authorization: token,
       },
     });
-    remove_token();
+    removeToken();
     setIsLogged(false);
   };
 
