@@ -1,32 +1,31 @@
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import Input from '../Components/Input';
-import Alert from '../Components/Alert';
-import Button from '../Components/Button';
-import Select from '../Components/Select';
-import Spin from '../Components/Spin';
+import Input from '../../Components/Input';
+import Alert from '../../Components/Alert';
+import Button from '../../Components/Button';
+import Spin from '../../Components/Spin';
 
-import routes from '../routes';
-import { API_URL } from '../api';
+import routes from '../../routes';
+import { setToken } from '../../tokenApi';
+import { API_URL } from '../../api';
+import { SessionInfoContext } from '../../SessionInfoContext';
 
-interface formItem extends FormItemProps {
+export interface formItem extends FormItemProps {
   type: string;
 }
 
-type userInfo = {
-  first_name: string;
-  last_name: string;
+type loginInfo = {
   email: string;
   password: string;
-  account_type: string;
 };
 
-const RegistrationForm = () => {
+const LoginForm = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const { setIsLogged } = useContext(SessionInfoContext);
   const [alerts, setAlerts] = useState<
     {
       type: 'success' | 'warning' | 'error' | 'info';
@@ -35,9 +34,8 @@ const RegistrationForm = () => {
     }[]
   >();
 
-  const register = async (credentials: { user: userInfo }) => {
-    setLoading(true);
-    return await fetch(`${API_URL}/users/`, {
+  const requestLogin = async (credentials: { user: loginInfo }) => {
+    return await fetch(`${API_URL}/users/sign_in/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -46,34 +44,36 @@ const RegistrationForm = () => {
     });
   };
 
-  const onFinish = async (values: userInfo) => {
+  const onFinish = async (values: loginInfo) => {
     const credentials = {
       user: values,
     };
 
-    const response = await register(credentials);
+    setLoading(true);
+    const response = await requestLogin(credentials);
     const responseDetails = await response.json();
-
     setLoading(false);
 
     if (response.ok) {
+      setToken(response.headers.get('Authorization'));
+
+      setIsLogged(true);
       setAlerts([
         {
           type: 'success',
           message: 'Success',
-          description: 'Account has been created! Redirecting to the login page',
         },
       ]);
       setTimeout(() => {
-        navigate(routes.logIn);
-      }, 3000);
+        navigate(routes.home);
+      }, 2000);
     } else {
-      setAlerts(
-        Object.entries(responseDetails.errors).map(([key, message]) => ({
+      setAlerts([
+        {
           type: 'info',
-          message: `${key} ${message}`,
-        }))
-      );
+          message: responseDetails.error,
+        },
+      ]);
     }
   };
 
@@ -90,18 +90,6 @@ const RegistrationForm = () => {
   };
 
   const formItems: formItem[] = [
-    {
-      label: 'Name',
-      name: 'first_name',
-      type: 'text',
-      rules: [{ required: true, message: 'Please input your firstname' }],
-    },
-    {
-      label: 'Last name',
-      name: 'last_name',
-      type: 'text',
-      rules: [{ required: true, message: 'Please input your lastname' }],
-    },
     { label: 'Email', name: 'email', type: 'email', rules: [{ required: true, message: 'Please input your email' }] },
     {
       label: 'Password',
@@ -119,7 +107,6 @@ const RegistrationForm = () => {
   const alertsJSX = alerts?.map(({ type, message, description }, idx) => (
     <Alert key={idx} closable={false} type={type} message={message} description={description} />
   ));
-
   return (
     <Spin spinning={loading} tip="waiting for server response...">
       <Form
@@ -127,26 +114,12 @@ const RegistrationForm = () => {
         wrapperCol={{ span: 12 }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        autoComplete="false"
+        autoComplete="off"
       >
         {formItemsJSX}
-        <Form.Item
-          label="Account type"
-          name="account_type"
-          wrapperCol={{ offset: 0, span: 12 }}
-          rules={[{ required: true, message: 'Please select your account type' }]}
-        >
-          <Select
-            placeholder="Select your account type"
-            options={[
-              { value: 'patient', label: 'patient' },
-              { value: 'doctor', label: 'doctor' },
-            ]}
-          />
-        </Form.Item>
         <Row gutter={[0, 12]}>
           <Col span={4} offset={6}>
-            <Button htmlType="submit" size="large" loading={loading}>
+            <Button shape="round" htmlType="submit" size="large" loading={loading}>
               Submit
             </Button>
           </Col>
@@ -159,4 +132,4 @@ const RegistrationForm = () => {
   );
 };
 
-export default RegistrationForm;
+export default LoginForm;

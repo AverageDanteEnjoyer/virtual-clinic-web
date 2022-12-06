@@ -1,10 +1,10 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { StyledButton } from './styles';
 
 interface CustomButtonProps {
   type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
   disabled?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
   htmlType?: 'button' | 'submit' | 'reset';
   size?: 'middle' | 'large';
   loading?: boolean;

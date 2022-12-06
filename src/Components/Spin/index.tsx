@@ -1,32 +1,18 @@
-import React from 'react';
+import { SpinProps } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
-import { Spin, SpinProps } from 'antd';
+import { StyledSpin } from './styles';
 
-interface StyledSpinProps extends SpinProps {
-  indicatorStyle?: React.CSSProperties;
-}
-
-const StyledSpin = ({
-  indicatorStyle = { fontSize: 22 },
-  delay,
-  size,
-  spinning,
-  tip,
-  className,
-  wrapperClassName,
-  children,
-}: StyledSpinProps) => (
-  <Spin
+const Spin = ({ className, delay, size, spinning, tip, children }: SpinProps) => (
+  <StyledSpin
+    className={className}
     delay={delay}
     size={size}
     spinning={spinning}
     tip={tip}
-    indicator={<SyncOutlined style={indicatorStyle} spin />}
-    className={className}
-    wrapperClassName={wrapperClassName}
+    indicator={<SyncOutlined spin />}
   >
     {children}
-  </Spin>
+  </StyledSpin>
 );
 
-export default StyledSpin;
+export default Spin;

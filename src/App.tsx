@@ -1,12 +1,12 @@
-import React from 'react';
+import { SessionInfoContextProvider } from './SessionInfoContext';
 import './App.css';
-import Navbar from './Components/Navbar';
+import Application from './Application';
 
 function App() {
   return (
-    <header>
-      <Navbar />
-    </header>
+    <SessionInfoContextProvider>
+      <Application />
+    </SessionInfoContextProvider>
   );
 }
 

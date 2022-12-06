@@ -1,4 +1,3 @@
-import React from 'react';
 import { InputProps } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
