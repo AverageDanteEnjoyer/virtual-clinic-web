@@ -114,7 +114,7 @@ const LoginForm = () => {
         wrapperCol={{ span: 12 }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        autoComplete="false"
+        autoComplete="off"
       >
         {formItemsJSX}
         <Row gutter={[0, 12]}>

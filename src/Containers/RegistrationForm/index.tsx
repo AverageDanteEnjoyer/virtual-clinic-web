@@ -127,7 +127,7 @@ const RegistrationForm = () => {
         wrapperCol={{ span: 12 }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        autoComplete="false"
+        autoComplete="off"
       >
         {formItemsJSX}
         <Form.Item
