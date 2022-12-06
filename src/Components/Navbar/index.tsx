@@ -30,10 +30,10 @@ const Navbar = () => {
     if (!token) return;
 
     const tokenDecoded = jwtDecode<{ exp: number }>(token);
-    const exp_date = new Date(0);
-    exp_date.setUTCSeconds(tokenDecoded.exp);
+    const expDate = new Date(0);
+    expDate.setUTCSeconds(tokenDecoded.exp);
 
-    if (exp_date < new Date()) {
+    if (expDate < new Date()) {
       removeToken(); //removes token from localStorage when it expires
     } else {
       setIsLogged(true);
