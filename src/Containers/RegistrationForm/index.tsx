@@ -65,7 +65,7 @@ const RegistrationForm = () => {
       ]);
       setTimeout(() => {
         navigate(routes.logIn);
-      }, 3000);
+      }, 2000);
     } else {
       setAlerts(
         Object.entries(responseDetails.errors).map(([key, message]) => ({
