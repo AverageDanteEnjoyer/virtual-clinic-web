@@ -36,7 +36,6 @@ const RegistrationForm = () => {
   >();
 
   const register = async (credentials: { user: userInfo }) => {
-    setLoading(true);
     return await fetch(`${API_URL}/users/`, {
       method: 'POST',
       headers: {
@@ -51,9 +50,9 @@ const RegistrationForm = () => {
       user: values,
     };
 
+    setLoading(true);
     const response = await register(credentials);
     const responseDetails = await response.json();
-
     setLoading(false);
 
     if (response.ok) {

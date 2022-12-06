@@ -35,7 +35,6 @@ const LoginForm = () => {
   >();
 
   const requestLogin = async (credentials: { user: loginInfo }) => {
-    setLoading(true);
     return await fetch(`${API_URL}/users/sign_in/`, {
       method: 'POST',
       headers: {
@@ -50,6 +49,7 @@ const LoginForm = () => {
       user: values,
     };
 
+    setLoading(true);
     const response = await requestLogin(credentials);
     const responseDetails = await response.json();
     setLoading(false);
