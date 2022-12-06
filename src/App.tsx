@@ -1,14 +1,12 @@
 import { SessionInfoContextProvider } from './SessionInfoContext';
 import './App.css';
-import Navbar from './Components/Navbar';
+import Application from './Application';
 
 function App() {
   return (
-    <header>
-      <SessionInfoContextProvider>
-        <Navbar />
-      </SessionInfoContextProvider>
-    </header>
+    <SessionInfoContextProvider>
+      <Application />
+    </SessionInfoContextProvider>
   );
 }
 

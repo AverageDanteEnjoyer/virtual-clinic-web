@@ -1,7 +1,13 @@
 import LoginForm from '../../Containers/LoginForm';
+import Navbar from '../../Components/Navbar';
 
 const LoginPage = () => {
-  return <LoginForm />;
+  return (
+    <>
+      <Navbar />
+      <LoginForm />
+    </>
+  );
 };
 
 export default LoginPage;
