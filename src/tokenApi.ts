@@ -1,6 +1,6 @@
 export const getToken = () => {
-  const token = localStorage.getItem('token');
-  return token ? JSON.parse(token).token : null;
+  const tokenJSON = localStorage.getItem('token');
+  return tokenJSON ? JSON.parse(tokenJSON).token : null;
 };
 
 export const setToken = (token: string | null) => {
