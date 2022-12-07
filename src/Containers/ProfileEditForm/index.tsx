@@ -4,7 +4,6 @@ import { Col, Form, FormItemProps, Row } from 'antd';
 import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
 import Button from '../../Components/Button';
-import Select from '../../Components/Select';
 import Spin from '../../Components/Spin';
 
 import { API_URL } from '../../api';
@@ -20,7 +19,6 @@ type userInfo = {
   email: string;
   current_password: string;
   password: string;
-  professions: string[];
 };
 
 const ProfileEditForm = () => {
@@ -34,6 +32,7 @@ const ProfileEditForm = () => {
   >();
 
   const update = async (credentials: { user: userInfo }) => {
+    console.log(credentials);
     const token = getToken();
     return await fetch(`${API_URL}/users/`, {
       method: 'PUT',
@@ -52,7 +51,6 @@ const ProfileEditForm = () => {
 
     setLoading(true);
     const response = await update(credentials);
-    const responseDetails = await response.json();
     setLoading(false);
 
     if (response.ok) {
@@ -64,10 +62,12 @@ const ProfileEditForm = () => {
         },
       ]);
     } else {
+      const responseDetails = await response.json();
       setAlerts(
         Object.entries(responseDetails.errors).map(([key, message]) => ({
-          type: 'info',
-          message: `${key} ${message}`,
+          type: 'error',
+          message: 'Error',
+          description: `${key} ${message}`.replaceAll('_', ' '),
         }))
       );
     }
@@ -78,7 +78,7 @@ const ProfileEditForm = () => {
       {
         type: 'error',
         message: 'Error',
-        description: `Please input:' ${errorInfo.errorFields
+        description: `Please input: ${errorInfo.errorFields
           .map((field: any) => field.name.toString().replaceAll('_', ' '))
           .join(', ')}`,
       },
@@ -90,15 +90,15 @@ const ProfileEditForm = () => {
       label: 'Name',
       name: 'first_name',
       type: 'text',
-      rules: [{ required: true, message: 'Please input your firstname' }],
+      rules: [{ message: 'Please input your firstname' }],
     },
     {
       label: 'Last name',
       name: 'last_name',
       type: 'text',
-      rules: [{ required: true, message: 'Please input your lastname' }],
+      rules: [{ message: 'Please input your lastname' }],
     },
-    { label: 'Email', name: 'email', type: 'email', rules: [{ required: true, message: 'Please input your email' }] },
+    { label: 'Email', name: 'email', type: 'email', rules: [{ message: 'Please input your email' }] },
     {
       label: 'Current password',
       name: 'current_password',
@@ -106,10 +106,10 @@ const ProfileEditForm = () => {
       rules: [{ required: true, message: 'Please input your password' }],
     },
     {
-      label: 'New password',
-      name: 'new_password',
+      label: 'Password',
+      name: 'password',
       type: 'password',
-      rules: [{ required: true, message: 'Please input your password' }],
+      rules: [{ message: 'Please input your password' }],
     },
   ];
 
@@ -133,20 +133,6 @@ const ProfileEditForm = () => {
         onFinishFailed={onFinishFailed}
       >
         {formItemsJSX}
-        <Form.Item
-          label="Professions"
-          name="professions"
-          wrapperCol={{ offset: 0, span: 12 }}
-          rules={[{ required: true, message: 'Please select your professions' }]}
-        >
-          <Select
-            placeholder="Select professions"
-            options={[
-              { value: 'patient', label: 'patient' },
-              { value: 'doctor', label: 'doctor' },
-            ]}
-          />
-        </Form.Item>
         <Row gutter={[0, 12]}>
           <Col span={12} offset={6}>
             <Button shape="round" htmlType="submit" size="large" loading={loading}>
