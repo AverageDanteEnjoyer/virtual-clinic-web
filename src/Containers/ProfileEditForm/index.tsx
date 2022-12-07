@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
 import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
 
+import routes from '../../routes';
 import { API_URL } from '../../api';
 import { getToken } from '../../tokenApi';
+import { SessionInfoContext } from '../../SessionInfoContext';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -22,6 +25,10 @@ type userInfo = {
 };
 
 const ProfileEditForm = () => {
+  const { setIsLogged } = useContext(SessionInfoContext);
+
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<
     {
@@ -58,18 +65,33 @@ const ProfileEditForm = () => {
         {
           type: 'success',
           message: 'Success',
-          description: 'Account details has been updated! Redirecting to the login page',
+          description: 'Account details has been updated!',
         },
       ]);
     } else {
       const responseDetails = await response.json();
-      setAlerts(
-        Object.entries(responseDetails.errors).map(([key, message]) => ({
-          type: 'error',
-          message: 'Error',
-          description: `${key} ${message}`.replaceAll('_', ' '),
-        }))
-      );
+      if (response.status === 422) {
+        setAlerts(
+          Object.entries(responseDetails.errors).map(([key, message]) => ({
+            type: 'error',
+            message: 'Error',
+            description: `${key} ${message}`.replaceAll('_', ' '),
+          }))
+        );
+      } else {
+        const responseError = Object(responseDetails);
+        setAlerts([
+          {
+            type: 'error',
+            message: 'Error',
+            description: `${responseError.error}`,
+          },
+        ]);
+        setTimeout(() => {
+          navigate(routes.logIn);
+        }, 2000);
+        setIsLogged(false);
+      }
     }
   };
 
