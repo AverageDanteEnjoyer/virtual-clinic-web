@@ -1,10 +1,10 @@
-import { Key, ReactNode, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Key, ReactNode, useContext, useMemo } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
 import routes from '../../routes';
-import { getToken, removeToken } from '../../tokenApi';
+import { getExpDateFromToken, getToken, removeToken } from '../../tokenApi';
 import { SessionInfoContext } from '../../SessionInfoContext';
 import { API_URL } from '../../api';
 
@@ -19,7 +19,19 @@ function getItem(label: ReactNode, key: Key, children?: MenuItem[]): MenuItem {
 }
 
 const Navbar = () => {
-  const { isLogged, setIsLogged } = useContext(SessionInfoContext);
+  const { isLogged, setIsLogged, setUserID } = useContext(SessionInfoContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const tokenExp = getExpDateFromToken();
+
+  useMemo(() => {
+    if (tokenExp && tokenExp < new Date()) {
+      removeToken();
+      setUserID(0);
+      setIsLogged(false);
+      navigate(routes.logIn);
+    }
+  }, [location]);
 
   const logOut = async () => {
     const token = getToken();
@@ -32,6 +44,7 @@ const Navbar = () => {
       },
     });
     removeToken();
+    setUserID(0);
     setIsLogged(false);
   };
 

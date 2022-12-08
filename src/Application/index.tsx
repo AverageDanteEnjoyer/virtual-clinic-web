@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 
 import routes from '../routes';
-import { getToken, removeToken } from '../tokenApi';
+import { getExpDateFromToken, getToken, removeToken } from '../tokenApi';
 import { SessionInfoContext } from '../SessionInfoContext';
 
 import ComponentsPage from '../Pages/ComponentsPage';
@@ -12,19 +12,19 @@ import LoginPage from '../Pages/LoginPage';
 import HomePage from '../Pages/HomePage';
 
 const Application = () => {
-  const { setIsLogged } = useContext(SessionInfoContext);
+  const { setIsLogged, setUserID } = useContext(SessionInfoContext);
 
   useEffect(() => {
     const token = getToken();
     if (!token) return;
 
-    const tokenDecoded = jwtDecode<{ exp: number }>(token);
-    const expDate = new Date(0);
-    expDate.setUTCSeconds(tokenDecoded.exp);
+    const tokenDecoded = jwtDecode<{ sub: number }>(token);
+    const expDate = getExpDateFromToken(token);
 
-    if (expDate < new Date()) {
+    if (expDate && expDate < new Date()) {
       removeToken(); //removes token from localStorage when it expires
     } else {
+      setUserID(tokenDecoded.sub);
       setIsLogged(true);
     }
   }, []);
