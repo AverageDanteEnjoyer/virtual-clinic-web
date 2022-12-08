@@ -39,7 +39,6 @@ const ProfileEditForm = () => {
   >();
 
   const update = async (credentials: { user: userInfo }) => {
-    console.log(credentials);
     const token = getToken();
     return await fetch(`${API_URL}/users/`, {
       method: 'PUT',
@@ -109,29 +108,29 @@ const ProfileEditForm = () => {
 
   const formItems: formItem[] = [
     {
-      label: 'Name',
+      label: 'First name',
       name: 'first_name',
       type: 'text',
-      rules: [{ message: 'Please input your firstname' }],
+      rules: [{ message: 'Please input your first name' }],
     },
     {
       label: 'Last name',
       name: 'last_name',
       type: 'text',
-      rules: [{ message: 'Please input your lastname' }],
+      rules: [{ message: 'Please input your last name' }],
     },
     { label: 'Email', name: 'email', type: 'email', rules: [{ message: 'Please input your email' }] },
     {
       label: 'Current password',
       name: 'current_password',
       type: 'password',
-      rules: [{ required: true, message: 'Please input your password' }],
+      rules: [{ required: true, message: 'Please input your current password' }],
     },
     {
-      label: 'Password',
+      label: 'New password',
       name: 'password',
       type: 'password',
-      rules: [{ message: 'Please input your password' }],
+      rules: [{ message: 'Please input your new password' }],
     },
   ];
 
