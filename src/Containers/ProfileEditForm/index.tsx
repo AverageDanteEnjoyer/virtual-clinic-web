@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,7 +25,7 @@ type userInfo = {
 };
 
 const ProfileEditForm = () => {
-  const { setIsLogged } = useContext(SessionInfoContext);
+  const { isLogged, setIsLogged } = useContext(SessionInfoContext);
 
   const navigate = useNavigate();
 
@@ -37,6 +37,13 @@ const ProfileEditForm = () => {
       description?: string;
     }[]
   >();
+
+  // Check if user is logged in.
+  useEffect(() => {
+    if (!isLogged) {
+      navigate(routes.logIn);
+    }
+  });
 
   const update = async (credentials: { user: userInfo }) => {
     const token = getToken();
