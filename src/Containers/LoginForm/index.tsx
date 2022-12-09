@@ -25,7 +25,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const { setIsLogged, setUserID } = useContext(SessionInfoContext);
+  const { setAccountType, setUserID } = useContext(SessionInfoContext);
   const [alerts, setAlerts] = useState<
     {
       type: 'success' | 'warning' | 'error' | 'info';
@@ -60,7 +60,7 @@ const LoginForm = () => {
 
       setToken(token);
       userID && setUserID(userID);
-      setIsLogged(true);
+      setAccountType(responseDetails.account_type);
 
       setAlerts([
         {

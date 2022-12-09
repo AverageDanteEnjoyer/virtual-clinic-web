@@ -2,8 +2,8 @@ import { useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import routes from '../routes';
-import { removeToken, getDataFromToken } from '../tokenApi';
-import { SessionInfoContext } from '../SessionInfoContext';
+import { getDataFromToken, removeToken } from '../tokenApi';
+import { SessionInfoContext, userType } from '../SessionInfoContext';
 
 import ComponentsPage from '../Pages/ComponentsPage';
 import RegistrationPage from '../Pages/RegistrationPage';
@@ -12,7 +12,7 @@ import HomePage from '../Pages/HomePage';
 import AuthVerify from '../AuthVerify';
 
 const Application = () => {
-  const { setIsLogged, setUserID } = useContext(SessionInfoContext);
+  const { setAccountType, setUserID } = useContext(SessionInfoContext);
 
   useEffect(() => {
     const { tokenExp, userID } = getDataFromToken();
@@ -22,7 +22,7 @@ const Application = () => {
       removeToken(); //removes token from localStorage when it expires
     } else {
       userID && setUserID(userID);
-      setIsLogged(true);
+      setAccountType(userType.PATIENT);
     }
   }, []);
 

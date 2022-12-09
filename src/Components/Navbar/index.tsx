@@ -5,7 +5,7 @@ import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
 import routes from '../../routes';
 import { getToken, removeToken } from '../../tokenApi';
-import { SessionInfoContext } from '../../SessionInfoContext';
+import { SessionInfoContext, userType } from '../../SessionInfoContext';
 import { API_URL } from '../../api';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -19,7 +19,7 @@ function getItem(label: ReactNode, key: Key, children?: MenuItem[]): MenuItem {
 }
 
 const Navbar = () => {
-  const { isLogged, setIsLogged, setUserID } = useContext(SessionInfoContext);
+  const { accountType, setAccountType, setUserID } = useContext(SessionInfoContext);
 
   const logOut = async () => {
     const token = getToken();
@@ -33,7 +33,7 @@ const Navbar = () => {
     });
     removeToken();
     setUserID(0);
-    setIsLogged(false);
+    setAccountType(userType.GUEST);
   };
 
   const items: MenuItem[] = [
@@ -42,7 +42,7 @@ const Navbar = () => {
     getItem(
       <UserOutlined />,
       'user',
-      isLogged
+      accountType !== userType.GUEST
         ? [
             getItem('Edit profile', '3'),
             getItem('Appointments', '4'),
