@@ -9,6 +9,7 @@ import ComponentsPage from '../Pages/ComponentsPage';
 import RegistrationPage from '../Pages/RegistrationPage';
 import LoginPage from '../Pages/LoginPage';
 import HomePage from '../Pages/HomePage';
+import AuthVerify from '../AuthVerify';
 
 const Application = () => {
   const { setIsLogged, setUserID } = useContext(SessionInfoContext);
@@ -35,6 +36,7 @@ const Application = () => {
         <Route path={routes.logIn} element={<LoginPage />} />
         <Route path={routes.register} element={<RegistrationPage />} />
       </Routes>
+      <AuthVerify />
     </BrowserRouter>
   );
 };
