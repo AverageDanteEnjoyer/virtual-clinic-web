@@ -4,7 +4,7 @@ import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
 import routes from '../../routes';
-import { getToken, removeToken } from '../../tokenApi';
+import { clearLocalStorage, getLocalStorageResource } from '../../localStorageAPI';
 import { SessionInfoContext, userType } from '../../SessionInfoContext';
 import { API_URL } from '../../api';
 
@@ -22,7 +22,7 @@ const Navbar = () => {
   const { accountType, setAccountType, setUserID } = useContext(SessionInfoContext);
 
   const logOut = async () => {
-    const token = getToken();
+    const token = getLocalStorageResource('token');
     if (!token) return;
     await fetch(`${API_URL}/users/sign_out/`, {
       method: 'DELETE',
@@ -31,7 +31,8 @@ const Navbar = () => {
         Authorization: token,
       },
     });
-    removeToken();
+    clearLocalStorage();
+
     setUserID(0);
     setAccountType(userType.GUEST);
   };

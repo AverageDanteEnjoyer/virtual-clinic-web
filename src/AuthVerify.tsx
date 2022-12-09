@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import { SessionInfoContext, userType } from './SessionInfoContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getDataFromToken, removeToken } from './tokenApi';
+import { clearLocalStorage, getDataFromToken } from './localStorageAPI';
 import routes from './routes';
 
 const AuthVerify = () => {
@@ -12,7 +12,8 @@ const AuthVerify = () => {
 
   useMemo(() => {
     if (tokenExp && tokenExp < new Date()) {
-      removeToken();
+      clearLocalStorage();
+
       setUserID(0);
       setAccountType(userType.GUEST);
       navigate(routes.logIn);

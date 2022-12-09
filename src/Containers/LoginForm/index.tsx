@@ -8,7 +8,7 @@ import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
-import { getDataFromToken, setToken } from '../../tokenApi';
+import { getDataFromToken, setLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 import { SessionInfoContext } from '../../SessionInfoContext';
 
@@ -58,7 +58,9 @@ const LoginForm = () => {
       const token = response.headers.get('Authorization');
       const { userID } = getDataFromToken(token);
 
-      setToken(token);
+      setLocalStorageResource('token', token);
+      setLocalStorageResource('accountType', responseDetails.account_type);
+
       userID && setUserID(userID);
       setAccountType(responseDetails.account_type);
 

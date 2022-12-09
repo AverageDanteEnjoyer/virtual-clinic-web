@@ -2,8 +2,8 @@ import { useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import routes from '../routes';
-import { getDataFromToken, removeToken } from '../tokenApi';
-import { SessionInfoContext, userType } from '../SessionInfoContext';
+import { clearLocalStorage, getDataFromToken, getLocalStorageResource } from '../localStorageAPI';
+import { SessionInfoContext } from '../SessionInfoContext';
 
 import ComponentsPage from '../Pages/ComponentsPage';
 import RegistrationPage from '../Pages/RegistrationPage';
@@ -19,10 +19,10 @@ const Application = () => {
     if (!tokenExp) return;
 
     if (tokenExp < new Date()) {
-      removeToken(); //removes token from localStorage when it expires
+      clearLocalStorage();
     } else {
       userID && setUserID(userID);
-      setAccountType(userType.PATIENT);
+      setAccountType(getLocalStorageResource('accountType'));
     }
   }, []);
 
