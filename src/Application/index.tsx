@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import routes from '../routes';
-import { getToken, removeToken, getDataFromToken } from '../tokenApi';
+import { removeToken, getDataFromToken } from '../tokenApi';
 import { SessionInfoContext } from '../SessionInfoContext';
 
 import ComponentsPage from '../Pages/ComponentsPage';
@@ -15,12 +15,10 @@ const Application = () => {
   const { setIsLogged, setUserID } = useContext(SessionInfoContext);
 
   useEffect(() => {
-    const token = getToken();
-    if (!token) return;
-
     const { tokenExp, userID } = getDataFromToken();
+    if (!tokenExp) return;
 
-    if (tokenExp && tokenExp < new Date()) {
+    if (tokenExp < new Date()) {
       removeToken(); //removes token from localStorage when it expires
     } else {
       userID && setUserID(userID);
