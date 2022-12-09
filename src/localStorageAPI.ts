@@ -5,8 +5,10 @@ export const getLocalStorageResource = (key: string) => {
   return resourceJSON ? JSON.parse(resourceJSON).value : null;
 };
 
-export const setLocalStorageResource = (key: string, value: any) => {
-  localStorage.setItem(key, JSON.stringify({ value }));
+export const setLocalStorageResources = (resources: object) => {
+  Object.entries(resources).forEach(([key, value]) => {
+    localStorage.setItem(key, JSON.stringify({ value }));
+  });
 };
 
 export const removeLocalStorageResource = (key: string) => {
