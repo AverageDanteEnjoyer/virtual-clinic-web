@@ -1,9 +1,8 @@
 import { useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
 
 import routes from '../routes';
-import { getExpDateFromToken, getToken, removeToken } from '../tokenApi';
+import { getToken, removeToken, getDataFromToken } from '../tokenApi';
 import { SessionInfoContext } from '../SessionInfoContext';
 
 import ComponentsPage from '../Pages/ComponentsPage';
@@ -18,13 +17,12 @@ const Application = () => {
     const token = getToken();
     if (!token) return;
 
-    const tokenDecoded = jwtDecode<{ sub: number }>(token);
-    const expDate = getExpDateFromToken(token);
+    const { tokenExp, userID } = getDataFromToken();
 
-    if (expDate && expDate < new Date()) {
+    if (tokenExp && tokenExp < new Date()) {
       removeToken(); //removes token from localStorage when it expires
     } else {
-      setUserID(tokenDecoded.sub);
+      userID && setUserID(userID);
       setIsLogged(true);
     }
   }, []);

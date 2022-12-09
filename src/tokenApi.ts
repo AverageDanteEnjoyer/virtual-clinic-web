@@ -13,12 +13,13 @@ export const removeToken = () => {
   localStorage.removeItem('token');
 };
 
-export const getExpDateFromToken = (token = getToken()) => {
-  if (!token) return;
+export const getDataFromToken = (token = getToken()) => {
+  if (!token) return {};
 
-  const tokenDecoded = jwtDecode<{ exp: number }>(token);
+  const tokenDecoded = jwtDecode<{ exp: number; sub: number }>(token);
 
   const expDate = new Date(0);
   expDate.setUTCSeconds(tokenDecoded.exp);
-  return expDate;
+
+  return { tokenExp: expDate, userID: tokenDecoded.sub };
 };

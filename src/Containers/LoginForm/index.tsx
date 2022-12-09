@@ -8,7 +8,7 @@ import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
-import { setToken } from '../../tokenApi';
+import { getDataFromToken, setToken } from '../../tokenApi';
 import { API_URL } from '../../api';
 import { SessionInfoContext } from '../../SessionInfoContext';
 
@@ -25,7 +25,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const { setIsLogged } = useContext(SessionInfoContext);
+  const { setIsLogged, setUserID } = useContext(SessionInfoContext);
   const [alerts, setAlerts] = useState<
     {
       type: 'success' | 'warning' | 'error' | 'info';
@@ -55,9 +55,13 @@ const LoginForm = () => {
     setLoading(false);
 
     if (response.ok) {
-      setToken(response.headers.get('Authorization'));
+      const token = response.headers.get('Authorization');
+      const { userID } = getDataFromToken(token);
 
+      setToken(token);
+      userID && setUserID(userID);
       setIsLogged(true);
+
       setAlerts([
         {
           type: 'success',

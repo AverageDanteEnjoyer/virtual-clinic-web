@@ -4,7 +4,7 @@ import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
 import routes from '../../routes';
-import { getExpDateFromToken, getToken, removeToken } from '../../tokenApi';
+import { getToken, getDataFromToken, removeToken } from '../../tokenApi';
 import { SessionInfoContext } from '../../SessionInfoContext';
 import { API_URL } from '../../api';
 
@@ -22,7 +22,7 @@ const Navbar = () => {
   const { isLogged, setIsLogged, setUserID } = useContext(SessionInfoContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const tokenExp = getExpDateFromToken();
+  const { tokenExp } = getDataFromToken();
 
   useMemo(() => {
     if (tokenExp && tokenExp < new Date()) {
