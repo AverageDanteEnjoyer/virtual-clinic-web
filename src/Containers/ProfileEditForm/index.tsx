@@ -85,18 +85,20 @@ const ProfileEditForm = () => {
           }))
         );
       } else {
-        const responseError = Object(responseDetails);
         setAlerts([
           {
             type: 'error',
             message: 'Error',
-            description: `${responseError.error}`,
+            description: `${responseDetails.error}`,
           },
         ]);
-        setTimeout(() => {
-          navigate(routes.logIn);
-        }, 2000);
-        setIsLogged(false);
+        //Token is either expired or doesn't exist somehow
+        if (response.status === 401) {
+          setTimeout(() => {
+            setIsLogged(false);
+            navigate(routes.logIn);
+          }, 2000);
+        }
       }
     }
   };
