@@ -8,7 +8,7 @@ import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
-import { getDataFromToken, setToken } from '../../tokenApi';
+import { getDataFromToken, setLocalStorageResources } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 import { SessionInfoContext } from '../../SessionInfoContext';
 
@@ -25,7 +25,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const { setIsLogged, setUserID } = useContext(SessionInfoContext);
+  const { setAccountType, setUserID } = useContext(SessionInfoContext);
   const [alerts, setAlerts] = useState<
     {
       type: 'success' | 'warning' | 'error' | 'info';
@@ -58,9 +58,10 @@ const LoginForm = () => {
       const token = response.headers.get('Authorization');
       const { userID } = getDataFromToken(token);
 
-      setToken(token);
+      setLocalStorageResources({ token: token, accountType: responseDetails.account_type });
+
       userID && setUserID(userID);
-      setIsLogged(true);
+      setAccountType(responseDetails.account_type);
 
       setAlerts([
         {
