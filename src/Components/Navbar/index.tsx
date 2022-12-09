@@ -19,7 +19,7 @@ function getItem(label: ReactNode, key: Key, children?: MenuItem[]): MenuItem {
 }
 
 const Navbar = () => {
-  const { accountType, setAccountType, setUserID } = useContext(SessionInfoContext);
+  const { accountType, setAccountType } = useContext(SessionInfoContext);
 
   const logOut = async () => {
     const token = getLocalStorageResource('token');
@@ -32,8 +32,6 @@ const Navbar = () => {
       },
     });
     clearLocalStorage();
-
-    setUserID(0);
     setAccountType(userType.GUEST);
   };
 

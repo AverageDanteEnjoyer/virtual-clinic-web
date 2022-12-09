@@ -5,7 +5,7 @@ import { clearLocalStorage, getDataFromToken } from './localStorageAPI';
 import routes from './routes';
 
 const AuthVerify = () => {
-  const { setAccountType, setUserID } = useContext(SessionInfoContext);
+  const { setAccountType } = useContext(SessionInfoContext);
   const location = useLocation();
   const navigate = useNavigate();
   const { tokenExp } = getDataFromToken();
@@ -13,8 +13,6 @@ const AuthVerify = () => {
   useMemo(() => {
     if (tokenExp && tokenExp < new Date()) {
       clearLocalStorage();
-
-      setUserID(0);
       setAccountType(userType.GUEST);
       navigate(routes.logIn);
     }

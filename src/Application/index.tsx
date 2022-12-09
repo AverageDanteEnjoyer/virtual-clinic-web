@@ -12,16 +12,15 @@ import HomePage from '../Pages/HomePage';
 import AuthVerify from '../AuthVerify';
 
 const Application = () => {
-  const { setAccountType, setUserID } = useContext(SessionInfoContext);
+  const { setAccountType } = useContext(SessionInfoContext);
 
   useEffect(() => {
-    const { tokenExp, userID } = getDataFromToken();
+    const { tokenExp } = getDataFromToken();
     if (!tokenExp) return;
 
     if (tokenExp < new Date()) {
       clearLocalStorage();
     } else {
-      userID && setUserID(userID);
       setAccountType(getLocalStorageResource('accountType'));
     }
   }, []);
