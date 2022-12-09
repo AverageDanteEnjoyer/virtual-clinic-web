@@ -4,8 +4,8 @@ import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
 import routes from '../../routes';
-import { getToken, removeToken } from '../../tokenApi';
-import { SessionInfoContext } from '../../SessionInfoContext';
+import { clearLocalStorage, getLocalStorageResource } from '../../localStorageAPI';
+import { SessionInfoContext, userType } from '../../SessionInfoContext';
 import { API_URL } from '../../api';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -19,10 +19,10 @@ function getItem(label: ReactNode, key: Key, children?: MenuItem[]): MenuItem {
 }
 
 const Navbar = () => {
-  const { isLogged, setIsLogged } = useContext(SessionInfoContext);
+  const { accountType, setAccountType } = useContext(SessionInfoContext);
 
   const logOut = async () => {
-    const token = getToken();
+    const token = getLocalStorageResource('token');
     if (!token) return;
     await fetch(`${API_URL}/users/sign_out/`, {
       method: 'DELETE',
@@ -31,8 +31,8 @@ const Navbar = () => {
         Authorization: token,
       },
     });
-    removeToken();
-    setIsLogged(false);
+    clearLocalStorage();
+    setAccountType(userType.GUEST);
   };
 
   const items: MenuItem[] = [
@@ -41,7 +41,7 @@ const Navbar = () => {
     getItem(
       <UserOutlined />,
       'user',
-      isLogged
+      accountType !== userType.GUEST
         ? [
             getItem('Edit profile', '3'),
             getItem('Appointments', '4'),

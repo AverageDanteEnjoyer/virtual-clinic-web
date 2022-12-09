@@ -1,21 +1,22 @@
 import React from 'react';
 
+export enum userType {
+  GUEST = 'guest',
+  PATIENT = 'patient',
+  DOCTOR = 'doctor',
+}
+
 type SessionInfoContextType = {
-  isLogged: boolean;
-  setIsLogged: (isLogged: boolean) => void;
+  accountType: userType;
+  setAccountType: (accountType: userType) => void;
 };
 
 export const SessionInfoContext = React.createContext<SessionInfoContextType>({
-  isLogged: false,
-  setIsLogged: () => {},
+  accountType: userType.GUEST,
+  setAccountType: () => {},
 });
 
 export const SessionInfoContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isLogged, setIsLogged] = React.useState<boolean>(false);
-
-  return (
-    <SessionInfoContext.Provider value={{ isLogged: isLogged, setIsLogged: setIsLogged }}>
-      {children}
-    </SessionInfoContext.Provider>
-  );
+  const [accountType, setAccountType] = React.useState<userType>(userType.GUEST);
+  return <SessionInfoContext.Provider value={{ accountType, setAccountType }}>{children}</SessionInfoContext.Provider>;
 };

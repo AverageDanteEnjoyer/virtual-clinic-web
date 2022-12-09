@@ -1,31 +1,27 @@
 import { useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
 
 import routes from '../routes';
-import { getToken, removeToken } from '../tokenApi';
+import { clearLocalStorage, getDataFromToken, getLocalStorageResource } from '../localStorageAPI';
 import { SessionInfoContext } from '../SessionInfoContext';
 
 import ComponentsPage from '../Pages/ComponentsPage';
 import RegistrationPage from '../Pages/RegistrationPage';
 import LoginPage from '../Pages/LoginPage';
 import HomePage from '../Pages/HomePage';
+import AuthVerify from '../AuthVerify';
 
 const Application = () => {
-  const { setIsLogged } = useContext(SessionInfoContext);
+  const { setAccountType } = useContext(SessionInfoContext);
 
   useEffect(() => {
-    const token = getToken();
-    if (!token) return;
+    const { tokenExp } = getDataFromToken();
+    if (!tokenExp) return;
 
-    const tokenDecoded = jwtDecode<{ exp: number }>(token);
-    const expDate = new Date(0);
-    expDate.setUTCSeconds(tokenDecoded.exp);
-
-    if (expDate < new Date()) {
-      removeToken(); //removes token from localStorage when it expires
+    if (tokenExp < new Date()) {
+      clearLocalStorage();
     } else {
-      setIsLogged(true);
+      setAccountType(getLocalStorageResource('accountType'));
     }
   }, []);
 
@@ -37,6 +33,7 @@ const Application = () => {
         <Route path={routes.logIn} element={<LoginPage />} />
         <Route path={routes.register} element={<RegistrationPage />} />
       </Routes>
+      <AuthVerify />
     </BrowserRouter>
   );
 };
