@@ -13,7 +13,7 @@ const ProfessionSelector = () => {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [data, setData] = useState<optionItem[]>([]);
-  const pageSize = 10;
+  const [pageSize, setPageSize] = useState<number>(10);
 
   useMemo(() => {
     const loadPage = async () => {
@@ -31,7 +31,7 @@ const ProfessionSelector = () => {
       setData(responseDetails.data);
     };
     loadPage();
-  }, [page, setTotalPages, setData]);
+  }, [page, pageSize, setTotalPages, setData]);
 
   return (
     <CustomSelect
@@ -43,9 +43,11 @@ const ProfessionSelector = () => {
           <div style={{ textAlign: 'center' }}>
             <Pagination
               current={page}
-              pageSize={pageSize}
               total={totalPages}
-              onChange={(pageIndex) => setPage(pageIndex)}
+              onChange={(pageIndex, pageSize) => {
+                setPage(pageIndex);
+                setPageSize(pageSize);
+              }}
             />
           </div>
         </>
