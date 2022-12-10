@@ -1,21 +1,19 @@
 import { Divider, Pagination, Select } from 'antd';
-import CustomSelect from '../../Components/Select';
 import React, { useEffect, useMemo, useState } from 'react';
+
 import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 
-interface optionItem {
-  key: number;
-  name: string;
-}
+import CustomSelect from '../../Components/Select';
+import Button from '../../Components/Button';
 
 const ProfessionSelector = () => {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
 
-  const [data, setData] = useState<optionItem[]>([]);
-  const [myProfessions, setMyProfessions] = useState<optionItem[]>([]);
+  const [data, setData] = useState<string[]>([]);
+  const [myProfessions, setMyProfessions] = useState<string[]>([]);
 
   useEffect(() => {
     const loadProfessions = async () => {
@@ -30,7 +28,7 @@ const ProfessionSelector = () => {
         },
       });
       const responseDetails = await response.json();
-      setMyProfessions(responseDetails.data);
+      setMyProfessions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
     };
     loadProfessions();
   }, []);
@@ -48,20 +46,37 @@ const ProfessionSelector = () => {
       });
       const responseDetails = await response.json();
       setTotalPages(responseDetails.total);
-      setData(responseDetails.data);
+      setData(responseDetails.data.map((value: { key: number; name: string }) => value.name));
     };
     loadPage();
   }, [page, pageSize, setTotalPages, setData]);
 
+  const submitProfessions = async () => {
+    const token = getLocalStorageResource('token');
+    if (!token) return;
+
+    const response = await fetch(`${API_URL}/users/`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify({ user: { professions: myProfessions, current_password: '11aasasasaaaaa' } }),
+    });
+  };
+
   return (
     <CustomSelect
       mode="multiple"
-      defaultValue={myProfessions.map((item) => item.name)}
+      value={myProfessions}
+      onChange={(values: string[]) => {
+        setMyProfessions(values);
+      }}
       dropdownRender={(menu) => (
         <>
           {menu}
           <Divider style={{ margin: '4px 0' }} />
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '22%', margin: '0 3%' }}>
             <Pagination
               current={page}
               total={totalPages}
@@ -70,6 +85,9 @@ const ProfessionSelector = () => {
                 setPageSize(pageSize);
               }}
             />
+            <Button size="large" onClick={submitProfessions}>
+              Submit changes
+            </Button>
           </div>
         </>
       )}
@@ -78,8 +96,8 @@ const ProfessionSelector = () => {
       {data &&
         data.map((item, idx) => {
           return (
-            <Select.Option key={(page - 1) * pageSize + idx} value={item.name}>
-              {item.name}
+            <Select.Option key={(page - 1) * pageSize + idx} value={item}>
+              {item}
             </Select.Option>
           );
         })}

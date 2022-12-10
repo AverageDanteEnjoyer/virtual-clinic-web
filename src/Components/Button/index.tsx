@@ -1,26 +1,18 @@
-import { ReactNode } from 'react';
 import { StyledButton } from './styles';
+import { ButtonProps } from 'antd';
 
-interface CustomButtonProps {
-  type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
-  disabled?: boolean;
-  children?: ReactNode;
-  htmlType?: 'button' | 'submit' | 'reset';
-  size?: 'middle' | 'large';
-  loading?: boolean;
-  shape?: 'default' | 'round';
-  className?: string;
-}
+interface CustomButtonProps extends ButtonProps {}
 
 const Button = ({
   type = 'primary',
   className,
   disabled,
   children,
-  shape,
+  shape = 'round',
   htmlType,
   size,
   loading,
+  onClick,
 }: CustomButtonProps) => (
   <StyledButton
     className={className}
@@ -30,6 +22,7 @@ const Button = ({
     htmlType={htmlType}
     size={size}
     loading={loading}
+    onClick={onClick}
   >
     {children}
   </StyledButton>

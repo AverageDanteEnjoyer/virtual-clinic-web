@@ -122,7 +122,7 @@ const LoginForm = () => {
         {formItemsJSX}
         <Row gutter={[0, 12]}>
           <Col span={4} offset={6}>
-            <Button shape="round" htmlType="submit" size="large" loading={loading}>
+            <Button htmlType="submit" size="large" loading={loading}>
               Submit
             </Button>
           </Col>
