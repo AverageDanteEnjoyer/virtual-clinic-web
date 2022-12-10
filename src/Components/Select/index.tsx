@@ -18,6 +18,9 @@ const Select = ({
   placeholder,
   className,
   onChange,
+  dropdownRender,
+  showArrow,
+  children,
 }: StyledSelectProps) => {
   const { Option, OptGroup } = StyledSelect;
   const groups = customOptions?.map(({ children, label }) => {
@@ -40,8 +43,11 @@ const Select = ({
       placeholder={placeholder}
       className={className}
       onChange={onChange}
+      dropdownRender={dropdownRender}
+      showArrow={showArrow}
     >
       {groups}
+      {children}
     </StyledSelect>
   );
 };

@@ -1,4 +1,5 @@
-import { Pagination, Select } from 'antd';
+import { Pagination, Select, Divider } from 'antd';
+import CustomSelect from '../../Components/Select';
 import React, { useState } from 'react';
 
 const ProfessionSelector = () => {
@@ -16,13 +17,15 @@ const ProfessionSelector = () => {
   };
 
   return (
-    <Select
-      style={{ width: 250 }}
+    <CustomSelect
       mode="multiple"
       dropdownRender={(menu) => (
         <>
           {menu}
-          <Pagination current={page} pageSize={pageSize} total={10} onChange={(pageIndex) => setPage(pageIndex)} />
+          <Divider style={{ margin: '4px 0' }} />
+          <div style={{ textAlign: 'center' }}>
+            <Pagination current={page} pageSize={pageSize} total={30} onChange={(pageIndex) => setPage(pageIndex)} />
+          </div>
         </>
       )}
       showArrow
@@ -34,7 +37,7 @@ const ProfessionSelector = () => {
           </Select.Option>
         );
       })}
-    </Select>
+    </CustomSelect>
   );
 };
 
