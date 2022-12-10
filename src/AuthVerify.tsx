@@ -8,15 +8,15 @@ const AuthVerify = () => {
   const { setAccountType } = useContext(SessionInfoContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const { tokenExp } = getDataFromToken();
 
   useMemo(() => {
+    const { tokenExp } = getDataFromToken();
     if (tokenExp && tokenExp < new Date()) {
       clearLocalStorage();
       setAccountType(userType.GUEST);
       navigate(routes.logIn);
     }
-  }, [location]);
+  }, [location, setAccountType]);
 
   return <></>;
 };

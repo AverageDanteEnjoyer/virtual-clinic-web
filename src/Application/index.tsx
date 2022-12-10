@@ -23,7 +23,7 @@ const Application = () => {
     } else {
       setAccountType(getLocalStorageResource('accountType'));
     }
-  }, []);
+  }, [setAccountType]);
 
   return (
     <BrowserRouter>
