@@ -12,7 +12,7 @@ const ProfessionSelector = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
 
-  const [data, setData] = useState<string[]>([]);
+  const [allProfessions, setAllProfessions] = useState<string[]>([]);
   const [myProfessions, setMyProfessions] = useState<string[]>([]);
 
   useEffect(() => {
@@ -46,10 +46,10 @@ const ProfessionSelector = () => {
       });
       const responseDetails = await response.json();
       setTotalPages(responseDetails.total);
-      setData(responseDetails.data.map((value: { key: number; name: string }) => value.name));
+      setAllProfessions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
     };
     loadPage();
-  }, [page, pageSize, setTotalPages, setData]);
+  }, [page, pageSize, setTotalPages, setAllProfessions]);
 
   const submitProfessions = () => {
     const token = getLocalStorageResource('token');
@@ -93,8 +93,8 @@ const ProfessionSelector = () => {
       )}
       showArrow
     >
-      {data &&
-        data.map((item, idx) => {
+      {allProfessions &&
+        allProfessions.map((item, idx) => {
           return (
             <Select.Option key={(page - 1) * pageSize + idx} value={item}>
               {item}
