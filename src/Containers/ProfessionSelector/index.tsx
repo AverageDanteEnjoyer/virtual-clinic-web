@@ -51,17 +51,17 @@ const ProfessionSelector = () => {
     loadPage();
   }, [page, pageSize, setTotalPages, setData]);
 
-  const submitProfessions = async () => {
+  const submitProfessions = () => {
     const token = getLocalStorageResource('token');
     if (!token) return;
 
-    const response = await fetch(`${API_URL}/users/`, {
+    fetch(`${API_URL}/users/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
       },
-      body: JSON.stringify({ user: { professions: myProfessions, current_password: '11aasasasaaaaa' } }),
+      body: JSON.stringify({ user: { professions: myProfessions, current_password: '11aasasasaaaaa' } }), //type your password manually here. It will be assembled with Edit_account soon
     });
   };
 
