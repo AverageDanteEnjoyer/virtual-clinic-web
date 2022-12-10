@@ -8,6 +8,7 @@ interface StyledSelectProps extends SelectProps {
     children: { label: string; value: string; disabled?: boolean; className?: string }[];
   }[];
   onChange?: any;
+  filterOption?: any;
 }
 
 const Select = ({
@@ -17,11 +18,14 @@ const Select = ({
   options,
   placeholder,
   className,
+  onSearch,
   onChange,
+  filterOption,
   dropdownRender,
   showArrow,
   children,
   value,
+  searchValue,
 }: StyledSelectProps) => {
   const { Option, OptGroup } = StyledSelect;
   const groups = customOptions?.map(({ children, label }) => {
@@ -44,9 +48,12 @@ const Select = ({
       placeholder={placeholder}
       className={className}
       onChange={onChange}
+      onSearch={onSearch}
+      filterOption={filterOption}
       dropdownRender={dropdownRender}
       showArrow={showArrow}
       value={value}
+      searchValue={searchValue}
     >
       {groups}
       {children}

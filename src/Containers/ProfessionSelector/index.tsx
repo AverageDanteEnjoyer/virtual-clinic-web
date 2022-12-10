@@ -11,6 +11,7 @@ const ProfessionSelector = () => {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [searchInput, setSearchInput] = useState<string>('');
 
   const [allProfessions, setAllProfessions] = useState<string[]>([]);
   const [myProfessions, setMyProfessions] = useState<string[]>([]);
@@ -37,19 +38,22 @@ const ProfessionSelector = () => {
     const loadPage = async () => {
       const token = getLocalStorageResource('token');
       if (!token) return;
-      const response = await fetch(`${API_URL}/api/v1/professions/?per_page=${pageSize}&page=${page}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
-        },
-      });
+      const response = await fetch(
+        `${API_URL}/api/v1/professions/?name=${searchInput}&per_page=${pageSize}&page=${page}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        }
+      );
       const responseDetails = await response.json();
       setTotalPages(responseDetails.total);
       setAllProfessions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
     };
     loadPage();
-  }, [page, pageSize, setTotalPages, setAllProfessions]);
+  }, [page, pageSize, searchInput, setTotalPages, setAllProfessions]);
 
   const submitProfessions = () => {
     const token = getLocalStorageResource('token');
@@ -69,8 +73,14 @@ const ProfessionSelector = () => {
     <CustomSelect
       mode="multiple"
       value={myProfessions}
+      searchValue={searchInput}
+      filterOption={false}
       onChange={(values: string[]) => {
         setMyProfessions(values);
+      }}
+      onSearch={(value: string) => {
+        setPage(1);
+        setSearchInput(value);
       }}
       dropdownRender={(menu) => (
         <>
