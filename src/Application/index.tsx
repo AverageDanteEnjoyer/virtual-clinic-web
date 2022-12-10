@@ -10,6 +10,7 @@ import RegistrationPage from '../Pages/RegistrationPage';
 import LoginPage from '../Pages/LoginPage';
 import HomePage from '../Pages/HomePage';
 import AuthVerify from '../AuthVerify';
+import DoctorEditProfilePage from '../Pages/DoctorEditProfilePage';
 
 const Application = () => {
   const { setAccountType } = useContext(SessionInfoContext);
@@ -32,6 +33,8 @@ const Application = () => {
         <Route path={routes.components} element={<ComponentsPage />} />
         <Route path={routes.logIn} element={<LoginPage />} />
         <Route path={routes.register} element={<RegistrationPage />} />
+        <Route path={`/doctor${routes.editProfile}`} element={<DoctorEditProfilePage />} />
+        <Route path={`/patient${routes.editProfile}`} element={<HomePage />} />
       </Routes>
       <AuthVerify />
     </BrowserRouter>

@@ -43,7 +43,7 @@ const Navbar = () => {
       'user',
       accountType !== userType.GUEST
         ? [
-            getItem('Edit profile', '3'),
+            getItem(<Link to={`/${accountType}${routes.editProfile}`}>Edit profile</Link>, '3'),
             getItem('Appointments', '4'),
             getItem(
               <Link to={routes.home} onClick={logOut}>
