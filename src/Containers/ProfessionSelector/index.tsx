@@ -1,7 +1,7 @@
-import { Pagination, Select, Divider } from 'antd';
+import { Divider, Pagination, Select } from 'antd';
 import CustomSelect from '../../Components/Select';
-import React, { useState, useMemo } from 'react';
-import { getLocalStorageResource } from '../../localStorageAPI';
+import React, { useEffect, useMemo, useState } from 'react';
+import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 
 interface optionItem {
@@ -12,8 +12,28 @@ interface optionItem {
 const ProfessionSelector = () => {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [data, setData] = useState<optionItem[]>([]);
   const [pageSize, setPageSize] = useState<number>(10);
+
+  const [data, setData] = useState<optionItem[]>([]);
+  const [myProfessions, setMyProfessions] = useState<optionItem[]>([]);
+
+  useEffect(() => {
+    const loadProfessions = async () => {
+      const token = getLocalStorageResource('token');
+      const { userID } = getDataFromToken();
+      if (!token) return;
+      const response = await fetch(`${API_URL}/api/v1/doctors/${userID}/professions/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      });
+      const responseDetails = await response.json();
+      setMyProfessions(responseDetails.data);
+    };
+    loadProfessions();
+  }, []);
 
   useMemo(() => {
     const loadPage = async () => {
@@ -36,6 +56,7 @@ const ProfessionSelector = () => {
   return (
     <CustomSelect
       mode="multiple"
+      defaultValue={myProfessions.map((item) => item.name)}
       dropdownRender={(menu) => (
         <>
           {menu}
