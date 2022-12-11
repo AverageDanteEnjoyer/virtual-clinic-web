@@ -9,7 +9,7 @@ import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
 import { API_URL } from '../../api';
-import {clearLocalStorage, getLocalStorageResource} from '../../localStorageAPI';
+import { clearLocalStorage, getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
 import { SessionInfoContext, userType } from '../../SessionInfoContext';
 
 export interface formItem extends FormItemProps {
@@ -37,7 +37,7 @@ const ProfileEditForm = () => {
       description?: string;
     }[]
   >();
-  
+
   const update = async (credentials: { user: userInfo }) => {
     const token = getLocalStorageResource('token');
     return await fetch(`${API_URL}/users/`, {
@@ -60,6 +60,13 @@ const ProfileEditForm = () => {
     setLoading(false);
 
     if (response.ok) {
+      const updatedInfo = {
+        first_name: values.first_name || getLocalStorageResource('first_name'),
+        last_name: values.last_name || getLocalStorageResource('last_name'),
+        email: values.email || getLocalStorageResource('email'),
+      };
+      setLocalStorageResources(updatedInfo);
+
       setAlerts([
         {
           type: 'success',
@@ -138,8 +145,13 @@ const ProfileEditForm = () => {
   ];
 
   const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
-    <Form.Item key={idx} label={label} name={name} rules={rules} >
-      <Input type={type} placeholder={`Enter your ${label}`} password={type === 'password'} defaultValue={name && getLocalStorageResource(name.toString())}/>
+    <Form.Item key={idx} label={label} name={name} rules={rules}>
+      <Input
+        type={type}
+        placeholder={`Enter your ${label}`}
+        password={type === 'password'}
+        defaultValue={name && getLocalStorageResource(name.toString())}
+      />
     </Form.Item>
   ));
 
