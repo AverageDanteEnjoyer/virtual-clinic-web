@@ -58,6 +58,9 @@ const LoginForm = () => {
       setLocalStorageResources({
         token: response.headers.get('Authorization'),
         accountType: responseDetails.account_type,
+        first_name: responseDetails.first_name,
+        last_name: responseDetails.last_name,
+        email: responseDetails.email,
       });
       setAccountType(responseDetails.account_type);
 

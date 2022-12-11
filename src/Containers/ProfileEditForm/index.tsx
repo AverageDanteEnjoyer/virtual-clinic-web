@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,8 +9,8 @@ import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
 import { API_URL } from '../../api';
-import { getToken } from '../../tokenApi';
-import { SessionInfoContext } from '../../SessionInfoContext';
+import {clearLocalStorage, getLocalStorageResource} from '../../localStorageAPI';
+import { SessionInfoContext, userType } from '../../SessionInfoContext';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -25,7 +25,7 @@ type userInfo = {
 };
 
 const ProfileEditForm = () => {
-  const { isLogged, setIsLogged } = useContext(SessionInfoContext);
+  const { setAccountType } = useContext(SessionInfoContext);
 
   const navigate = useNavigate();
 
@@ -37,16 +37,9 @@ const ProfileEditForm = () => {
       description?: string;
     }[]
   >();
-
-  // Check if user is logged in.
-  useEffect(() => {
-    if (!isLogged) {
-      navigate(routes.logIn);
-    }
-  });
-
+  
   const update = async (credentials: { user: userInfo }) => {
-    const token = getToken();
+    const token = getLocalStorageResource('token');
     return await fetch(`${API_URL}/users/`, {
       method: 'PUT',
       headers: {
@@ -95,7 +88,8 @@ const ProfileEditForm = () => {
         //Token is either expired or doesn't exist somehow
         if (response.status === 401) {
           setTimeout(() => {
-            setIsLogged(false);
+            setAccountType(userType.GUEST);
+            clearLocalStorage();
             navigate(routes.logIn);
           }, 2000);
         }
@@ -144,8 +138,8 @@ const ProfileEditForm = () => {
   ];
 
   const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
-    <Form.Item key={idx} label={label} name={name} rules={rules}>
-      <Input type={type} placeholder={`Enter your ${label}`} password={type === 'password'} />
+    <Form.Item key={idx} label={label} name={name} rules={rules} >
+      <Input type={type} placeholder={`Enter your ${label}`} password={type === 'password'} defaultValue={name && getLocalStorageResource(name.toString())}/>
     </Form.Item>
   ));
 
