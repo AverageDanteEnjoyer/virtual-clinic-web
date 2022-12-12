@@ -36,7 +36,7 @@ const ProfileEditForm = () => {
       message: string;
       description?: string;
     }[]
-  >();
+  >([]);
 
   const update = async (credentials: { user: userInfo }) => {
     const token = getLocalStorageResource('token');
@@ -155,7 +155,7 @@ const ProfileEditForm = () => {
     </Form.Item>
   ));
 
-  const alertsJSX = alerts?.map(({ type, message, description }, idx) => (
+  const alertsJSX = alerts.map(({ type, message, description }, idx) => (
     <Alert key={idx} closable={false} type={type} message={message} description={description} />
   ));
 

@@ -1,6 +1,7 @@
 import jwtDecode from 'jwt-decode';
 
-export const getLocalStorageResource = (key: string) => {
+export const getLocalStorageResource = (key: string | undefined) => {
+  if (!key) return;
   const resourceJSON = localStorage.getItem(key);
   return resourceJSON ? JSON.parse(resourceJSON).value : null;
 };
