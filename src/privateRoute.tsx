@@ -1,13 +1,12 @@
+import { Navigate } from 'react-router-dom';
+
+import routes from './routes';
+
 type ProtectedRouteProps = {
   accountType: string;
   children: JSX.Element;
-  redirectPage: JSX.Element;
 };
 
-export const ProtectedRoutes = ({ accountType, children, redirectPage }: ProtectedRouteProps) => {
-  if (accountType === 'guest') {
-    return redirectPage;
-  }
-
-  return children;
+export const ProtectedRoutes = ({ accountType, children }: ProtectedRouteProps) => {
+  return accountType === 'guest' ? <Navigate to={routes.logIn} replace /> : children;
 };

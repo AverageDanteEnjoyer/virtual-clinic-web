@@ -36,7 +36,7 @@ const Application = () => {
         <Route
           path={routes.editProfile}
           element={
-            <ProtectedRoutes accountType={accountType} redirectPage={<LoginPage />}>
+            <ProtectedRoutes accountType={accountType}>
               <ProfileEditPage />
             </ProtectedRoutes>
           }
