@@ -1,5 +1,6 @@
 import { Divider, Pagination, Select } from 'antd';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { debounce } from 'lodash';
 
 import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
@@ -8,6 +9,7 @@ import CustomSelect from '../../Components/Select';
 import Button from '../../Components/Button';
 
 const ProfessionSelector = () => {
+  const fetchRef = useRef(0);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -34,26 +36,36 @@ const ProfessionSelector = () => {
     loadProfessions();
   }, []);
 
-  useMemo(() => {
-    const loadPage = async () => {
+  const debounceFetch = useMemo(() => {
+    const fetchOptions = () => {
+      fetchRef.current += 1;
+      const fetchId = fetchRef.current;
+
       const token = getLocalStorageResource('token');
       if (!token) return;
-      const response = await fetch(
-        `${API_URL}/api/v1/professions/?name=${searchInput}&per_page=${pageSize}&page=${page}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-        }
-      );
-      const responseDetails = await response.json();
-      setTotalPages(responseDetails.total);
-      setAllProfessions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
+      fetch(`${API_URL}/api/v1/professions/?name=${searchInput}&per_page=${pageSize}&page=${page}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
+        .then((response) => response.json())
+        .then((responseDetails) => {
+          if (fetchId !== fetchRef.current) {
+            // for fetch callback order
+            return;
+          }
+          setTotalPages(responseDetails.total);
+          setAllProfessions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
+        });
     };
-    loadPage();
-  }, [page, pageSize, searchInput, setTotalPages, setAllProfessions]);
+    return debounce(fetchOptions, 1000);
+  }, [page, pageSize, searchInput]);
+
+  useMemo(() => {
+    debounceFetch();
+  }, [page, pageSize, searchInput]);
 
   const submitProfessions = () => {
     const token = getLocalStorageResource('token');
@@ -73,7 +85,6 @@ const ProfessionSelector = () => {
     <CustomSelect
       mode="multiple"
       value={myProfessions}
-      searchValue={searchInput}
       filterOption={false}
       onChange={(values: string[]) => {
         setMyProfessions(values);
