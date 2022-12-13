@@ -19,7 +19,7 @@ export interface PaginatedSelectProps {
   fetchInitialValues: () => Promise<any>;
 }
 
-const ProfessionSelector = ({ fetchOptions, fetchInitialValues }: PaginatedSelectProps) => {
+const PaginatedSelect = ({ fetchOptions, fetchInitialValues }: PaginatedSelectProps) => {
   const fetchRef = useRef(0);
 
   const [page, setPage] = useState<number>(1);
@@ -35,20 +35,20 @@ const ProfessionSelector = ({ fetchOptions, fetchInitialValues }: PaginatedSelec
       fetchRef.current += 1;
       const fetchId = fetchRef.current;
 
-      fetchOptions({ name: name, perPage: perPage, pageIndex: pageIndex }).then((responseDetails) => {
+      fetchOptions({ name: name, perPage: perPage, pageIndex: pageIndex }).then((optionData) => {
         if (fetchId !== fetchRef.current) {
           return;
         }
-        setTotalPages(responseDetails.total ? responseDetails.total : 1);
-        setOptions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
+        setTotalPages(optionData.total ? optionData.total : 1);
+        setOptions(optionData.options);
       });
     };
     return debounce(loadOptions, 800);
   }, [fetchOptions]);
 
   useEffect(() => {
-    fetchInitialValues().then((responseDetails) => {
-      setMyProfessions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
+    fetchInitialValues().then((initialValues) => {
+      setMyProfessions(initialValues);
     });
     debounceFetch({ name: searchInput, pageIndex: page, perPage: pageSize });
   }, [debounceFetch, fetchInitialValues]);
@@ -115,4 +115,4 @@ const ProfessionSelector = ({ fetchOptions, fetchInitialValues }: PaginatedSelec
   );
 };
 
-export default ProfessionSelector;
+export default PaginatedSelect;

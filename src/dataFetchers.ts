@@ -11,7 +11,12 @@ export const fetchAllProfessions = async ({ name, perPage, pageIndex }: searchPa
       'Content-Type': 'application/json',
       Authorization: token,
     },
-  }).then((response) => response.json());
+  })
+    .then((response) => response.json())
+    .then((responseBody) => ({
+      options: responseBody.data.map((value: { key: number; name: string }) => value.name),
+      total: responseBody.total,
+    }));
 };
 
 export const fetchDoctorProfessions = async () => {
@@ -24,5 +29,7 @@ export const fetchDoctorProfessions = async () => {
       'Content-Type': 'application/json',
       Authorization: token,
     },
-  }).then((response) => response.json());
+  })
+    .then((response) => response.json())
+    .then((responseBody) => responseBody.data.map((value: { key: number; name: string }) => value.name));
 };
