@@ -1,15 +1,16 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
 import Button from '../../Components/Button';
-import Select from '../../Components/Select';
 import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
 import { API_URL } from '../../api';
+import { clearLocalStorage, getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
+import { SessionInfoContext, userType } from '../../SessionInfoContext';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -19,11 +20,13 @@ type userInfo = {
   first_name: string;
   last_name: string;
   email: string;
+  current_password: string;
   password: string;
-  account_type: string;
 };
 
-const RegistrationForm = () => {
+const ProfileEditForm = () => {
+  const { setAccountType } = useContext(SessionInfoContext);
+
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -35,11 +38,13 @@ const RegistrationForm = () => {
     }[]
   >([]);
 
-  const register = async (credentials: { user: userInfo }) => {
+  const update = async (credentials: { user: userInfo }) => {
+    const token = getLocalStorageResource('token');
     return await fetch(`${API_URL}/users/`, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: token,
       },
       body: JSON.stringify(credentials),
     });
@@ -51,28 +56,51 @@ const RegistrationForm = () => {
     };
 
     setLoading(true);
-    const response = await register(credentials);
-    const responseDetails = await response.json();
+    const response = await update(credentials);
     setLoading(false);
 
     if (response.ok) {
+      const updatedInfo = {
+        first_name: values.first_name || getLocalStorageResource('first_name'),
+        last_name: values.last_name || getLocalStorageResource('last_name'),
+        email: values.email || getLocalStorageResource('email'),
+      };
+      setLocalStorageResources(updatedInfo);
+
       setAlerts([
         {
           type: 'success',
           message: 'Success',
-          description: 'Account has been created! Redirecting to the login page',
+          description: 'Account details has been updated!',
         },
       ]);
-      setTimeout(() => {
-        navigate(routes.logIn);
-      }, 2000);
     } else {
-      setAlerts(
-        Object.entries(responseDetails.errors).map(([key, message]) => ({
-          type: 'info',
-          message: `${key} ${message}`,
-        }))
-      );
+      const responseDetails = await response.json();
+      if (response.status === 422) {
+        setAlerts(
+          Object.entries(responseDetails.errors).map(([key, message]) => ({
+            type: 'error',
+            message: 'Error',
+            description: `${key} ${message}`.replaceAll('_', ' '),
+          }))
+        );
+      } else {
+        setAlerts([
+          {
+            type: 'error',
+            message: 'Error',
+            description: `${responseDetails.error}`,
+          },
+        ]);
+        //Token is either expired or doesn't exist somehow
+        if (response.status === 401) {
+          setTimeout(() => {
+            setAccountType(userType.GUEST);
+            clearLocalStorage();
+            navigate(routes.logIn);
+          }, 2000);
+        }
+      }
     }
   };
 
@@ -90,28 +118,40 @@ const RegistrationForm = () => {
 
   const formItems: formItem[] = [
     {
-      label: 'Name',
+      label: 'First name',
       name: 'first_name',
       type: 'text',
-      rules: [{ required: true, message: 'Please input your firstname' }],
+      rules: [{ message: 'Please input your first name' }],
     },
     {
       label: 'Last name',
       name: 'last_name',
       type: 'text',
-      rules: [{ required: true, message: 'Please input your lastname' }],
+      rules: [{ message: 'Please input your last name' }],
     },
-    { label: 'Email', name: 'email', type: 'email', rules: [{ required: true, message: 'Please input your email' }] },
+    { label: 'Email', name: 'email', type: 'email', rules: [{ message: 'Please input your email' }] },
     {
-      label: 'Password',
+      label: 'Current password',
+      name: 'current_password',
+      type: 'password',
+      rules: [{ required: true, message: 'Please input your current password' }],
+    },
+    {
+      label: 'New password',
       name: 'password',
       type: 'password',
-      rules: [{ required: true, message: 'Please input your password' }],
+      rules: [{ message: 'Please input your new password' }],
     },
   ];
+
   const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
     <Form.Item key={idx} label={label} name={name} rules={rules}>
-      <Input type={type} placeholder={`Enter your ${label}`} password={name === 'password'} />
+      <Input
+        type={type}
+        placeholder={`Enter your ${label}`}
+        password={type === 'password'}
+        defaultValue={name && getLocalStorageResource(name.toString())}
+      />
     </Form.Item>
   ));
 
@@ -124,27 +164,13 @@ const RegistrationForm = () => {
       <Form
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 12 }}
+        autoComplete="off"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        autoComplete="off"
       >
         {formItemsJSX}
-        <Form.Item
-          label="Account type"
-          name="account_type"
-          wrapperCol={{ offset: 0, span: 12 }}
-          rules={[{ required: true, message: 'Please select your account type' }]}
-        >
-          <Select
-            placeholder="Select your account type"
-            options={[
-              { value: 'patient', label: 'patient' },
-              { value: 'doctor', label: 'doctor' },
-            ]}
-          />
-        </Form.Item>
         <Row gutter={[0, 12]}>
-          <Col span={4} offset={6}>
+          <Col span={12} offset={6}>
             <Button shape="round" htmlType="submit" size="large" loading={loading}>
               Submit
             </Button>
@@ -158,4 +184,4 @@ const RegistrationForm = () => {
   );
 };
 
-export default RegistrationForm;
+export default ProfileEditForm;

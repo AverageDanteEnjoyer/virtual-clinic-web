@@ -32,7 +32,7 @@ const LoginForm = () => {
       message: string;
       description?: string;
     }[]
-  >();
+  >([]);
 
   const requestLogin = async (credentials: { user: loginInfo }) => {
     return await fetch(`${API_URL}/users/sign_in/`, {
@@ -58,6 +58,9 @@ const LoginForm = () => {
       setLocalStorageResources({
         token: response.headers.get('Authorization'),
         accountType: responseDetails.account_type,
+        first_name: responseDetails.first_name,
+        last_name: responseDetails.last_name,
+        email: responseDetails.email,
       });
       setAccountType(responseDetails.account_type);
 
@@ -107,7 +110,7 @@ const LoginForm = () => {
     </Form.Item>
   ));
 
-  const alertsJSX = alerts?.map(({ type, message, description }, idx) => (
+  const alertsJSX = alerts.map(({ type, message, description }, idx) => (
     <Alert key={idx} closable={false} type={type} message={message} description={description} />
   ));
   return (
