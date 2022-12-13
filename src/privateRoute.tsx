@@ -8,5 +8,5 @@ type ProtectedRouteProps = {
 };
 
 export const ProtectedRoutes = ({ accountType, children }: ProtectedRouteProps) => {
-  return accountType === 'guest' ? <Navigate to={routes.logIn} replace /> : children;
+  return accountType === 'guest' ? <Navigate to={routes.logIn} /> : children;
 };
