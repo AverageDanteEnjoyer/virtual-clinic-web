@@ -79,7 +79,7 @@ const ProfessionSelector = ({ fetchOptions, fetchInitialValues }: PaginatedSelec
       onSearch={(value: string) => {
         setPage(1);
         setSearchInput(value);
-        debounceFetch({ name: value, pageIndex: page, perPage: pageSize });
+        debounceFetch({ name: value, pageIndex: 1, perPage: pageSize });
       }}
       dropdownRender={(menu) => (
         <>
