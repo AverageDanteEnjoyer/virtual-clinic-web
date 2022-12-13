@@ -31,7 +31,7 @@ const ProfessionSelector = ({ fetchOptions, fetchInitialValues }: PaginatedSelec
   const [myProfessions, setMyProfessions] = useState<string[]>([]);
 
   const debounceFetch = useMemo(() => {
-    const loadOptions = ({ name = searchInput, perPage = pageSize, pageIndex = page }: searchParameters) => {
+    const loadOptions = ({ name, perPage, pageIndex }: searchParameters) => {
       fetchRef.current += 1;
       const fetchId = fetchRef.current;
 
@@ -44,14 +44,14 @@ const ProfessionSelector = ({ fetchOptions, fetchInitialValues }: PaginatedSelec
       });
     };
     return debounce(loadOptions, 800);
-  }, []);
+  }, [fetchOptions]);
 
   useEffect(() => {
     fetchInitialValues().then((responseDetails) => {
       setMyProfessions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
     });
-    debounceFetch({});
-  }, [debounceFetch]);
+    debounceFetch({ name: searchInput, pageIndex: page, perPage: pageSize });
+  }, [debounceFetch, fetchInitialValues]);
 
   const submitProfessions = () => {
     const token = getLocalStorageResource('token');
@@ -72,13 +72,14 @@ const ProfessionSelector = ({ fetchOptions, fetchInitialValues }: PaginatedSelec
       mode="multiple"
       value={myProfessions}
       filterOption={false}
+      searchValue={searchInput}
       onChange={(values: string[]) => {
         setMyProfessions(values);
       }}
       onSearch={(value: string) => {
         setPage(1);
         setSearchInput(value);
-        debounceFetch({ name: value });
+        debounceFetch({ name: value, pageIndex: page, perPage: pageSize });
       }}
       dropdownRender={(menu) => (
         <>
@@ -88,10 +89,10 @@ const ProfessionSelector = ({ fetchOptions, fetchInitialValues }: PaginatedSelec
             <Pagination
               current={page}
               total={totalPages}
-              onChange={(pageIndex, pageSize) => {
-                setPage(pageIndex);
-                setPageSize(pageSize);
-                debounceFetch({ pageIndex: pageIndex, perPage: pageSize });
+              onChange={(index, size) => {
+                setPage(index);
+                setPageSize(size);
+                debounceFetch({ name: searchInput, pageIndex: index, perPage: size });
               }}
             />
             <Button size="large" onClick={submitProfessions}>
