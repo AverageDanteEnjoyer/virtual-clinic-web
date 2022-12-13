@@ -2,44 +2,24 @@ import { Divider, Pagination, Select } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 
-import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
+import { getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 
 import CustomSelect from '../../Components/Select';
 import Button from '../../Components/Button';
 
-interface searchParameters {
+export interface searchParameters {
   name?: string;
   pageIndex?: number;
   perPage?: number;
 }
 
-const fetchOptions = async ({ name, perPage, pageIndex }: searchParameters) => {
-  const token = getLocalStorageResource('token');
-  if (!token) return;
-  return fetch(`${API_URL}/api/v1/professions/?name=${name}&per_page=${perPage}&page=${pageIndex}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token,
-    },
-  }).then((response) => response.json());
-};
+export interface PaginatedSelectProps {
+  fetchOptions: ({ name, perPage, pageIndex }: searchParameters) => Promise<any>;
+  fetchInitialValues: () => Promise<any>;
+}
 
-const fetchInitialValues = async () => {
-  const token = getLocalStorageResource('token');
-  const { userID } = getDataFromToken();
-  if (!token) return;
-  return await fetch(`${API_URL}/api/v1/doctors/${userID}/professions/`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token,
-    },
-  }).then((response) => response.json());
-};
-
-const ProfessionSelector = () => {
+const ProfessionSelector = ({ fetchOptions, fetchInitialValues }: PaginatedSelectProps) => {
   const fetchRef = useRef(0);
 
   const [page, setPage] = useState<number>(1);
