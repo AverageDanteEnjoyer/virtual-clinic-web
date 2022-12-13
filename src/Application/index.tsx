@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import routes from '../routes';
 import { clearLocalStorage, getDataFromToken, getLocalStorageResource } from '../localStorageAPI';
 import { SessionInfoContext } from '../SessionInfoContext';
+import { ProtectedRoutes } from '../privateRoute';
 
 import ComponentsPage from '../Pages/ComponentsPage';
 import RegistrationPage from '../Pages/RegistrationPage';
@@ -13,7 +14,7 @@ import AuthVerify from '../AuthVerify';
 import ProfileEditPage from '../Pages/ProfileEditPage';
 
 const Application = () => {
-  const { setAccountType } = useContext(SessionInfoContext);
+  const { accountType, setAccountType } = useContext(SessionInfoContext);
 
   useEffect(() => {
     const { tokenExp } = getDataFromToken();
@@ -25,7 +26,6 @@ const Application = () => {
       setAccountType(getLocalStorageResource('accountType'));
     }
   }, []);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -33,7 +33,14 @@ const Application = () => {
         <Route path={routes.components} element={<ComponentsPage />} />
         <Route path={routes.logIn} element={<LoginPage />} />
         <Route path={routes.register} element={<RegistrationPage />} />
-        <Route path={routes.editProfile} element={<ProfileEditPage />} />
+        <Route
+          path={routes.editProfile}
+          element={
+            <ProtectedRoutes accountType={accountType} redirectPage={<LoginPage />}>
+              <ProfileEditPage />
+            </ProtectedRoutes>
+          }
+        />
       </Routes>
       <AuthVerify />
     </BrowserRouter>
