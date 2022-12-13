@@ -8,6 +8,12 @@ import { API_URL } from '../../api';
 import CustomSelect from '../../Components/Select';
 import Button from '../../Components/Button';
 
+interface searchParameters {
+  name?: string;
+  pageIndex?: number;
+  perPage?: number;
+}
+
 const ProfessionSelector = () => {
   const fetchRef = useRef(0);
   const [page, setPage] = useState<number>(1);
@@ -15,7 +21,7 @@ const ProfessionSelector = () => {
   const [pageSize, setPageSize] = useState<number>(10);
   const [searchInput, setSearchInput] = useState<string>('');
 
-  const [allProfessions, setAllProfessions] = useState<string[]>([]);
+  const [options, setOptions] = useState<string[]>([]);
   const [myProfessions, setMyProfessions] = useState<string[]>([]);
 
   useEffect(() => {
@@ -34,16 +40,17 @@ const ProfessionSelector = () => {
       setMyProfessions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
     };
     loadProfessions();
+    debounceFetch({});
   }, []);
 
   const debounceFetch = useMemo(() => {
-    const fetchOptions = () => {
+    const fetchOptions = ({ name = searchInput, perPage = pageSize, pageIndex = page }: searchParameters) => {
       fetchRef.current += 1;
       const fetchId = fetchRef.current;
 
       const token = getLocalStorageResource('token');
       if (!token) return;
-      fetch(`${API_URL}/api/v1/professions/?name=${searchInput}&per_page=${pageSize}&page=${page}`, {
+      fetch(`${API_URL}/api/v1/professions/?name=${name}&per_page=${perPage}&page=${pageIndex}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -56,14 +63,10 @@ const ProfessionSelector = () => {
             return;
           }
           setTotalPages(responseDetails.total);
-          setAllProfessions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
+          setOptions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
         });
     };
     return debounce(fetchOptions, 800);
-  }, [page, pageSize, searchInput]);
-
-  useMemo(() => {
-    debounceFetch();
   }, [page, pageSize, searchInput]);
 
   const submitProfessions = () => {
@@ -91,6 +94,7 @@ const ProfessionSelector = () => {
       onSearch={(value: string) => {
         setPage(1);
         setSearchInput(value);
+        debounceFetch({ name: value });
       }}
       dropdownRender={(menu) => (
         <>
@@ -103,6 +107,7 @@ const ProfessionSelector = () => {
               onChange={(pageIndex, pageSize) => {
                 setPage(pageIndex);
                 setPageSize(pageSize);
+                debounceFetch({ pageIndex: pageIndex, perPage: pageSize });
               }}
             />
             <Button size="large" onClick={submitProfessions}>
@@ -113,8 +118,8 @@ const ProfessionSelector = () => {
       )}
       showArrow
     >
-      {allProfessions &&
-        allProfessions.map((item, idx) => {
+      {options &&
+        options.map((item, idx) => {
           return (
             <Select.Option key={(page - 1) * pageSize + idx} value={item}>
               {item}
