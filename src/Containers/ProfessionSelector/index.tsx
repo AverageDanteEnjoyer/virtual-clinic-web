@@ -53,7 +53,6 @@ const ProfessionSelector = () => {
         .then((response) => response.json())
         .then((responseDetails) => {
           if (fetchId !== fetchRef.current) {
-            // for fetch callback order
             return;
           }
           setTotalPages(responseDetails.total);
