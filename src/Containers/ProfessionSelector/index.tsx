@@ -26,6 +26,19 @@ const fetchOptions = async ({ name, perPage, pageIndex }: searchParameters) => {
   }).then((response) => response.json());
 };
 
+const fetchInitialValues = async () => {
+  const token = getLocalStorageResource('token');
+  const { userID } = getDataFromToken();
+  if (!token) return;
+  return await fetch(`${API_URL}/api/v1/doctors/${userID}/professions/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  }).then((response) => response.json());
+};
+
 const ProfessionSelector = () => {
   const fetchRef = useRef(0);
 
@@ -54,21 +67,9 @@ const ProfessionSelector = () => {
   }, []);
 
   useEffect(() => {
-    const loadProfessions = async () => {
-      const token = getLocalStorageResource('token');
-      const { userID } = getDataFromToken();
-      if (!token) return;
-      const response = await fetch(`${API_URL}/api/v1/doctors/${userID}/professions/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
-        },
-      });
-      const responseDetails = await response.json();
+    fetchInitialValues().then((responseDetails) => {
       setMyProfessions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
-    };
-    loadProfessions();
+    });
     debounceFetch({});
   }, [debounceFetch]);
 
