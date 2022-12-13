@@ -14,8 +14,21 @@ interface searchParameters {
   perPage?: number;
 }
 
+const fetchOptions = async ({ name, perPage, pageIndex }: searchParameters) => {
+  const token = getLocalStorageResource('token');
+  if (!token) return;
+  return fetch(`${API_URL}/api/v1/professions/?name=${name}&per_page=${perPage}&page=${pageIndex}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  }).then((response) => response.json());
+};
+
 const ProfessionSelector = () => {
   const fetchRef = useRef(0);
+
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -44,30 +57,20 @@ const ProfessionSelector = () => {
   }, []);
 
   const debounceFetch = useMemo(() => {
-    const fetchOptions = ({ name = searchInput, perPage = pageSize, pageIndex = page }: searchParameters) => {
+    const loadOptions = ({ name = searchInput, perPage = pageSize, pageIndex = page }: searchParameters) => {
       fetchRef.current += 1;
       const fetchId = fetchRef.current;
 
-      const token = getLocalStorageResource('token');
-      if (!token) return;
-      fetch(`${API_URL}/api/v1/professions/?name=${name}&per_page=${perPage}&page=${pageIndex}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
-        },
-      })
-        .then((response) => response.json())
-        .then((responseDetails) => {
-          if (fetchId !== fetchRef.current) {
-            return;
-          }
-          setTotalPages(responseDetails.total);
-          setOptions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
-        });
+      fetchOptions({ name: name, perPage: perPage, pageIndex: pageIndex }).then((responseDetails) => {
+        if (fetchId !== fetchRef.current) {
+          return;
+        }
+        responseDetails.total && setTotalPages(responseDetails.total);
+        setOptions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
+      });
     };
-    return debounce(fetchOptions, 800);
-  }, [page, pageSize, searchInput]);
+    return debounce(loadOptions, 800);
+  }, []);
 
   const submitProfessions = () => {
     const token = getLocalStorageResource('token');
