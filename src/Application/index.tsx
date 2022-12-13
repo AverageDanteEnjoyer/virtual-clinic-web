@@ -11,6 +11,7 @@ import LoginPage from '../Pages/LoginPage';
 import HomePage from '../Pages/HomePage';
 import AuthVerify from '../AuthVerify';
 import DoctorEditProfilePage from '../Pages/DoctorEditProfilePage';
+import ProfileEditPage from '../Pages/ProfileEditPage';
 
 const Application = () => {
   const { setAccountType } = useContext(SessionInfoContext);
@@ -34,7 +35,7 @@ const Application = () => {
         <Route path={routes.logIn} element={<LoginPage />} />
         <Route path={routes.register} element={<RegistrationPage />} />
         <Route path={`/doctor${routes.editProfile}`} element={<DoctorEditProfilePage />} />
-        <Route path={`/patient${routes.editProfile}`} element={<HomePage />} />
+        <Route path={`/patient${routes.editProfile}`} element={<ProfileEditPage />} />
       </Routes>
       <AuthVerify />
     </BrowserRouter>
