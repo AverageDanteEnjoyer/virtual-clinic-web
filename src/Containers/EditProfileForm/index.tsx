@@ -6,11 +6,13 @@ import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
 import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
+import PaginatedSelect from '../PaginatedSelect';
 
 import routes from '../../routes';
 import { API_URL } from '../../api';
 import { clearLocalStorage, getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
 import { SessionInfoContext, userType } from '../../SessionInfoContext';
+import { fetchAllProfessions, fetchDoctorProfessions } from '../../dataFetchers';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -22,6 +24,7 @@ type userInfo = {
   email: string;
   current_password: string;
   password: string;
+  professions: string[];
 };
 
 const ProfileEditForm = () => {
@@ -179,6 +182,9 @@ const ProfileEditForm = () => {
             {alertsJSX}
           </Col>
         </Row>
+        <Form.Item label="Professions" name="professions">
+          <PaginatedSelect fetchOptions={fetchAllProfessions} fetchInitialValues={fetchDoctorProfessions} />
+        </Form.Item>
       </Form>
     </Spin>
   );
