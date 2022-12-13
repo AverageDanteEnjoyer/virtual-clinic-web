@@ -59,7 +59,7 @@ const ProfessionSelector = () => {
           setAllProfessions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
         });
     };
-    return debounce(fetchOptions, 1000);
+    return debounce(fetchOptions, 800);
   }, [page, pageSize, searchInput]);
 
   useMemo(() => {
