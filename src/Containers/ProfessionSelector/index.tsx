@@ -37,6 +37,22 @@ const ProfessionSelector = () => {
   const [options, setOptions] = useState<string[]>([]);
   const [myProfessions, setMyProfessions] = useState<string[]>([]);
 
+  const debounceFetch = useMemo(() => {
+    const loadOptions = ({ name = searchInput, perPage = pageSize, pageIndex = page }: searchParameters) => {
+      fetchRef.current += 1;
+      const fetchId = fetchRef.current;
+
+      fetchOptions({ name: name, perPage: perPage, pageIndex: pageIndex }).then((responseDetails) => {
+        if (fetchId !== fetchRef.current) {
+          return;
+        }
+        setTotalPages(responseDetails.total ? responseDetails.total : 1);
+        setOptions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
+      });
+    };
+    return debounce(loadOptions, 800);
+  }, []);
+
   useEffect(() => {
     const loadProfessions = async () => {
       const token = getLocalStorageResource('token');
@@ -54,23 +70,7 @@ const ProfessionSelector = () => {
     };
     loadProfessions();
     debounceFetch({});
-  }, []);
-
-  const debounceFetch = useMemo(() => {
-    const loadOptions = ({ name = searchInput, perPage = pageSize, pageIndex = page }: searchParameters) => {
-      fetchRef.current += 1;
-      const fetchId = fetchRef.current;
-
-      fetchOptions({ name: name, perPage: perPage, pageIndex: pageIndex }).then((responseDetails) => {
-        if (fetchId !== fetchRef.current) {
-          return;
-        }
-        responseDetails.total && setTotalPages(responseDetails.total);
-        setOptions(responseDetails.data.map((value: { key: number; name: string }) => value.name));
-      });
-    };
-    return debounce(loadOptions, 800);
-  }, []);
+  }, [debounceFetch]);
 
   const submitProfessions = () => {
     const token = getLocalStorageResource('token');
