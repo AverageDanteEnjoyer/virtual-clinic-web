@@ -61,8 +61,8 @@ const ProfileEditForm = () => {
 
     if (response.ok) {
       const updatedInfo = {
-        firstName: values.first_name || getLocalStorageResource('firstName'),
-        lastName: values.last_name || getLocalStorageResource('lastName'),
+        first_name: values.first_name || getLocalStorageResource('first_name'),
+        last_name: values.last_name || getLocalStorageResource('last_name'),
         email: values.email || getLocalStorageResource('email'),
       };
       setLocalStorageResources(updatedInfo);
@@ -119,20 +119,20 @@ const ProfileEditForm = () => {
   const formItems: formItem[] = [
     {
       label: 'First name',
-      name: 'firstName',
+      name: 'first_name',
       type: 'text',
       rules: [{ message: 'Please input your first name' }],
     },
     {
       label: 'Last name',
-      name: 'lastName',
+      name: 'last_name',
       type: 'text',
       rules: [{ message: 'Please input your last name' }],
     },
     { label: 'Email', name: 'email', type: 'email', rules: [{ message: 'Please input your email' }] },
     {
       label: 'Current password',
-      name: 'currentPassword',
+      name: 'current_password',
       type: 'password',
       rules: [{ required: true, message: 'Please input your current password' }],
     },
