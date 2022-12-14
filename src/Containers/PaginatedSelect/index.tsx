@@ -43,7 +43,7 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues }: PaginatedSelectPr
         setOptions(optionData.options);
       });
     };
-    return debounce(loadOptions, 800);
+    return debounce(loadOptions, 600);
   }, [fetchOptions]);
 
   useEffect(() => {
@@ -71,8 +71,8 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues }: PaginatedSelectPr
     <CustomSelect
       mode="multiple"
       value={myProfessions}
-      filterOption={false}
       searchValue={searchInput}
+      filterOption={false}
       onChange={(values: string[]) => {
         setMyProfessions(values);
       }}
