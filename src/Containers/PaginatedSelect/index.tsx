@@ -17,9 +17,11 @@ export interface searchParameters {
 export interface PaginatedSelectProps {
   fetchOptions: ({ name, perPage, pageIndex }: searchParameters) => Promise<any>;
   fetchInitialValues: () => Promise<any>;
+  values: string[];
+  setValues: (values: string[]) => void;
 }
 
-const PaginatedSelect = ({ fetchOptions, fetchInitialValues }: PaginatedSelectProps) => {
+const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }: PaginatedSelectProps) => {
   const fetchRef = useRef(0);
 
   const [page, setPage] = useState<number>(1);
@@ -28,7 +30,6 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues }: PaginatedSelectPr
   const [searchInput, setSearchInput] = useState<string>('');
 
   const [options, setOptions] = useState<string[]>([]);
-  const [myProfessions, setMyProfessions] = useState<string[]>([]);
 
   const debounceFetch = useMemo(() => {
     const loadOptions = ({ name, perPage, pageIndex }: searchParameters) => {
@@ -48,7 +49,7 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues }: PaginatedSelectPr
 
   useEffect(() => {
     fetchInitialValues().then((initialValues) => {
-      setMyProfessions(initialValues);
+      setValues(initialValues);
     });
     debounceFetch({ name: searchInput, pageIndex: page, perPage: pageSize });
   }, [debounceFetch, fetchInitialValues]);
@@ -63,18 +64,18 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues }: PaginatedSelectPr
         'Content-Type': 'application/json',
         Authorization: token,
       },
-      body: JSON.stringify({ user: { professions: myProfessions, current_password: '11aasasasaaaaa' } }), //type your password manually here. It will be assembled with Edit_account soon
+      body: JSON.stringify({ user: { professions: values, current_password: '11aasasasaaaaa' } }), //type your password manually here. It will be assembled with Edit_account soon
     });
   };
 
   return (
     <CustomSelect
       mode="multiple"
-      value={myProfessions}
+      value={values}
       searchValue={searchInput}
       filterOption={false}
       onChange={(values: string[]) => {
-        setMyProfessions(values);
+        setValues(values);
       }}
       onSearch={(value: string) => {
         setPage(1);

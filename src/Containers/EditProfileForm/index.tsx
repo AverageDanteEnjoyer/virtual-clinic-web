@@ -24,7 +24,6 @@ type userInfo = {
   email: string;
   current_password: string;
   password: string;
-  professions: string[];
 };
 
 const ProfileEditForm = () => {
@@ -32,6 +31,7 @@ const ProfileEditForm = () => {
 
   const navigate = useNavigate();
 
+  const [professions, setProfessions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<
     {
@@ -55,8 +55,9 @@ const ProfileEditForm = () => {
 
   const onFinish = async (values: userInfo) => {
     const credentials = {
-      user: values,
+      user: { ...values, professions: professions },
     };
+    console.log(credentials);
 
     setLoading(true);
     const response = await update(credentials);
@@ -172,6 +173,14 @@ const ProfileEditForm = () => {
         onFinishFailed={onFinishFailed}
       >
         {formItemsJSX}
+        <Form.Item label="Professions">
+          <PaginatedSelect
+            fetchOptions={fetchAllProfessions}
+            fetchInitialValues={fetchDoctorProfessions}
+            values={professions}
+            setValues={setProfessions}
+          />
+        </Form.Item>
         <Row gutter={[0, 12]}>
           <Col span={12} offset={6}>
             <Button shape="round" htmlType="submit" size="large" loading={loading}>
@@ -182,9 +191,6 @@ const ProfileEditForm = () => {
             {alertsJSX}
           </Col>
         </Row>
-        <Form.Item label="Professions" name="professions">
-          <PaginatedSelect fetchOptions={fetchAllProfessions} fetchInitialValues={fetchDoctorProfessions} />
-        </Form.Item>
       </Form>
     </Spin>
   );
