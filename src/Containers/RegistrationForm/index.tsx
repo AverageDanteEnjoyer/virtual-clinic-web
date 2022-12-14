@@ -52,7 +52,7 @@ const RegistrationForm = () => {
 
     setLoading(true);
     const response = await register(credentials);
-    const responseDetails = await response.json();
+    const responseBody = await response.json();
     setLoading(false);
 
     if (response.ok) {
@@ -68,7 +68,7 @@ const RegistrationForm = () => {
       }, 2000);
     } else {
       setAlerts(
-        Object.entries(responseDetails.errors).map(([key, message]) => ({
+        Object.entries(responseBody.errors).map(([key, message]) => ({
           type: 'info',
           message: `${key} ${message}`,
         }))

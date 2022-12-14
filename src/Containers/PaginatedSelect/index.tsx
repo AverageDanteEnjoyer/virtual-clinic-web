@@ -5,14 +5,18 @@ import { debounce } from 'lodash';
 import CustomSelect from '../../Components/Select';
 
 export interface searchParameters {
-  name?: string;
-  pageIndex?: number;
-  perPage?: number;
+  name: string;
+  pageIndex: number;
+  perPage: number;
 }
 
 export interface PaginatedSelectProps {
-  fetchOptions: ({ name, perPage, pageIndex }: searchParameters) => Promise<any>;
-  fetchInitialValues: () => Promise<any>;
+  fetchOptions: ({
+    name,
+    perPage,
+    pageIndex,
+  }: searchParameters) => Promise<{ total: number; options: string[] } | undefined>;
+  fetchInitialValues: () => Promise<string[]>;
   values: string[];
   setValues: (values: string[]) => void;
 }
@@ -34,6 +38,9 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
 
       fetchOptions({ name: name, perPage: perPage, pageIndex: pageIndex }).then((optionData) => {
         if (fetchId !== fetchRef.current) {
+          return;
+        }
+        if (!optionData) {
           return;
         }
         setTotalPages(optionData.total ? optionData.total : 1);

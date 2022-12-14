@@ -51,18 +51,18 @@ const LoginForm = () => {
 
     setLoading(true);
     const response = await requestLogin(credentials);
-    const responseDetails = await response.json();
+    const responseBody = await response.json();
     setLoading(false);
 
     if (response.ok) {
       setLocalStorageResources({
         token: response.headers.get('Authorization'),
-        accountType: responseDetails.account_type,
-        first_name: responseDetails.first_name,
-        last_name: responseDetails.last_name,
-        email: responseDetails.email,
+        accountType: responseBody.account_type,
+        first_name: responseBody.first_name,
+        last_name: responseBody.last_name,
+        email: responseBody.email,
       });
-      setAccountType(responseDetails.account_type);
+      setAccountType(responseBody.account_type);
 
       setAlerts([
         {
@@ -77,7 +77,7 @@ const LoginForm = () => {
       setAlerts([
         {
           type: 'info',
-          message: responseDetails.error,
+          message: responseBody.error,
         },
       ]);
     }

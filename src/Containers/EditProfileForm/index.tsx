@@ -78,10 +78,10 @@ const ProfileEditForm = () => {
         },
       ]);
     } else {
-      const responseDetails = await response.json();
+      const responseBody = await response.json();
       if (response.status === 422) {
         setAlerts(
-          Object.entries(responseDetails.errors).map(([key, message]) => ({
+          Object.entries(responseBody.errors).map(([key, message]) => ({
             type: 'error',
             message: 'Error',
             description: `${key} ${message}`.replaceAll('_', ' '),
@@ -92,7 +92,7 @@ const ProfileEditForm = () => {
           {
             type: 'error',
             message: 'Error',
-            description: `${responseDetails.error}`,
+            description: `${responseBody.error}`,
           },
         ]);
         //Token is either expired or doesn't exist somehow
