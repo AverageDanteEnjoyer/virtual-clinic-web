@@ -57,7 +57,6 @@ const ProfileEditForm = () => {
     const credentials = {
       user: { ...values, professions: professions },
     };
-    console.log(credentials);
 
     setLoading(true);
     const response = await update(credentials);

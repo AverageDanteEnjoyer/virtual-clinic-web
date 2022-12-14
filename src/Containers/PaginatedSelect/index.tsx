@@ -2,11 +2,7 @@ import { Divider, Pagination, Select } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 
-import { getLocalStorageResource } from '../../localStorageAPI';
-import { API_URL } from '../../api';
-
 import CustomSelect from '../../Components/Select';
-import Button from '../../Components/Button';
 
 export interface searchParameters {
   name?: string;
@@ -54,20 +50,6 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
     debounceFetch({ name: searchInput, pageIndex: page, perPage: pageSize });
   }, [debounceFetch, fetchInitialValues]);
 
-  const submitProfessions = () => {
-    const token = getLocalStorageResource('token');
-    if (!token) return;
-
-    fetch(`${API_URL}/users/`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      body: JSON.stringify({ user: { professions: values, current_password: '11aasasasaaaaa' } }), //type your password manually here. It will be assembled with Edit_account soon
-    });
-  };
-
   return (
     <CustomSelect
       mode="multiple"
@@ -86,7 +68,7 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
         <>
           {menu}
           <Divider style={{ margin: '4px 0' }} />
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '22%', margin: '0 3%' }}>
+          <div style={{ textAlign: 'center' }}>
             <Pagination
               current={page}
               total={totalPages}
@@ -96,9 +78,6 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
                 debounceFetch({ name: searchInput, pageIndex: index, perPage: size });
               }}
             />
-            <Button size="large" onClick={submitProfessions}>
-              Submit changes
-            </Button>
           </div>
         </>
       )}
