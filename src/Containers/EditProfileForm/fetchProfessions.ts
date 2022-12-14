@@ -1,6 +1,6 @@
-import { searchParameters } from './Containers/PaginatedSelect';
-import { getDataFromToken, getLocalStorageResource } from './localStorageAPI';
-import { API_URL } from './api';
+import { searchParameters } from '../PaginatedSelect';
+import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
+import { API_URL } from '../../api';
 
 export const fetchAllProfessions = async ({ name, perPage, pageIndex }: searchParameters) => {
   const token = getLocalStorageResource('token');
