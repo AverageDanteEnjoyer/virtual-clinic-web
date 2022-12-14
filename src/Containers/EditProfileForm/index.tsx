@@ -27,7 +27,7 @@ type userInfo = {
 };
 
 const ProfileEditForm = () => {
-  const { setAccountType } = useContext(SessionInfoContext);
+  const { setAccountType, accountType } = useContext(SessionInfoContext);
 
   const navigate = useNavigate();
 
@@ -64,9 +64,9 @@ const ProfileEditForm = () => {
 
     if (response.ok) {
       const updatedInfo = {
-        first_name: values.first_name || getLocalStorageResource('first_name'),
-        last_name: values.last_name || getLocalStorageResource('last_name'),
-        email: values.email || getLocalStorageResource('email'),
+        first_name: values.first_name,
+        last_name: values.last_name,
+        email: values.email,
       };
       setLocalStorageResources(updatedInfo);
 
@@ -148,12 +148,18 @@ const ProfileEditForm = () => {
   ];
 
   const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
-    <Form.Item key={idx} label={label} name={name} rules={rules}>
+    <Form.Item
+      key={idx}
+      label={label}
+      name={name}
+      rules={rules}
+      initialValue={name && getLocalStorageResource(name as string)}
+    >
       <Input
         type={type}
         placeholder={`Enter your ${label}`}
         password={type === 'password'}
-        defaultValue={name && getLocalStorageResource(name.toString())}
+        defaultValue={name && getLocalStorageResource(name as string)}
       />
     </Form.Item>
   ));
@@ -172,14 +178,16 @@ const ProfileEditForm = () => {
         onFinishFailed={onFinishFailed}
       >
         {formItemsJSX}
-        <Form.Item label="Professions">
-          <PaginatedSelect
-            fetchOptions={fetchAllProfessions}
-            fetchInitialValues={fetchDoctorProfessions}
-            values={professions}
-            setValues={setProfessions}
-          />
-        </Form.Item>
+        {accountType === userType.DOCTOR && (
+          <Form.Item label="Professions">
+            <PaginatedSelect
+              fetchOptions={fetchAllProfessions}
+              fetchInitialValues={fetchDoctorProfessions}
+              values={professions}
+              setValues={setProfessions}
+            />
+          </Form.Item>
+        )}
         <Row gutter={[0, 12]}>
           <Col span={12} offset={6}>
             <Button shape="round" htmlType="submit" size="large" loading={loading}>
