@@ -56,13 +56,13 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
       value={values}
       searchValue={searchInput}
       filterOption={false}
-      onChange={(values: string[]) => {
-        setValues(values);
+      onChange={(newValues: string[]) => {
+        setValues(newValues);
       }}
-      onSearch={(value: string) => {
+      onSearch={(searchValue: string) => {
         setPage(1);
-        setSearchInput(value);
-        debounceFetch({ name: value, pageIndex: 1, perPage: pageSize });
+        setSearchInput(searchValue);
+        debounceFetch({ name: searchValue, pageIndex: 1, perPage: pageSize });
       }}
       dropdownRender={(menu) => (
         <>
@@ -72,10 +72,10 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
             <Pagination
               current={page}
               total={totalPages}
-              onChange={(index, size) => {
-                setPage(index);
-                setPageSize(size);
-                debounceFetch({ name: searchInput, pageIndex: index, perPage: size });
+              onChange={(newPage, newSize) => {
+                setPage(newPage);
+                setPageSize(newSize);
+                debounceFetch({ name: searchInput, pageIndex: newPage, perPage: newSize });
               }}
             />
           </div>
