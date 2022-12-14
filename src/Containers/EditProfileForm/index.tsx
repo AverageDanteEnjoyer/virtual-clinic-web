@@ -12,7 +12,7 @@ import routes from '../../routes';
 import { API_URL } from '../../api';
 import { clearLocalStorage, getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
 import { SessionInfoContext, userType } from '../../SessionInfoContext';
-import { fetchAllProfessions, fetchDoctorProfessions } from '../../dataFetchers';
+import { fetchAllProfessions, fetchDoctorProfessions } from '../../fetchProfessions';
 
 export interface formItem extends FormItemProps {
   type: string;

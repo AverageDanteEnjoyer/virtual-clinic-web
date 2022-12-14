@@ -5,6 +5,7 @@ import { API_URL } from './api';
 export const fetchAllProfessions = async ({ name, perPage, pageIndex }: searchParameters) => {
   const token = getLocalStorageResource('token');
   if (!token) return;
+
   return fetch(`${API_URL}/api/v1/professions/?name=${name}&per_page=${perPage}&page=${pageIndex}`, {
     method: 'GET',
     headers: {
@@ -12,7 +13,9 @@ export const fetchAllProfessions = async ({ name, perPage, pageIndex }: searchPa
       Authorization: token,
     },
   })
-    .then((response) => response.json())
+    .then((response) => {
+      return response.ok ? response.json() : undefined;
+    })
     .then((responseBody) => ({
       options: responseBody.data.map((value: { key: number; name: string }) => value.name),
       total: responseBody.total,
@@ -21,8 +24,9 @@ export const fetchAllProfessions = async ({ name, perPage, pageIndex }: searchPa
 
 export const fetchDoctorProfessions = async () => {
   const token = getLocalStorageResource('token');
-  const { userID } = getDataFromToken();
   if (!token) return;
+  const { userID } = getDataFromToken();
+
   return await fetch(`${API_URL}/api/v1/doctors/${userID}/professions/`, {
     method: 'GET',
     headers: {
@@ -30,6 +34,8 @@ export const fetchDoctorProfessions = async () => {
       Authorization: token,
     },
   })
-    .then((response) => response.json())
+    .then((response) => {
+      return response.ok ? response.json() : undefined;
+    })
     .then((responseBody) => responseBody.data.map((value: { key: number; name: string }) => value.name));
 };
