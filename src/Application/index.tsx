@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import routes from '../routes';
 import { clearLocalStorage, getDataFromToken, getLocalStorageResource } from '../localStorageAPI';
 import { SessionInfoContext } from '../SessionInfoContext';
-import { ProtectedRoutes } from '../privateRoute';
+import { PrivateRoute } from '../privateRoute';
 
 import ComponentsPage from '../Pages/ComponentsPage';
 import RegistrationPage from '../Pages/RegistrationPage';
@@ -14,7 +14,7 @@ import AuthVerify from '../AuthVerify';
 import ProfileEditPage from '../Pages/ProfileEditPage';
 
 const Application = () => {
-  const { accountType, setAccountType } = useContext(SessionInfoContext);
+  const { setAccountType } = useContext(SessionInfoContext);
 
   useEffect(() => {
     const { tokenExp } = getDataFromToken();
@@ -32,13 +32,20 @@ const Application = () => {
         <Route path={routes.home} element={<HomePage />} />
         <Route path={routes.components} element={<ComponentsPage />} />
         <Route path={routes.logIn} element={<LoginPage />} />
-        <Route path={routes.register} element={<RegistrationPage />} />
+        <Route
+          path={routes.register}
+          element={
+            <PrivateRoute destinationPath={routes.register} redirectPath={routes.home}>
+              <RegistrationPage />
+            </PrivateRoute>
+          }
+        />
         <Route
           path={routes.editProfile}
           element={
-            <ProtectedRoutes accountType={accountType}>
+            <PrivateRoute destinationPath={routes.editProfile} redirectPath={routes.logIn}>
               <ProfileEditPage />
-            </ProtectedRoutes>
+            </PrivateRoute>
           }
         />
       </Routes>
