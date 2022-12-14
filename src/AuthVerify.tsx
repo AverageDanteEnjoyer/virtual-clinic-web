@@ -13,7 +13,11 @@ const AuthVerify = () => {
     if (tokenExp && tokenExp < new Date()) {
       clearLocalStorage();
       setAccountType(userType.GUEST);
-      navigate(routes.logIn);
+      navigate(routes.logIn, {
+        state: {
+          errors: [{ type: 'info', message: 'You have been logged out, please log in again!' }],
+        },
+      });
     }
   }, [navigate, setAccountType]);
 

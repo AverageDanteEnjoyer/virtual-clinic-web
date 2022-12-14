@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
@@ -23,6 +23,7 @@ type loginInfo = {
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [loading, setLoading] = useState(false);
   const { setAccountType } = useContext(SessionInfoContext);
@@ -32,7 +33,7 @@ const LoginForm = () => {
       message: string;
       description?: string;
     }[]
-  >([]);
+  >(location.state ? location.state.errors : []);
 
   const requestLogin = async (credentials: { user: loginInfo }) => {
     return await fetch(`${API_URL}/users/sign_in/`, {

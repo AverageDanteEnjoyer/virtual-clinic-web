@@ -100,7 +100,11 @@ const ProfileEditForm = () => {
           setTimeout(() => {
             setAccountType(userType.GUEST);
             clearLocalStorage();
-            navigate(routes.logIn);
+            navigate(routes.logIn, {
+              state: {
+                errors: [{ type: 'info', message: 'You have been logged out, please log in again!' }],
+              },
+            });
           }, 2000);
         }
       }
