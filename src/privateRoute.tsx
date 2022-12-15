@@ -1,27 +1,25 @@
 import { Navigate } from 'react-router-dom';
 
-import routes from './routes';
 import { getLocalStorageResource } from './localStorageAPI';
 import { userType } from './SessionInfoContext';
 
-type PrivateRouteProps = {
-  children: JSX.Element;
-  destinationPath: string;
-  redirectPath: string;
+export const equals = (expectedAccountType: string): boolean => {
+  const accountType = getLocalStorageResource('accountType') || userType.GUEST;
+  return accountType === expectedAccountType;
 };
 
-export const PrivateRoute = ({ children, destinationPath, redirectPath }: PrivateRouteProps) => {
+export const notEquals = (expectedAccountType: string): boolean => {
   const accountType = getLocalStorageResource('accountType') || userType.GUEST;
+  return accountType !== expectedAccountType;
+};
 
-  if (accountType === userType.GUEST) {
-    if (destinationPath === routes.editProfile) {
-      return <Navigate to={redirectPath} />;
-    }
-  } else {
-    if (destinationPath === routes.register || destinationPath === routes.logIn) {
-      return <Navigate to={redirectPath} />;
-    }
-  }
+type PrivateRouteProps = {
+  children: JSX.Element;
+  redirectPath: string;
+  condition: (expectedAccountType: string) => boolean;
+  expectedAccountType: string;
+};
 
-  return children;
+export const PrivateRoute = ({ children, redirectPath, condition, expectedAccountType }: PrivateRouteProps) => {
+  return condition(expectedAccountType) ? children : <Navigate to={redirectPath} />;
 };

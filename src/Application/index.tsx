@@ -4,8 +4,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import routes from '../routes';
 import { clearLocalStorage, getDataFromToken, getLocalStorageResource } from '../localStorageAPI';
 import { SessionInfoContext } from '../SessionInfoContext';
-import { PrivateRoute } from '../privateRoute';
+import { PrivateRoute, equals, notEquals } from '../privateRoute';
 
+import { userType } from '../SessionInfoContext';
 import ComponentsPage from '../Pages/ComponentsPage';
 import RegistrationPage from '../Pages/RegistrationPage';
 import LoginPage from '../Pages/LoginPage';
@@ -34,7 +35,7 @@ const Application = () => {
         <Route
           path={routes.logIn}
           element={
-            <PrivateRoute destinationPath={routes.logIn} redirectPath={routes.home}>
+            <PrivateRoute redirectPath={routes.home} condition={equals} expectedAccountType={userType.GUEST}>
               <LoginPage />
             </PrivateRoute>
           }
@@ -42,7 +43,7 @@ const Application = () => {
         <Route
           path={routes.register}
           element={
-            <PrivateRoute destinationPath={routes.register} redirectPath={routes.home}>
+            <PrivateRoute redirectPath={routes.home} condition={notEquals} expectedAccountType={userType.GUEST}>
               <RegistrationPage />
             </PrivateRoute>
           }
@@ -50,7 +51,7 @@ const Application = () => {
         <Route
           path={routes.editProfile}
           element={
-            <PrivateRoute destinationPath={routes.editProfile} redirectPath={routes.logIn}>
+            <PrivateRoute redirectPath={routes.logIn} condition={notEquals} expectedAccountType={userType.GUEST}>
               <ProfileEditPage />
             </PrivateRoute>
           }
