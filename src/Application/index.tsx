@@ -31,7 +31,14 @@ const Application = () => {
       <Routes>
         <Route path={routes.home} element={<HomePage />} />
         <Route path={routes.components} element={<ComponentsPage />} />
-        <Route path={routes.logIn} element={<LoginPage />} />
+        <Route
+          path={routes.logIn}
+          element={
+            <PrivateRoute destinationPath={routes.logIn} redirectPath={routes.home}>
+              <LoginPage />
+            </PrivateRoute>
+          }
+        />
         <Route
           path={routes.register}
           element={

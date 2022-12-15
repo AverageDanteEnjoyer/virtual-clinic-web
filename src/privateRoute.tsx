@@ -14,9 +14,11 @@ export const PrivateRoute = ({ children, destinationPath, redirectPath }: Privat
   const accountType = getLocalStorageResource('accountType') || userType.GUEST;
 
   if (accountType === userType.GUEST) {
-    return <Navigate to={redirectPath} />;
+    if (destinationPath === routes.editProfile) {
+      return <Navigate to={redirectPath} />;
+    }
   } else {
-    if (destinationPath === routes.register) {
+    if (destinationPath === routes.register || destinationPath === routes.logIn) {
       return <Navigate to={redirectPath} />;
     }
   }
