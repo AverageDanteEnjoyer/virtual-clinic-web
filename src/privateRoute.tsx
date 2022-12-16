@@ -16,10 +16,9 @@ export const notEquals = (expectedAccountType: string): boolean => {
 type PrivateRouteProps = {
   children: JSX.Element;
   redirectPath: string;
-  condition: (expectedAccountType: string) => boolean;
-  expectedAccountType: string;
+  condition: () => boolean;
 };
 
-export const PrivateRoute = ({ children, redirectPath, condition, expectedAccountType }: PrivateRouteProps) => {
-  return condition(expectedAccountType) ? children : <Navigate to={redirectPath} />;
+export const PrivateRoute = ({ children, redirectPath, condition }: PrivateRouteProps) => {
+  return condition() ? children : <Navigate to={redirectPath} />;
 };

@@ -35,7 +35,7 @@ const Application = () => {
         <Route
           path={routes.logIn}
           element={
-            <PrivateRoute redirectPath={routes.home} condition={equals} expectedAccountType={userType.GUEST}>
+            <PrivateRoute redirectPath={routes.home} condition={() => equals(userType.GUEST)}>
               <LoginPage />
             </PrivateRoute>
           }
@@ -43,7 +43,7 @@ const Application = () => {
         <Route
           path={routes.register}
           element={
-            <PrivateRoute redirectPath={routes.home} condition={notEquals} expectedAccountType={userType.GUEST}>
+            <PrivateRoute redirectPath={routes.home} condition={() => equals(userType.GUEST)}>
               <RegistrationPage />
             </PrivateRoute>
           }
@@ -51,7 +51,7 @@ const Application = () => {
         <Route
           path={routes.editProfile}
           element={
-            <PrivateRoute redirectPath={routes.logIn} condition={notEquals} expectedAccountType={userType.GUEST}>
+            <PrivateRoute redirectPath={routes.logIn} condition={() => notEquals(userType.GUEST)}>
               <ProfileEditPage />
             </PrivateRoute>
           }
