@@ -3,13 +3,11 @@ import { Navigate } from 'react-router-dom';
 import { getAccountType } from './localStorageAPI';
 
 export const equals = (expectedAccountType: string): boolean => {
-  const accountType = getAccountType();
-  return accountType === expectedAccountType;
+  return getAccountType() === expectedAccountType;
 };
 
 export const notEquals = (expectedAccountType: string): boolean => {
-  const accountType = getAccountType();
-  return accountType !== expectedAccountType;
+  return getAccountType() !== expectedAccountType;
 };
 
 type PrivateRouteProps = {
