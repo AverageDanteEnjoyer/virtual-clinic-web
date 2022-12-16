@@ -13,6 +13,7 @@ const Button = ({
   size,
   loading,
   onClick,
+  icon,
 }: CustomButtonProps) => (
   <StyledButton
     className={className}
@@ -23,6 +24,7 @@ const Button = ({
     size={size}
     loading={loading}
     onClick={onClick}
+    icon={icon}
   >
     {children}
   </StyledButton>

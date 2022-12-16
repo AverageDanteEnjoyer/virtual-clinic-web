@@ -26,6 +26,7 @@ const Select = ({
   children,
   value,
   searchValue,
+  notFoundContent,
 }: StyledSelectProps) => {
   const { Option, OptGroup } = StyledSelect;
   const groups = customOptions?.map(({ children, label }) => {
@@ -54,6 +55,7 @@ const Select = ({
       showArrow={showArrow}
       value={value}
       searchValue={searchValue}
+      notFoundContent={notFoundContent}
     >
       {groups}
       {children}

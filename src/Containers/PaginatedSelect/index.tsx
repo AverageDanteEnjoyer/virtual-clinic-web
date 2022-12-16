@@ -1,8 +1,11 @@
 import { Divider, Pagination, Select } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
+import Input from '../../Components/Input';
 
 import CustomSelect from '../../Components/Select';
+import Button from '../../Components/Button';
 
 export interface searchParameters {
   name: string;
@@ -28,6 +31,7 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
   const [totalPages, setTotalPages] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [searchInput, setSearchInput] = useState<string>('');
+  const [newProfessionInput, setNewProfessionInput] = useState<string>('');
 
   const [options, setOptions] = useState<string[]>([]);
 
@@ -71,6 +75,13 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
         setSearchInput(searchValue);
         debounceFetch({ name: searchValue, pageIndex: 1, perPage: pageSize });
       }}
+      notFoundContent={
+        <>
+          <Input onChange={(event) => setNewProfessionInput(event.target.value)}></Input>
+          <Divider style={{ margin: '4px 0' }} />
+          <Button icon={<PlusOutlined />}>Add item</Button>
+        </>
+      }
       dropdownRender={(menu) => (
         <>
           {menu}
