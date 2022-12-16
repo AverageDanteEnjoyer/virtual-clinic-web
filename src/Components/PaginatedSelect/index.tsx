@@ -65,59 +65,67 @@ const PaginatedSelect = ({
     debounceFetch({ name: searchInput, pageIndex: page, perPage: pageSize });
   }, [debounceFetch, fetchInitialValues]);
 
+  const onChange = (newValues: string[]) => {
+    setValues(newValues);
+  };
+
+  const onSearch = (searchValue: string) => {
+    setPage(1);
+    setSearchInput(searchValue);
+    setNewOptionValue(searchValue);
+    debounceFetch({ name: searchValue, pageIndex: 1, perPage: pageSize });
+  };
+
+  const notFoundContent = (
+    <>
+      <Input value={newOptionValue} onChange={(event) => setNewOptionValue(event.target.value)}></Input>
+      <Divider style={{ margin: '4px 0' }} />
+      <Button
+        icon={<PlusOutlined />}
+        onClick={() => {
+          createNewOption(newOptionValue).then((response) => {
+            response.success
+              ? message.success(
+                  `${newOptionValue} was successfully added to profession pool. Please press submit before leaving!`
+                )
+              : message.error(`${newOptionValue} ${response.message}`);
+            response.success && setValues([...values, newOptionValue]);
+          });
+        }}
+      >
+        Add item
+      </Button>
+    </>
+  );
+
+  const dropdownRender = (menu: React.ReactNode) => (
+    <>
+      {menu}
+      <Divider style={{ margin: '4px 0' }} />
+      <div style={{ textAlign: 'center' }}>
+        <Pagination
+          current={page}
+          total={totalPages}
+          onChange={(newPage, newSize) => {
+            setPage(newPage);
+            setPageSize(newSize);
+            debounceFetch({ name: searchInput, pageIndex: newPage, perPage: newSize });
+          }}
+        />
+      </div>
+    </>
+  );
+
   return (
     <CustomSelect
       mode="multiple"
       value={values}
       searchValue={searchInput}
       filterOption={false}
-      onChange={(newValues: string[]) => {
-        setValues(newValues);
-      }}
-      onSearch={(searchValue: string) => {
-        setPage(1);
-        setSearchInput(searchValue);
-        setNewOptionValue(searchValue);
-        debounceFetch({ name: searchValue, pageIndex: 1, perPage: pageSize });
-      }}
-      notFoundContent={
-        <>
-          <Input value={newOptionValue} onChange={(event) => setNewOptionValue(event.target.value)}></Input>
-          <Divider style={{ margin: '4px 0' }} />
-          <Button
-            icon={<PlusOutlined />}
-            onClick={() => {
-              createNewOption(newOptionValue).then((response) => {
-                response.success
-                  ? message.success(
-                      `${newOptionValue} was successfully added to profession pool. Please press submit before leaving!`
-                    )
-                  : message.error(`${newOptionValue} ${response.message}`);
-                response.success && setValues([...values, newOptionValue]);
-              });
-            }}
-          >
-            Add item
-          </Button>
-        </>
-      }
-      dropdownRender={(menu) => (
-        <>
-          {menu}
-          <Divider style={{ margin: '4px 0' }} />
-          <div style={{ textAlign: 'center' }}>
-            <Pagination
-              current={page}
-              total={totalPages}
-              onChange={(newPage, newSize) => {
-                setPage(newPage);
-                setPageSize(newSize);
-                debounceFetch({ name: searchInput, pageIndex: newPage, perPage: newSize });
-              }}
-            />
-          </div>
-        </>
-      )}
+      onChange={onChange}
+      onSearch={onSearch}
+      notFoundContent={notFoundContent}
+      dropdownRender={dropdownRender}
       showArrow
     >
       {options &&
