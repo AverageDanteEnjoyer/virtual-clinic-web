@@ -45,6 +45,7 @@ const Navbar = () => {
         ? [
             getItem(<Link to={routes.editProfile}>edit profile</Link>, '3'),
             getItem('Appointments', '4'),
+            getItem(<Link to={routes.doctorProcedures}>my procedures</Link>, '6'),
             getItem(
               <Link to={routes.home} onClick={logOut}>
                 log out
