@@ -6,6 +6,8 @@ import Input from '../../Components/Input';
 
 import CustomSelect from '../../Components/Select';
 import Button from '../../Components/Button';
+import { getLocalStorageResource } from '../../localStorageAPI';
+import { API_URL } from '../../api';
 
 export interface searchParameters {
   name: string;
@@ -20,6 +22,7 @@ export interface PaginatedSelectProps {
     pageIndex,
   }: searchParameters) => Promise<{ total: number; options: string[] } | undefined>;
   fetchInitialValues: () => Promise<string[]>;
+  // createNewOption: (option: string) => { ok: boolean };
   values: string[];
   setValues: (values: string[]) => void;
 }
@@ -61,6 +64,20 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
     debounceFetch({ name: searchInput, pageIndex: page, perPage: pageSize });
   }, [debounceFetch, fetchInitialValues]);
 
+  const createNewOption = async (option: string) => {
+    const token = getLocalStorageResource('token');
+    if (!token) return;
+
+    return fetch(`${API_URL}/api/v1/professions/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify({ profession: { name: option } }),
+    });
+  };
+
   return (
     <CustomSelect
       mode="multiple"
@@ -79,7 +96,15 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
         <>
           <Input onChange={(event) => setNewProfessionInput(event.target.value)}></Input>
           <Divider style={{ margin: '4px 0' }} />
-          <Button icon={<PlusOutlined />}>Add item</Button>
+          <Button
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setValues([...values, newProfessionInput]);
+              createNewOption(newProfessionInput);
+            }}
+          >
+            Add item
+          </Button>
         </>
       }
       dropdownRender={(menu) => (
