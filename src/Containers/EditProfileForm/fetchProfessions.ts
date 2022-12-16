@@ -1,4 +1,4 @@
-import { searchParameters } from '../PaginatedSelect';
+import { searchParameters } from '../../Components/PaginatedSelect';
 import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 

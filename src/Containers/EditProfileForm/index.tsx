@@ -6,7 +6,7 @@ import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
 import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
-import PaginatedSelect from '../PaginatedSelect';
+import PaginatedSelect from '../../Components/PaginatedSelect';
 
 import routes from '../../routes';
 import { API_URL } from '../../api';

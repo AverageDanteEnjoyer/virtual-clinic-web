@@ -2,10 +2,10 @@ import { Divider, message, Pagination, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
-import Input from '../../Components/Input';
+import Input from '../Input';
 
-import CustomSelect from '../../Components/Select';
-import Button from '../../Components/Button';
+import CustomSelect from '../Select';
+import Button from '../Button';
 
 export interface searchParameters {
   name: string;
@@ -95,7 +95,7 @@ const PaginatedSelect = ({
                   ? message.success(
                       `${newOptionValue} was successfully added to profession pool. Please press submit before leaving!`
                     )
-                  : message.error(`${newOptionValue} response.message`);
+                  : message.error(`${newOptionValue} ${response.message}`);
                 response.success && setValues([...values, newOptionValue]);
               });
             }}
