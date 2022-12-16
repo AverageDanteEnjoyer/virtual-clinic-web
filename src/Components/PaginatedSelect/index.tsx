@@ -3,9 +3,9 @@ import { PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 
-import Input from '../Input';
 import CustomSelect from '../Select';
 import Button from '../Button';
+import { StyledTypography } from '../Typography/styles';
 
 export interface searchParameters {
   name: string;
@@ -38,7 +38,6 @@ const PaginatedSelect = ({
   const [totalPages, setTotalPages] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [searchInput, setSearchInput] = useState<string>('');
-  const [newOptionValue, setNewOptionValue] = useState<string>('');
 
   const [options, setOptions] = useState<string[]>([]);
 
@@ -72,30 +71,31 @@ const PaginatedSelect = ({
   const onSearch = (searchValue: string) => {
     setPage(1);
     setSearchInput(searchValue);
-    setNewOptionValue(searchValue);
     debounceFetch({ name: searchValue, pageIndex: 1, perPage: pageSize });
   };
 
   const notFoundContent = (
-    <>
-      <Input value={newOptionValue} onChange={(event) => setNewOptionValue(event.target.value)}></Input>
-      <Divider style={{ margin: '4px 0' }} />
+    <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <StyledTypography>
+        '{searchInput}' not found <br /> Would you like to add it?
+      </StyledTypography>
       <Button
+        size="large"
         icon={<PlusOutlined />}
         onClick={() => {
-          createNewOption(newOptionValue).then((response) => {
+          createNewOption(searchInput).then((response) => {
             response.success
               ? message.success(
-                  `${newOptionValue} was successfully added to profession pool. Please press submit before leaving!`
+                  `${searchInput} was successfully added to profession pool. Please press submit before leaving!`
                 )
-              : message.error(`${newOptionValue} ${response.message}`);
-            response.success && setValues([...values, newOptionValue]);
+              : message.error(`${searchInput} ${response.message}`);
+            response.success && setValues([...values, searchInput]);
           });
         }}
       >
         Add item
       </Button>
-    </>
+    </div>
   );
 
   const dropdownRender = (menu: React.ReactNode) => (
