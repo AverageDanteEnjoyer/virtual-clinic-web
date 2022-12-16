@@ -128,14 +128,13 @@ const PaginatedSelect = ({
       dropdownRender={dropdownRender}
       showArrow
     >
-      {options &&
-        options.map((item, idx) => {
-          return (
-            <Select.Option key={(page - 1) * pageSize + idx} value={item}>
-              {item}
-            </Select.Option>
-          );
-        })}
+      {options.map((item, idx) => {
+        return (
+          <Select.Option key={(page - 1) * pageSize + idx} value={item}>
+            {item}
+          </Select.Option>
+        );
+      })}
     </CustomSelect>
   );
 };
