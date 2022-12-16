@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import routes from '../routes';
-import { clearLocalStorage, getDataFromToken, getLocalStorageResource } from '../localStorageAPI';
+import { clearLocalStorage, getAccountType, getDataFromToken } from '../localStorageAPI';
 import { SessionInfoContext } from '../SessionInfoContext';
 import { PrivateRoute, equals, notEquals } from '../privateRoute';
 
@@ -24,7 +24,7 @@ const Application = () => {
     if (tokenExp < new Date()) {
       clearLocalStorage();
     } else {
-      setAccountType(getLocalStorageResource('accountType'));
+      setAccountType(getAccountType());
     }
   }, []);
   return (

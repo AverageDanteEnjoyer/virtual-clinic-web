@@ -1,15 +1,14 @@
 import { Navigate } from 'react-router-dom';
 
-import { getLocalStorageResource } from './localStorageAPI';
-import { userType } from './SessionInfoContext';
+import { getAccountType } from './localStorageAPI';
 
 export const equals = (expectedAccountType: string): boolean => {
-  const accountType = getLocalStorageResource('accountType') || userType.GUEST;
+  const accountType = getAccountType();
   return accountType === expectedAccountType;
 };
 
 export const notEquals = (expectedAccountType: string): boolean => {
-  const accountType = getLocalStorageResource('accountType') || userType.GUEST;
+  const accountType = getAccountType();
   return accountType !== expectedAccountType;
 };
 
