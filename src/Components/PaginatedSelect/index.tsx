@@ -48,10 +48,7 @@ const PaginatedSelect = ({
       const fetchId = fetchRef.current;
 
       fetchOptions({ name: name, perPage: perPage, pageIndex: pageIndex }).then((optionData) => {
-        if (fetchId !== fetchRef.current) {
-          return;
-        }
-        if (!optionData) {
+        if (fetchId !== fetchRef.current || !optionData) {
           return;
         }
         setTotalPages(optionData.total ? optionData.total : 1);
