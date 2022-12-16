@@ -38,7 +38,7 @@ const PaginatedSelect = ({
   const [totalPages, setTotalPages] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [searchInput, setSearchInput] = useState<string>('');
-  const [newOptionInput, setNewOptionInput] = useState<string>('');
+  const [newOptionValue, setNewOptionValue] = useState<string>('');
 
   const [options, setOptions] = useState<string[]>([]);
 
@@ -80,22 +80,23 @@ const PaginatedSelect = ({
       onSearch={(searchValue: string) => {
         setPage(1);
         setSearchInput(searchValue);
+        setNewOptionValue(searchValue);
         debounceFetch({ name: searchValue, pageIndex: 1, perPage: pageSize });
       }}
       notFoundContent={
         <>
-          <Input onChange={(event) => setNewOptionInput(event.target.value)}></Input>
+          <Input value={newOptionValue} onChange={(event) => setNewOptionValue(event.target.value)}></Input>
           <Divider style={{ margin: '4px 0' }} />
           <Button
             icon={<PlusOutlined />}
             onClick={() => {
-              createNewOption(newOptionInput).then((response) => {
+              createNewOption(newOptionValue).then((response) => {
                 response.success
                   ? message.success(
-                      `${newOptionInput} was successfully added to profession pool. Please press submit before leaving!`
+                      `${newOptionValue} was successfully added to profession pool. Please press submit before leaving!`
                     )
-                  : message.error(`${newOptionInput} response.message`);
-                response.success && setValues([...values, newOptionInput]);
+                  : message.error(`${newOptionValue} response.message`);
+                response.success && setValues([...values, newOptionValue]);
               });
             }}
           >

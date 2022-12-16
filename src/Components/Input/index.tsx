@@ -16,6 +16,7 @@ const Input = ({
   onChange,
   className,
   defaultValue,
+  value,
 }: StyledInputProps) => {
   return password ? (
     <StyledInputPassword
@@ -34,6 +35,7 @@ const Input = ({
       type={type}
       onChange={onChange}
       defaultValue={defaultValue}
+      value={value}
     />
   );
 };
