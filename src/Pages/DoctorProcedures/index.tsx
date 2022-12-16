@@ -1,4 +1,4 @@
-import ProfileEditForm from '../../Containers/ProfileEditForm';
+import DoctorManageProcedures from '../../Containers/DoctorManageProcedures';
 import Navbar from '../../Components/Navbar';
 import { StyledTitle } from '../../Components/Typography/styles';
 
@@ -7,7 +7,7 @@ const DoctorProcedures = () => {
     <>
       <Navbar />
       <StyledTitle>Doctor procedures</StyledTitle>
-      {/* <ProfileEditForm /> */}
+      <DoctorManageProcedures />
     </>
   );
 };
