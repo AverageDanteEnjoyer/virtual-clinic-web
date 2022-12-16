@@ -39,3 +39,22 @@ export const fetchDoctorProfessions = async () => {
     })
     .then((responseBody) => responseBody.data.map((value: { key: number; name: string }) => value.name));
 };
+
+export const createNewProfession = async (option: string) => {
+  const token = getLocalStorageResource('token');
+  if (!token) return { success: false, message: 'Token expired' };
+
+  return fetch(`${API_URL}/api/v1/professions/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    body: JSON.stringify({ profession: { name: option } }),
+  })
+    .then((response) => response.json())
+    .then((responseBody) => ({
+      success: Boolean(responseBody.data),
+      message: responseBody.errors ? responseBody.errors.name : '',
+    }));
+};

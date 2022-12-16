@@ -1,4 +1,4 @@
-import { Divider, Pagination, Select } from 'antd';
+import { Divider, message, Pagination, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
@@ -6,8 +6,6 @@ import Input from '../../Components/Input';
 
 import CustomSelect from '../../Components/Select';
 import Button from '../../Components/Button';
-import { getLocalStorageResource } from '../../localStorageAPI';
-import { API_URL } from '../../api';
 
 export interface searchParameters {
   name: string;
@@ -22,19 +20,25 @@ export interface PaginatedSelectProps {
     pageIndex,
   }: searchParameters) => Promise<{ total: number; options: string[] } | undefined>;
   fetchInitialValues: () => Promise<string[]>;
-  // createNewOption: (option: string) => { ok: boolean };
+  createNewOption: (option: string) => Promise<{ success: boolean; message: string }>;
   values: string[];
   setValues: (values: string[]) => void;
 }
 
-const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }: PaginatedSelectProps) => {
+const PaginatedSelect = ({
+  fetchOptions,
+  fetchInitialValues,
+  createNewOption,
+  values,
+  setValues,
+}: PaginatedSelectProps) => {
   const fetchRef = useRef(0);
 
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [searchInput, setSearchInput] = useState<string>('');
-  const [newProfessionInput, setNewProfessionInput] = useState<string>('');
+  const [newOptionInput, setNewOptionInput] = useState<string>('');
 
   const [options, setOptions] = useState<string[]>([]);
 
@@ -64,20 +68,6 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
     debounceFetch({ name: searchInput, pageIndex: page, perPage: pageSize });
   }, [debounceFetch, fetchInitialValues]);
 
-  const createNewOption = async (option: string) => {
-    const token = getLocalStorageResource('token');
-    if (!token) return;
-
-    return fetch(`${API_URL}/api/v1/professions/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      body: JSON.stringify({ profession: { name: option } }),
-    });
-  };
-
   return (
     <CustomSelect
       mode="multiple"
@@ -94,13 +84,19 @@ const PaginatedSelect = ({ fetchOptions, fetchInitialValues, values, setValues }
       }}
       notFoundContent={
         <>
-          <Input onChange={(event) => setNewProfessionInput(event.target.value)}></Input>
+          <Input onChange={(event) => setNewOptionInput(event.target.value)}></Input>
           <Divider style={{ margin: '4px 0' }} />
           <Button
             icon={<PlusOutlined />}
             onClick={() => {
-              setValues([...values, newProfessionInput]);
-              createNewOption(newProfessionInput);
+              createNewOption(newOptionInput).then((response) => {
+                response.success
+                  ? message.success(
+                      `${newOptionInput} was successfully added to profession pool. Please press submit before leaving!`
+                    )
+                  : message.error(`${newOptionInput} response.message`);
+                response.success && setValues([...values, newOptionInput]);
+              });
             }}
           >
             Add item
