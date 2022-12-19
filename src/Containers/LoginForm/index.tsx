@@ -112,7 +112,7 @@ const LoginForm = () => {
   ));
 
   const alertsJSX = alerts.map(({ type, message, description }, idx) => (
-    <Alert key={idx} closable={false} type={type} message={message} description={description} />
+    <Alert key={idx} type={type} message={message} description={description} />
   ));
   return (
     <Spin spinning={loading} tip="waiting for server response...">
