@@ -1,11 +1,12 @@
-import { Divider, message, Pagination, Select } from 'antd';
+import { message, Pagination, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 
 import CustomSelect from '../Select';
 import Button from '../Button';
-import { StyledTypography } from '../Typography/styles';
+import { StyledTypography as Typography } from '../Typography/styles';
+import { NoContentFrame, PaginationFrame, StyledDivider as Divider } from './styles';
 
 export interface searchParameters {
   name: string;
@@ -75,10 +76,10 @@ const PaginatedSelect = ({
   };
 
   const notFoundContent = (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <StyledTypography>
+    <NoContentFrame>
+      <Typography>
         '{searchInput}' not found <br /> Would you like to add it?
-      </StyledTypography>
+      </Typography>
       <Button
         size="large"
         icon={<PlusOutlined />}
@@ -95,14 +96,14 @@ const PaginatedSelect = ({
       >
         Add item
       </Button>
-    </div>
+    </NoContentFrame>
   );
 
   const dropdownRender = (menu: React.ReactNode) => (
     <>
       {menu}
-      <Divider style={{ margin: '4px 0' }} />
-      <div style={{ textAlign: 'center' }}>
+      <Divider />
+      <PaginationFrame>
         <Pagination
           current={page}
           total={totalPages}
@@ -112,7 +113,7 @@ const PaginatedSelect = ({
             debounceFetch({ name: searchInput, pageIndex: newPage, perPage: newSize });
           }}
         />
-      </div>
+      </PaginationFrame>
     </>
   );
 
