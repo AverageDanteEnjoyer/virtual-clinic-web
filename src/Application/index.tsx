@@ -14,6 +14,13 @@ import HomePage from '../Pages/HomePage';
 import AuthVerify from '../AuthVerify';
 import ProfileEditPage from '../Pages/ProfileEditPage';
 
+interface privateRouteItem {
+  path: string;
+  children: JSX.Element;
+  redirectPath: string;
+  condition: () => boolean;
+}
+
 const Application = () => {
   const { setAccountType } = useContext(SessionInfoContext);
 
@@ -27,35 +34,45 @@ const Application = () => {
       setAccountType(getAccountType());
     }
   }, []);
+
+  const privateRouteItems: privateRouteItem[] = [
+    {
+      path: routes.logIn,
+      children: <LoginPage />,
+      redirectPath: routes.home,
+      condition: () => equals(userType.GUEST),
+    },
+    {
+      path: routes.register,
+      children: <RegistrationPage />,
+      redirectPath: routes.home,
+      condition: () => equals(userType.GUEST),
+    },
+    {
+      path: routes.editProfile,
+      children: <ProfileEditPage />,
+      redirectPath: routes.logIn,
+      condition: () => notEquals(userType.GUEST),
+    },
+  ];
+
+  const privateRouteItemsJSX = privateRouteItems.map(({ path, children, redirectPath, condition }) => (
+    <Route
+      path={path}
+      element={
+        <PrivateRoute redirectPath={redirectPath} condition={condition}>
+          {children}
+        </PrivateRoute>
+      }
+    />
+  ));
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path={routes.home} element={<HomePage />} />
         <Route path={routes.components} element={<ComponentsPage />} />
-        <Route
-          path={routes.logIn}
-          element={
-            <PrivateRoute redirectPath={routes.home} condition={() => equals(userType.GUEST)}>
-              <LoginPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={routes.register}
-          element={
-            <PrivateRoute redirectPath={routes.home} condition={() => equals(userType.GUEST)}>
-              <RegistrationPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={routes.editProfile}
-          element={
-            <PrivateRoute redirectPath={routes.logIn} condition={() => notEquals(userType.GUEST)}>
-              <ProfileEditPage />
-            </PrivateRoute>
-          }
-        />
+        {privateRouteItemsJSX}
       </Routes>
       <AuthVerify />
     </BrowserRouter>
