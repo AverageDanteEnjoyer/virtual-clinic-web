@@ -27,7 +27,7 @@ type userInfo = {
 };
 
 const ProfileEditForm = () => {
-  const { setAccountType, accountType } = useContext(SessionInfoContext);
+  const { accountType , setAccountType } = useContext(SessionInfoContext);
 
   const navigate = useNavigate();
 
