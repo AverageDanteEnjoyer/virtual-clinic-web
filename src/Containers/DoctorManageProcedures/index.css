@@ -1,0 +1,70 @@
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.wrap {
+  --purple: rgb(139, 6, 201);
+  --shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+  --radius: 10px;
+
+  padding: 1rem 2rem;
+  background-color: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-width: 500px;
+}
+
+.field-area {
+  border: none;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  color: var(--purple);
+  font-weight: bold;
+  display: inline-block;
+  width: 7.5rem;
+}
+
+input {
+  margin-left: 0.5rem;
+  border: 0;
+  outline: 0;
+  border-bottom: dotted 2px var(--purple);
+  width: 14rem;
+  font-size: 0.7rem;
+}
+
+.inp-num {
+  margin-left: 0.5rem;
+  border: 0;
+  outline: 0;
+  border-bottom: dotted 2px var(--purple);
+  width: 3rem;
+  font-size: 0.7rem;
+}
+
+input:focus {
+  border-bottom-style: solid;
+}
+
+button {
+  appearance: none;
+  border: none;
+  color: white;
+  background-color: var(--purple);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 100%;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: rgb(108, 12, 153);
+}
