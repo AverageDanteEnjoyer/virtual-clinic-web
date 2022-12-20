@@ -22,7 +22,7 @@ const Application = () => {
     } else {
       setAccountType(getAccountType());
     }
-  }, []);
+  }, [setAccountType]);
 
   return (
     <BrowserRouter>
