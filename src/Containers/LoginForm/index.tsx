@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
@@ -23,6 +23,7 @@ type loginInfo = {
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [loading, setLoading] = useState(false);
   const { setAccountType } = useContext(SessionInfoContext);
@@ -32,7 +33,7 @@ const LoginForm = () => {
       message: string;
       description?: string;
     }[]
-  >([]);
+  >(location.state ? location.state.errors : []);
 
   const requestLogin = async (credentials: { user: loginInfo }) => {
     return await fetch(`${API_URL}/users/sign_in/`, {
@@ -51,18 +52,18 @@ const LoginForm = () => {
 
     setLoading(true);
     const response = await requestLogin(credentials);
-    const responseDetails = await response.json();
+    const responseBody = await response.json();
     setLoading(false);
 
     if (response.ok) {
       setLocalStorageResources({
         token: response.headers.get('Authorization'),
-        accountType: responseDetails.account_type,
-        first_name: responseDetails.first_name,
-        last_name: responseDetails.last_name,
-        email: responseDetails.email,
+        accountType: responseBody.account_type,
+        first_name: responseBody.first_name,
+        last_name: responseBody.last_name,
+        email: responseBody.email,
       });
-      setAccountType(responseDetails.account_type);
+      setAccountType(responseBody.account_type);
 
       setAlerts([
         {
@@ -77,7 +78,7 @@ const LoginForm = () => {
       setAlerts([
         {
           type: 'info',
-          message: responseDetails.error,
+          message: responseBody.error,
         },
       ]);
     }
@@ -111,7 +112,7 @@ const LoginForm = () => {
   ));
 
   const alertsJSX = alerts.map(({ type, message, description }, idx) => (
-    <Alert key={idx} closable={false} type={type} message={message} description={description} />
+    <Alert key={idx} type={type} message={message} description={description} />
   ));
   return (
     <Spin spinning={loading} tip="waiting for server response...">
@@ -125,7 +126,7 @@ const LoginForm = () => {
         {formItemsJSX}
         <Row gutter={[0, 12]}>
           <Col span={4} offset={6}>
-            <Button shape="round" htmlType="submit" size="large" loading={loading}>
+            <Button htmlType="submit" size="large" loading={loading}>
               Submit
             </Button>
           </Col>

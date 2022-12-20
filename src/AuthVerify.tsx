@@ -1,22 +1,25 @@
 import { useContext, useMemo } from 'react';
 import { SessionInfoContext, userType } from './SessionInfoContext';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { clearLocalStorage, getDataFromToken } from './localStorageAPI';
 import routes from './routes';
 
 const AuthVerify = () => {
   const { setAccountType } = useContext(SessionInfoContext);
-  const location = useLocation();
   const navigate = useNavigate();
-  const { tokenExp } = getDataFromToken();
 
   useMemo(() => {
+    const { tokenExp } = getDataFromToken();
     if (tokenExp && tokenExp < new Date()) {
       clearLocalStorage();
       setAccountType(userType.GUEST);
-      navigate(routes.logIn);
+      navigate(routes.logIn, {
+        state: {
+          errors: [{ type: 'info', message: 'You have been logged out, please log in again!' }],
+        },
+      });
     }
-  }, [location]);
+  }, [navigate, setAccountType]);
 
   return <></>;
 };

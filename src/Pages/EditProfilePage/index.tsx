@@ -1,4 +1,4 @@
-import ProfileEditForm from '../../Containers/ProfileEditForm';
+import ProfileEditForm from '../../Containers/EditProfileForm';
 import Navbar from '../../Components/Navbar';
 import { StyledTitle } from '../../Components/Typography/styles';
 

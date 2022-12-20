@@ -6,11 +6,13 @@ import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
 import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
+import PaginatedSelect from '../../Components/PaginatedSelect';
 
 import routes from '../../routes';
 import { API_URL } from '../../api';
 import { clearLocalStorage, getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
 import { SessionInfoContext, userType } from '../../SessionInfoContext';
+import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -25,10 +27,11 @@ type userInfo = {
 };
 
 const ProfileEditForm = () => {
-  const { setAccountType } = useContext(SessionInfoContext);
+  const { accountType , setAccountType } = useContext(SessionInfoContext);
 
   const navigate = useNavigate();
 
+  const [professions, setProfessions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<
     {
@@ -52,7 +55,7 @@ const ProfileEditForm = () => {
 
   const onFinish = async (values: userInfo) => {
     const credentials = {
-      user: values,
+      user: { ...values, professions: professions },
     };
 
     setLoading(true);
@@ -61,9 +64,9 @@ const ProfileEditForm = () => {
 
     if (response.ok) {
       const updatedInfo = {
-        first_name: values.first_name || getLocalStorageResource('first_name'),
-        last_name: values.last_name || getLocalStorageResource('last_name'),
-        email: values.email || getLocalStorageResource('email'),
+        first_name: values.first_name,
+        last_name: values.last_name,
+        email: values.email,
       };
       setLocalStorageResources(updatedInfo);
 
@@ -75,10 +78,10 @@ const ProfileEditForm = () => {
         },
       ]);
     } else {
-      const responseDetails = await response.json();
+      const responseBody = await response.json();
       if (response.status === 422) {
         setAlerts(
-          Object.entries(responseDetails.errors).map(([key, message]) => ({
+          Object.entries(responseBody.errors).map(([key, message]) => ({
             type: 'error',
             message: 'Error',
             description: `${key} ${message}`.replaceAll('_', ' '),
@@ -89,7 +92,7 @@ const ProfileEditForm = () => {
           {
             type: 'error',
             message: 'Error',
-            description: `${responseDetails.error}`,
+            description: `${responseBody.error}`,
           },
         ]);
         //Token is either expired or doesn't exist somehow
@@ -97,7 +100,11 @@ const ProfileEditForm = () => {
           setTimeout(() => {
             setAccountType(userType.GUEST);
             clearLocalStorage();
-            navigate(routes.logIn);
+            navigate(routes.logIn, {
+              state: {
+                errors: [{ type: 'info', message: 'You have been logged out, please log in again!' }],
+              },
+            });
           }, 2000);
         }
       }
@@ -145,18 +152,24 @@ const ProfileEditForm = () => {
   ];
 
   const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
-    <Form.Item key={idx} label={label} name={name} rules={rules}>
+    <Form.Item
+      key={idx}
+      label={label}
+      name={name}
+      rules={rules}
+      initialValue={name && getLocalStorageResource(name as string)}
+    >
       <Input
         type={type}
         placeholder={`Enter your ${label}`}
         password={type === 'password'}
-        defaultValue={name && getLocalStorageResource(name.toString())}
+        defaultValue={name && getLocalStorageResource(name as string)}
       />
     </Form.Item>
   ));
 
   const alertsJSX = alerts.map(({ type, message, description }, idx) => (
-    <Alert key={idx} closable={false} type={type} message={message} description={description} />
+    <Alert key={idx} type={type} message={message} description={description} />
   ));
 
   return (
@@ -169,6 +182,17 @@ const ProfileEditForm = () => {
         onFinishFailed={onFinishFailed}
       >
         {formItemsJSX}
+        {accountType === userType.DOCTOR && (
+          <Form.Item label="Professions">
+            <PaginatedSelect
+              fetchOptions={fetchAllProfessions}
+              fetchInitialValues={fetchDoctorProfessions}
+              createNewOption={createNewProfession}
+              values={professions}
+              setValues={setProfessions}
+            />
+          </Form.Item>
+        )}
         <Row gutter={[0, 12]}>
           <Col span={12} offset={6}>
             <Button shape="round" htmlType="submit" size="large" loading={loading}>

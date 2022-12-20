@@ -10,7 +10,7 @@ import RegistrationPage from '../Pages/RegistrationPage';
 import LoginPage from '../Pages/LoginPage';
 import HomePage from '../Pages/HomePage';
 import AuthVerify from '../AuthVerify';
-import ProfileEditPage from '../Pages/ProfileEditPage';
+import EditProfilePage from '../Pages/EditProfilePage';
 
 const Application = () => {
   const { setAccountType } = useContext(SessionInfoContext);
@@ -24,7 +24,7 @@ const Application = () => {
     } else {
       setAccountType(getLocalStorageResource('accountType'));
     }
-  }, []);
+  }, [setAccountType]);
 
   return (
     <BrowserRouter>
@@ -33,7 +33,7 @@ const Application = () => {
         <Route path={routes.components} element={<ComponentsPage />} />
         <Route path={routes.logIn} element={<LoginPage />} />
         <Route path={routes.register} element={<RegistrationPage />} />
-        <Route path={routes.editProfile} element={<ProfileEditPage />} />
+        <Route path={routes.editProfile} element={<EditProfilePage />} />
       </Routes>
       <AuthVerify />
     </BrowserRouter>

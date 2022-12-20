@@ -7,19 +7,17 @@ interface StyledAlertProps {
   type?: 'success' | 'info' | 'warning' | 'error';
   icon?: ReactNode;
   showIcon?: boolean;
-  closable?: boolean;
   description?: string;
   className?: string;
 }
 
-const Alert = ({ showIcon = true, closable = true, message, type, icon, description, className }: StyledAlertProps) => (
+const Alert = ({ showIcon = true, message, type, icon, description, className }: StyledAlertProps) => (
   <StyledAlert
     className={className}
     message={message}
     type={type}
     icon={icon}
     showIcon={showIcon}
-    closable={closable}
     description={description}
   />
 );

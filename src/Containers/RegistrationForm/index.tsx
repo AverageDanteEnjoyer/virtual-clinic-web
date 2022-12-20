@@ -52,7 +52,7 @@ const RegistrationForm = () => {
 
     setLoading(true);
     const response = await register(credentials);
-    const responseDetails = await response.json();
+    const responseBody = await response.json();
     setLoading(false);
 
     if (response.ok) {
@@ -68,7 +68,7 @@ const RegistrationForm = () => {
       }, 2000);
     } else {
       setAlerts(
-        Object.entries(responseDetails.errors).map(([key, message]) => ({
+        Object.entries(responseBody.errors).map(([key, message]) => ({
           type: 'info',
           message: `${key} ${message}`,
         }))
@@ -116,7 +116,7 @@ const RegistrationForm = () => {
   ));
 
   const alertsJSX = alerts.map(({ type, message, description }, idx) => (
-    <Alert key={idx} closable={false} type={type} message={message} description={description} />
+    <Alert key={idx} type={type} message={message} description={description} />
   ));
 
   return (
@@ -145,7 +145,7 @@ const RegistrationForm = () => {
         </Form.Item>
         <Row gutter={[0, 12]}>
           <Col span={4} offset={6}>
-            <Button shape="round" htmlType="submit" size="large" loading={loading}>
+            <Button htmlType="submit" size="large" loading={loading}>
               Submit
             </Button>
           </Col>
