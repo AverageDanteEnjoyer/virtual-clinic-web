@@ -1,5 +1,7 @@
 import jwtDecode from 'jwt-decode';
 
+import { userType } from './SessionInfoContext';
+
 export const getLocalStorageResource = (key: string | undefined) => {
   if (!key) return;
   const resourceJSON = localStorage.getItem(key);
@@ -30,3 +32,5 @@ export const getDataFromToken = (token = getLocalStorageResource('token')) => {
 
   return { tokenExp: expDate, userID: tokenDecoded.sub };
 };
+
+export const getAccountType = () => getLocalStorageResource('accountType') || userType.GUEST;
