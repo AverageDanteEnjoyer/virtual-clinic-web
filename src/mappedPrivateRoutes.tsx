@@ -5,7 +5,7 @@ import LoginPage from './Pages/LoginPage';
 import { equals, notEquals, PrivateRoute } from './privateRoute';
 import { userType } from './SessionInfoContext';
 import RegistrationPage from './Pages/RegistrationPage';
-import ProfileEditPage from './Pages/ProfileEditPage';
+import ProfileEditPage from './Pages/EditProfilePage';
 
 interface privateRouteItem {
   path: string;
