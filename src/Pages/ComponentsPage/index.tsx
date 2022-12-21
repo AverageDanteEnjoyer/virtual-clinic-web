@@ -11,8 +11,65 @@ import Select from '../../Components/Select';
 import Button from '../../Components/Button';
 import ComponentsStyles from './Components.module.css';
 import Navbar from '../../Components/Navbar';
+import PaginatedTable, { ColumnType, TableData } from '../../Components/PaginatedTable';
+import { getLocalStorageResource } from '../../localStorageAPI';
+import { API_URL } from '../../api';
+
+interface Procedure extends TableData {
+  user_id: number;
+  name: string;
+  needed_time_min: number;
+  created_at: string;
+  updated_at: string;
+}
 
 const ComponentsPage = () => {
+  const paginatedTableFetchData = async (page: number, perPage: number) => {
+    const token = getLocalStorageResource('token');
+    if (!token) return;
+
+    const response = await fetch(`${API_URL}/api/v1/procedures/?page=${page}&per_page=${perPage}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    });
+
+    return response.json();
+  };
+
+  const paginatedTableColumns: ColumnType<Procedure>[] = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    } as ColumnType<Procedure>,
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    } as ColumnType<Procedure>,
+    {
+      title: 'Needed time',
+      dataIndex: 'needed_time_min',
+      key: 'needed_time_min',
+    } as ColumnType<Procedure>,
+  ];
+
+  const paginatedTableActions = (text: any, record: Procedure, index: number) => {
+    return (
+      <Button
+        type="primary"
+        onClick={() => {
+          console.log(record);
+        }}
+      >
+        View
+      </Button>
+    );
+  };
+
   return (
     <>
       <Navbar />
@@ -23,6 +80,15 @@ const ComponentsPage = () => {
           </Col>
           <Col className="gutter-row" span={12}>
             <Carousel />
+          </Col>
+        </Row>
+        <Row gutter={[14, 12]}>
+          <Col className="gutter-row" span={12}>
+            <PaginatedTable
+              fetchData={paginatedTableFetchData}
+              columns={paginatedTableColumns}
+              actions={paginatedTableActions}
+            />
           </Col>
         </Row>
         <Row gutter={[0, 12]}>
