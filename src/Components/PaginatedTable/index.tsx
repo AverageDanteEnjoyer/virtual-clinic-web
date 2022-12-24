@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { Table } from 'antd';
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 
@@ -18,28 +18,28 @@ export interface TableColumnType<T extends TableRecord> extends ColumnsType<T> {
   title: string;
   dataIndex: string;
   key: string;
-  render?: (text: any, record: T, index: number) => React.ReactNode;
+  render?: (text: any, record: T, index: number) => ReactNode;
 }
 
 export interface PaginatedTableProps<T extends TableRecord> {
   columns: TableColumnType<T>[];
   fetchData: (page: number, pageSize: number) => Promise<FetchResponse<T>>;
-  actions?: (text: any, record: T, index: number) => React.ReactNode;
+  actions?: (text: any, record: T, index: number) => ReactNode;
 }
 
 const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: PaginatedTableProps<T>) => {
-  const [data, setData] = React.useState<T[]>([]);
-  const [loading, setLoading] = React.useState(false);
-  const [page, setPage] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(5);
-  const [total, setTotal] = React.useState(0);
+  const [data, setData] = useState<T[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [total, setTotal] = useState(0);
 
   const onTableChange = (pagination: TablePaginationConfig) => {
     setPage(pagination.current || 1);
     setPageSize(pagination.pageSize || 5);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
     const fetchDataAsync = async () => {
       const response: FetchResponse<T> = await fetchData(page, pageSize);
