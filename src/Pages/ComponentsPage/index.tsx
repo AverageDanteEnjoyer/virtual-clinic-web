@@ -11,7 +11,12 @@ import Select from '../../Components/Select';
 import Button from '../../Components/Button';
 import ComponentsStyles from './Components.module.css';
 import Navbar from '../../Components/Navbar';
-import PaginatedTable, { TableColumnType, TableRecord, FetchResponse } from '../../Components/PaginatedTable';
+import PaginatedTable, {
+  TableColumnType,
+  TableRecord,
+  FetchResponse,
+  FetchParams,
+} from '../../Components/PaginatedTable';
 import { getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 
@@ -24,11 +29,15 @@ interface Procedure extends TableRecord {
 }
 
 const ComponentsPage = () => {
-  const paginatedTableFetchData = async (page: number, perPage: number): Promise<FetchResponse<Procedure>> => {
+  const paginatedTableFetchData = async ({ page, perPage, filter }: FetchParams): Promise<FetchResponse<Procedure>> => {
     const token = getLocalStorageResource('token');
     if (!token) return { data: [], page, per_page: perPage, total: 0 };
 
-    const response = await fetch(`${API_URL}/api/v1/procedures/?page=${page}&per_page=${perPage}`, {
+    const filterString = Object.keys(filter)
+      .map((key) => `${key}=${filter[key]}`)
+      .join('&');
+
+    const response = await fetch(`${API_URL}/api/v1/procedures/?page=${page}&per_page=${perPage}&${filterString}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
