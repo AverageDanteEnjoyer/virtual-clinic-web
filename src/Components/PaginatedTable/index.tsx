@@ -2,7 +2,8 @@ import { ReactNode, useState, useEffect } from 'react';
 import { Table } from 'antd';
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 
-type FilterType = { [field: string]: string };
+export type FilterType = { [field: string]: string };
+type ErrorType = { [field: string]: string[] };
 
 export interface FetchParams {
   page: number;
@@ -12,7 +13,7 @@ export interface FetchParams {
 
 export interface FetchResponse<T extends TableRecord> {
   data: T[];
-  errors?: { [field: string]: string[] };
+  errors?: ErrorType;
   page: number;
   per_page: number;
   total: number;
