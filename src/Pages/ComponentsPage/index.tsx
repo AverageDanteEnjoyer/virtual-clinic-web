@@ -53,17 +53,17 @@ const ComponentsPage = () => {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
-    } as TableColumnType<Procedure>,
+    },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-    } as TableColumnType<Procedure>,
+    },
     {
       title: 'Needed time',
       dataIndex: 'needed_time_min',
       key: 'needed_time_min',
-    } as TableColumnType<Procedure>,
+    },
   ];
 
   const paginatedTableActions = (text: any, record: Procedure, index: number) => {
@@ -93,7 +93,7 @@ const ComponentsPage = () => {
         </Row>
         <Row gutter={[14, 12]}>
           <Col className="gutter-row" span={12}>
-            <PaginatedTable
+            <PaginatedTable<Procedure>
               fetchData={paginatedTableFetchData}
               columns={paginatedTableColumns}
               actions={paginatedTableActions}

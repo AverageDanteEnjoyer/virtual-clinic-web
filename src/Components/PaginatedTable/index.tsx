@@ -1,9 +1,14 @@
 import { ReactNode, useState, useEffect } from 'react';
 import { Table } from 'antd';
-import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
+import type { TablePaginationConfig } from 'antd/es/table';
 
-export type FilterType = { [field: string]: string };
-type ErrorType = { [field: string]: string[] };
+export interface FilterType {
+  [field: string]: string;
+}
+
+interface ErrorType {
+  [field: string]: string[];
+}
 
 export interface FetchParams {
   page: number;
@@ -19,18 +24,18 @@ export interface FetchResponse<T extends TableRecord> {
   total: number;
 }
 
-export interface TableRecord {
+export type TableRecord = {
   id: number;
-}
+};
 
-export interface TableColumnType<T extends TableRecord> extends ColumnsType<T> {
+export type TableColumnType<T extends TableRecord> = {
   title: string;
   dataIndex: string;
   key: string;
   render?: (text: any, record: T, index: number) => ReactNode;
-}
+};
 
-export interface PaginatedTableProps<T extends TableRecord> {
+interface PaginatedTableProps<T extends TableRecord> {
   columns: TableColumnType<T>[];
   fetchData: ({ page, perPage, filter }: FetchParams) => Promise<FetchResponse<T>>;
   actions?: (text: any, record: T, index: number) => ReactNode;
