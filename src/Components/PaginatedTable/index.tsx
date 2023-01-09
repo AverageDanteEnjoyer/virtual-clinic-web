@@ -1,6 +1,7 @@
-import { ReactNode, useState, useEffect } from 'react';
-import { Table } from 'antd';
-import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
+import React, { ReactNode, useState, useEffect } from 'react';
+import { Button, Input, Table } from 'antd';
+import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
+import { SearchOutlined } from '@ant-design/icons';
 
 export interface FilterType {
   [field: string]: string;
@@ -34,12 +35,52 @@ interface PaginatedTableProps<T extends TableRecord> {
   actions?: (text: any, record: T, index: number) => ReactNode;
 }
 
+export function tableColumnTextFilterConfig<T>(): ColumnType<T> {
+  const searchInputHolder: { current: any } = { current: null };
+
+  return {
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
+      return (
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={(node) => (searchInputHolder.current = node)}
+            placeholder={'Search'}
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => confirm()}
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Button
+            type="primary"
+            onClick={() => confirm()}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90, marginRight: 8 }}
+          >
+            Search
+          </Button>
+          <Button size="small" style={{ width: 90 }} onClick={clearFilters}>
+            Reset
+          </Button>
+        </div>
+      );
+    },
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInputHolder.current);
+      }
+    },
+  };
+}
+
 const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: PaginatedTableProps<T>) => {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [total, setTotal] = useState(0);
+  const [filter, setFilter] = useState<FilterType>({ name: '123' });
 
   const onTableChange = (pagination: TablePaginationConfig) => {
     setPage(pagination.current || 1);
@@ -49,7 +90,7 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
   useEffect(() => {
     setLoading(true);
     const fetchDataAsync = async () => {
-      const response: FetchResponse<T> = await fetchData({ page, perPage: pageSize, filter: {} });
+      const response = await fetchData({ page, perPage: pageSize, filter: filter });
       setData(response.data);
       setTotal(response.total);
       setLoading(false);

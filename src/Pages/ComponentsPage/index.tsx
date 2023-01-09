@@ -12,7 +12,12 @@ import Select from '../../Components/Select';
 import Button from '../../Components/Button';
 import ComponentsStyles from './Components.module.css';
 import Navbar from '../../Components/Navbar';
-import PaginatedTable, { TableRecord, FetchResponse, FetchParams } from '../../Components/PaginatedTable';
+import PaginatedTable, {
+  TableRecord,
+  FetchResponse,
+  FetchParams,
+  tableColumnTextFilterConfig,
+} from '../../Components/PaginatedTable';
 import { getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 
@@ -54,6 +59,7 @@ const ComponentsPage = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      ...tableColumnTextFilterConfig<Procedure>(),
     },
     {
       title: 'Needed time',
