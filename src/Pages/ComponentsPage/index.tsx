@@ -1,5 +1,6 @@
 import { Col, Row } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
+import { ColumnsType } from 'antd/es/table';
 
 import Carousel from '../../Components/Carousel';
 import Spin from '../../Components/Spin';
@@ -11,12 +12,7 @@ import Select from '../../Components/Select';
 import Button from '../../Components/Button';
 import ComponentsStyles from './Components.module.css';
 import Navbar from '../../Components/Navbar';
-import PaginatedTable, {
-  TableColumnType,
-  TableRecord,
-  FetchResponse,
-  FetchParams,
-} from '../../Components/PaginatedTable';
+import PaginatedTable, { TableRecord, FetchResponse, FetchParams } from '../../Components/PaginatedTable';
 import { getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 
@@ -48,7 +44,7 @@ const ComponentsPage = () => {
     return response.json();
   };
 
-  const paginatedTableColumns: TableColumnType<Procedure>[] = [
+  const paginatedTableColumns: ColumnsType<Procedure> = [
     {
       title: 'ID',
       dataIndex: 'id',
