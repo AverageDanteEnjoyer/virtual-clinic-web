@@ -35,6 +35,7 @@ interface PaginatedTableProps<T extends TableRecord> {
   actions?: (text: any, record: T, index: number) => ReactNode;
 }
 
+// https://github.com/freewind-demos/typescript-react-antd-table-search-column-demo/blob/master/src/tableUtils.tsx
 export function tableColumnTextFilterConfig<T>(): ColumnType<T> {
   const searchInputHolder: { current: any } = { current: null };
 
