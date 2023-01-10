@@ -15,11 +15,3 @@ export const StyledInputPassword = styled(Input.Password)`
   ${styles};
   font-size: 16px;
 `;
-
-export const StyledTableInput = styled(Input)`
-  ${styles};
-  width: 200px;
-  display: block;
-  font-size: 14px;
-  margin-bottom: 10px;
-`;
