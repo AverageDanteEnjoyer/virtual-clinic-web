@@ -1,10 +1,12 @@
 import { ReactNode, useState, useEffect, useRef, useMemo } from 'react';
-import { Button, Input, Space, Table } from 'antd';
+import { Space, Table } from 'antd';
 import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
 import { debounce } from 'lodash';
 
 import { FilterDropdown } from './styles';
+import Button from '../Button';
+import { StyledTableInput } from '../Input/styles';
 
 export interface FilterType {
   [field: string]: string;
@@ -69,17 +71,16 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
   const getColumnSearchProps = (dataIndex: string): ColumnType<T> => ({
     filterDropdown: () => (
       <FilterDropdown onKeyDown={(e) => e.stopPropagation()}>
-        <Input
+        <StyledTableInput
           placeholder={`Search ${dataIndex}`}
           value={filter[dataIndex]}
           onChange={(e) => {
             setFilter({ ...filter, [dataIndex]: e.target.value });
             setPage(1);
           }}
-          style={{ marginBottom: 8, display: 'block' }}
         />
         <Space>
-          <Button onClick={() => handleReset(dataIndex)} size="small" style={{ width: 90 }}>
+          <Button onClick={() => handleReset(dataIndex)} size={'small'}>
             Reset
           </Button>
         </Space>
