@@ -37,13 +37,19 @@ interface PaginatedTableProps<T extends TableRecord> {
   columns: ColumnsType<T>;
   fetchData: ({ page, perPage, filter }: FetchParams) => Promise<FetchResponse<T>>;
   actions?: (text: any, record: T, index: number) => ReactNode;
+  pageSizeOptions?: number[];
 }
 
-const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: PaginatedTableProps<T>) => {
+const PaginatedTable = <T extends TableRecord>({
+  columns,
+  fetchData,
+  actions,
+  pageSizeOptions = [5, 10, 50],
+}: PaginatedTableProps<T>) => {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
   const [total, setTotal] = useState(0);
   const [filter, setFilter] = useState<FilterType>({});
   const fetchRef = useRef(0);
@@ -90,7 +96,7 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
 
   const onTableChange = (pagination: TablePaginationConfig) => {
     setPage(pagination.current || 1);
-    setPageSize(pagination.pageSize || 5);
+    setPageSize(pagination.pageSize || pageSizeOptions[0]);
   };
 
   useEffect(() => {
@@ -120,7 +126,7 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
         current: page,
         pageSize: pageSize,
         total: total,
-        pageSizeOptions: [5, 10, 20],
+        pageSizeOptions: pageSizeOptions,
       }}
       onChange={onTableChange}
       rowKey={(record) => record.id}
