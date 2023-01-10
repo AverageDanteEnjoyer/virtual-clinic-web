@@ -102,18 +102,20 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
     column.filtered ? { ...column, ...getColumnSearchProps(column.key as string) } : column
   );
 
-  const columnsWithActions = [
+  columns = [
     ...columns,
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: actions,
-    },
+    actions
+      ? {
+          title: 'Actions',
+          key: 'actions',
+          render: actions,
+        }
+      : {},
   ];
 
   return (
     <Table
-      columns={actions ? columnsWithActions : columns}
+      columns={columns}
       dataSource={data}
       loading={loading}
       pagination={{
