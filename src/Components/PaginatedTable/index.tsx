@@ -4,6 +4,8 @@ import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/tab
 import { SearchOutlined } from '@ant-design/icons';
 import { debounce } from 'lodash';
 
+import { FilterDropdown } from './styles';
+
 export interface FilterType {
   [field: string]: string;
 }
@@ -66,7 +68,7 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
 
   const getColumnSearchProps = (dataIndex: string): ColumnType<T> => ({
     filterDropdown: () => (
-      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+      <FilterDropdown onKeyDown={(e) => e.stopPropagation()}>
         <Input
           placeholder={`Search ${dataIndex}`}
           value={filter[dataIndex]}
@@ -81,7 +83,7 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
             Reset
           </Button>
         </Space>
-      </div>
+      </FilterDropdown>
     ),
     filterIcon: (filtered: boolean) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
   });
