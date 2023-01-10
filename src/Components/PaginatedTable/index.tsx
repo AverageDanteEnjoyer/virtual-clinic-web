@@ -73,7 +73,14 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
           >
             Search
           </Button>
-          <Button onClick={() => clearFilters && handleReset(dataIndex)} size="small" style={{ width: 90 }}>
+          <Button
+            onClick={() => {
+              setSelectedKeys(['']);
+              clearFilters && handleReset(dataIndex);
+            }}
+            size="small"
+            style={{ width: 90 }}
+          >
             Reset
           </Button>
         </Space>
