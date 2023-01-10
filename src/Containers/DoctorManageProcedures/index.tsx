@@ -41,6 +41,7 @@ const DoctorManageProcedures = () => {
     setDoctorProcedures(responseDetails.data);
     setTotalPages(responseDetails.data.length);
     console.log(responseDetails.data);
+    console.log(doctorProcedures);
   };
 
   const handleSumbit = async (event: FormEvent<HTMLFormElement>) => {
@@ -67,6 +68,32 @@ const DoctorManageProcedures = () => {
     getDoctorProcedures();
   };
 
+  const handleDelete = async (record: any) => {
+    console.log('essa del');
+    const token = getLocalStorageResource('token');
+    if (!token) return;
+
+    await fetch(`${API_URL}/api/v1/procedures/${record.id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      method: 'DELETE',
+      body: JSON.stringify({
+        procedure: {
+          name: procedureName,
+          needed_time_min: neededTime,
+        },
+      }),
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error('error');
+      } else {
+        getDoctorProcedures();
+      }
+    });
+  };
+
   useEffect(() => {
     getDoctorProcedures();
   }, []);
@@ -88,9 +115,16 @@ const DoctorManageProcedures = () => {
       key: 'needed_time_min',
     },
     {
-      title: 'delete',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Actions',
+      key: 'delete',
+      render: (record: any) => {
+        // return <button style={{ color: 'white', backgroundColor: '#6C0C99' }}>delete</button>;
+        return (
+          <button className="btn-del" onClick={() => handleDelete(record)}>
+            delete
+          </button>
+        );
+      },
     },
   ];
 

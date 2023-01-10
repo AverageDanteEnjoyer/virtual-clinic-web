@@ -68,3 +68,23 @@ button {
 button:hover {
   background-color: rgb(108, 12, 153);
 }
+
+button.btn-del {
+  appearance: none;
+  border: none;
+  color: white;
+  background-color: rgb(139, 6, 201);
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+  width: 200px;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button.btn-del:hover {
+  background-color: rgb(108, 12, 153);
+}
