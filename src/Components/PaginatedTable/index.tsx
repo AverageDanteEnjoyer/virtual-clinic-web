@@ -1,8 +1,10 @@
-import React, { ReactNode, useState, useEffect, useRef } from 'react';
+import React, { ReactNode, useState, useEffect, useRef, useMemo } from 'react';
 import { Button, Input, Space, Table } from 'antd';
 import type { InputRef } from 'antd';
 import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
+import { debounce } from 'lodash';
+import { searchParameters } from '../PaginatedSelect';
 
 export interface FilterType {
   [field: string]: string;
@@ -44,10 +46,22 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
   const [total, setTotal] = useState(0);
   const [filter, setFilter] = useState<FilterType>({});
   const searchInput = useRef<InputRef>(null);
+  const fetchRef = useRef(0);
 
-  const handleSearch = (selectedKeys: string[], dataIndex: string) => {
-    setFilter({ ...filter, [dataIndex]: selectedKeys[0] });
-  };
+  const debounceFetch = useMemo(() => {
+    const loadData = ({ page, perPage, filter }: FetchParams) => {
+      fetchRef.current += 1;
+      const fetchId = fetchRef.current;
+      setLoading(true);
+      fetchData({ page, perPage, filter }).then((data) => {
+        if (fetchId !== fetchRef.current || !data) return;
+        setTotal(data.total);
+        setData(data.data);
+        setLoading(false);
+      });
+    };
+    return debounce(loadData, 600);
+  }, [fetchData]);
 
   const handleReset = (dataIndex: string) => {
     setFilter({ ...filter, [dataIndex]: '' });
@@ -60,19 +74,13 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [''])}
+          onChange={(e) => {
+            setSelectedKeys(e.target.value ? [e.target.value] : ['']);
+            setFilter({ ...filter, [dataIndex]: e.target.value });
+          }}
           style={{ marginBottom: 8, display: 'block' }}
         />
         <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys as string[], dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
           <Button
             onClick={() => {
               setSelectedKeys(['']);
@@ -100,15 +108,7 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
   };
 
   useEffect(() => {
-    setLoading(true);
-    const fetchDataAsync = async () => {
-      const response = await fetchData({ page, perPage: pageSize, filter: filter });
-      setData(response.data);
-      setTotal(response.total);
-      setLoading(false);
-    };
-
-    fetchDataAsync();
+    debounceFetch({ page, perPage: pageSize, filter: filter });
   }, [page, pageSize, filter]);
 
   columns = columns.map((column) =>
