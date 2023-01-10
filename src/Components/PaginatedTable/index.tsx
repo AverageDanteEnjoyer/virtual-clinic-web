@@ -1,5 +1,6 @@
-import React, { ReactNode, useState, useEffect } from 'react';
-import { Button, Input, Table } from 'antd';
+import React, { ReactNode, useState, useEffect, useRef } from 'react';
+import { Button, Input, Space, Table } from 'antd';
+import type { InputRef } from 'antd';
 import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -35,53 +36,56 @@ interface PaginatedTableProps<T extends TableRecord> {
   actions?: (text: any, record: T, index: number) => ReactNode;
 }
 
-// https://github.com/freewind-demos/typescript-react-antd-table-search-column-demo/blob/master/src/tableUtils.tsx
-export function tableColumnTextFilterConfig<T>(): ColumnType<T> {
-  const searchInputHolder: { current: any } = { current: null };
-
-  return {
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
-      return (
-        <div style={{ padding: 8 }}>
-          <Input
-            ref={(node) => (searchInputHolder.current = node)}
-            placeholder={'Search'}
-            value={selectedKeys[0]}
-            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={() => confirm()}
-            style={{ width: 188, marginBottom: 8, display: 'block' }}
-          />
-          <Button
-            type="primary"
-            onClick={() => confirm()}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90, marginRight: 8 }}
-          >
-            Search
-          </Button>
-          <Button size="small" style={{ width: 90 }} onClick={clearFilters}>
-            Reset
-          </Button>
-        </div>
-      );
-    },
-    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInputHolder.current);
-      }
-    },
-  };
-}
-
 const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: PaginatedTableProps<T>) => {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [total, setTotal] = useState(0);
-  const [filter, setFilter] = useState<FilterType>({ name: '123' });
+  const [filter, setFilter] = useState<FilterType>({});
+  const searchInput = useRef<InputRef>(null);
+
+  const handleSearch = (selectedKeys: string[], dataIndex: string) => {
+    setFilter({ ...filter, [dataIndex]: selectedKeys[0] });
+  };
+
+  const handleReset = (dataIndex: string) => {
+    setFilter({ ...filter, [dataIndex]: '' });
+  };
+
+  const getColumnSearchProps = (dataIndex: string): ColumnType<T> => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, clearFilters }) => (
+      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [''])}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys as string[], dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => clearFilters && handleReset(dataIndex)} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered: boolean) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+  });
 
   const onTableChange = (pagination: TablePaginationConfig) => {
     setPage(pagination.current || 1);
@@ -98,7 +102,11 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
     };
 
     fetchDataAsync();
-  }, [page, pageSize]);
+  }, [page, pageSize, filter]);
+
+  columns = columns.map((column) =>
+    column.filtered ? { ...column, ...getColumnSearchProps(column.key as string) } : column
+  );
 
   const columnsWithActions = [
     ...columns,

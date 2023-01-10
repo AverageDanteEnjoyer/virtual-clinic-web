@@ -12,12 +12,7 @@ import Select from '../../Components/Select';
 import Button from '../../Components/Button';
 import ComponentsStyles from './Components.module.css';
 import Navbar from '../../Components/Navbar';
-import PaginatedTable, {
-  TableRecord,
-  FetchResponse,
-  FetchParams,
-  tableColumnTextFilterConfig,
-} from '../../Components/PaginatedTable';
+import PaginatedTable, { TableRecord, FetchResponse, FetchParams } from '../../Components/PaginatedTable';
 import { getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 
@@ -30,12 +25,13 @@ interface Procedure extends TableRecord {
 }
 
 const ComponentsPage = () => {
+  // I leave it here to others, who may not know how to correctly use it.
   const paginatedTableFetchData = async ({ page, perPage, filter }: FetchParams): Promise<FetchResponse<Procedure>> => {
     const token = getLocalStorageResource('token');
     if (!token) return { data: [], page, per_page: perPage, total: 0 };
 
     const filterString = Object.keys(filter)
-      .map((key) => `${key}=${filter[key]}`)
+      .map((key) => `${key}=${filter[key] as string}`)
       .join('&');
 
     const response = await fetch(`${API_URL}/api/v1/procedures/?page=${page}&per_page=${perPage}&${filterString}`, {
@@ -59,7 +55,7 @@ const ComponentsPage = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      ...tableColumnTextFilterConfig<Procedure>(),
+      filtered: true,
     },
     {
       title: 'Needed time',
