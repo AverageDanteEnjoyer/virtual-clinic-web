@@ -1,10 +1,8 @@
-import React, { ReactNode, useState, useEffect, useRef, useMemo } from 'react';
+import { ReactNode, useState, useEffect, useRef, useMemo } from 'react';
 import { Button, Input, Space, Table } from 'antd';
-import type { InputRef } from 'antd';
 import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
 import { debounce } from 'lodash';
-import { searchParameters } from '../PaginatedSelect';
 
 export interface FilterType {
   [field: string]: string;
@@ -45,7 +43,6 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
   const [pageSize, setPageSize] = useState(5);
   const [total, setTotal] = useState(0);
   const [filter, setFilter] = useState<FilterType>({});
-  const searchInput = useRef<InputRef>(null);
   const fetchRef = useRef(0);
 
   const debounceFetch = useMemo(() => {
@@ -68,38 +65,25 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
   };
 
   const getColumnSearchProps = (dataIndex: string): ColumnType<T> => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, clearFilters }) => (
+    filterDropdown: () => (
       <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
         <Input
-          ref={searchInput}
           placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
+          value={filter[dataIndex]}
           onChange={(e) => {
-            setSelectedKeys(e.target.value ? [e.target.value] : ['']);
             setFilter({ ...filter, [dataIndex]: e.target.value });
+            setPage(1);
           }}
           style={{ marginBottom: 8, display: 'block' }}
         />
         <Space>
-          <Button
-            onClick={() => {
-              setSelectedKeys(['']);
-              clearFilters && handleReset(dataIndex);
-            }}
-            size="small"
-            style={{ width: 90 }}
-          >
+          <Button onClick={() => handleReset(dataIndex)} size="small" style={{ width: 90 }}>
             Reset
           </Button>
         </Space>
       </div>
     ),
     filterIcon: (filtered: boolean) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
   });
 
   const onTableChange = (pagination: TablePaginationConfig) => {
@@ -133,6 +117,7 @@ const PaginatedTable = <T extends TableRecord>({ columns, fetchData, actions }: 
         current: page,
         pageSize: pageSize,
         total: total,
+        pageSizeOptions: [5, 10, 20],
       }}
       onChange={onTableChange}
       rowKey={(record) => record.id}
