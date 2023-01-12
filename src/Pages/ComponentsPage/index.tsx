@@ -111,7 +111,7 @@ const ComponentsPage = () => {
           </Col>
         </Row>
         <Row gutter={[14, 12]}>
-          <Col className="gutter-row" span={12}>
+          <Col className="gutter-row" span={24}>
             <PaginatedTable<Procedure>
               fetchData={paginatedTableFetchData}
               columns={paginatedTableColumns}

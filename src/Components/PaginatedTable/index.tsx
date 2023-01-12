@@ -127,6 +127,7 @@ const PaginatedTable = <T extends TableRecord>({
         pageSize,
         total,
         pageSizeOptions,
+        position: ['bottomCenter'],
       }}
       onChange={onTableChange}
       rowKey={(record) => record.id}
