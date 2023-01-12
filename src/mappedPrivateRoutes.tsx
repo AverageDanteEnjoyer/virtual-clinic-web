@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import routes from './routes';
 import LoginPage from './Pages/LoginPage';
 import { equals, notEquals, PrivateRoute } from './privateRoute';
-import { userType } from './SessionInfoContext';
+import { userType } from './store';
 import RegistrationPage from './Pages/RegistrationPage';
 import ProfileEditPage from './Pages/EditProfilePage';
 
@@ -35,8 +35,9 @@ const privateRouteItems: privateRouteItem[] = [
   },
 ];
 
-export const mappedPrivateRoutes = privateRouteItems.map(({ path, children, redirectPath, condition }) => (
+export const mappedPrivateRoutes = privateRouteItems.map(({ path, children, redirectPath, condition }, idx) => (
   <Route
+    key={idx}
     path={path}
     element={
       <PrivateRoute redirectPath={redirectPath} condition={condition}>
