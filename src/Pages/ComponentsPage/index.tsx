@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd';
+import { Col, Modal, Row } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
 
@@ -15,6 +15,7 @@ import Navbar from '../../Components/Navbar';
 import PaginatedTable, { FetchParams, FetchResponse, TableRecord } from '../../Components/PaginatedTable';
 import { getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
+import { useState } from 'react';
 
 interface Procedure extends TableRecord {
   user_id: number;
@@ -25,6 +26,8 @@ interface Procedure extends TableRecord {
 }
 
 const ComponentsPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   // I leave it here to others, who may not know how to correctly use it.
   const paginatedTableFetchData = async ({ page, perPage, filter }: FetchParams): Promise<FetchResponse<Procedure>> => {
     const token = getLocalStorageResource('token');
@@ -65,15 +68,33 @@ const ComponentsPage = () => {
   ];
 
   const paginatedTableActions = (text: any, record: Procedure, index: number) => {
+    const showModal = () => {
+      setIsModalOpen(true);
+    };
+
+    const handleOk = () => {
+      setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+      setIsModalOpen(false);
+    };
+
     return (
-      <Button
-        type="primary"
-        onClick={() => {
-          console.log(record);
-        }}
-      >
-        View
-      </Button>
+      <>
+        <Button type="primary" onClick={showModal}>
+          View
+        </Button>
+        <Modal title="Details" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+          <p>ID: {record.id}</p>
+          <p>Name: {record.name}</p>
+          <p>Doctor's ID: {record.user_id}</p>
+          <p>Needed time: {record.needed_time_min}</p>
+          <p>Created at: {record.created_at}</p>
+          <p>Updated at: {record.updated_at}</p>
+          <p>Index: {index}</p>
+        </Modal>
+      </>
     );
   };
 
