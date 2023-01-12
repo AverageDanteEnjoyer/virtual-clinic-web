@@ -54,16 +54,17 @@ const PaginatedTable = <T extends TableRecord>({
   const fetchRef = useRef(0);
 
   const debounceFetch = useMemo(() => {
-    const loadData = ({ page, perPage, filter }: FetchParams) => {
+    const loadData = async ({ page, perPage, filter }: FetchParams) => {
+      setLoading(true);
       fetchRef.current += 1;
       const fetchId = fetchRef.current;
-      setLoading(true);
-      fetchData({ page, perPage, filter }).then((data) => {
-        if (fetchId !== fetchRef.current || !data) return;
-        setTotal(data.total);
-        setData(data.data);
-        setLoading(false);
-      });
+
+      const data = await fetchData({ page, perPage, filter });
+      if (fetchId !== fetchRef.current || !data) return;
+
+      setTotal(data.total);
+      setData(data.data);
+      setLoading(false);
     };
     return debounce(loadData, 600);
   }, [fetchData]);
@@ -84,7 +85,7 @@ const PaginatedTable = <T extends TableRecord>({
           }}
         />
         <Space>
-          <Button onClick={() => handleReset(dataIndex)} size={'small'}>
+          <Button onClick={() => handleReset(dataIndex)} size="small">
             Reset
           </Button>
         </Space>
@@ -93,13 +94,13 @@ const PaginatedTable = <T extends TableRecord>({
     filterIcon: () => <SearchIcon />,
   });
 
-  const onTableChange = (pagination: TablePaginationConfig) => {
-    setPage(pagination.current || 1);
-    setPageSize(pagination.pageSize || pageSizeOptions[0]);
+  const onTableChange = ({ current, pageSize }: TablePaginationConfig) => {
+    setPage(current || 1);
+    setPageSize(pageSize || pageSizeOptions[0]);
   };
 
   useEffect(() => {
-    debounceFetch({ page, perPage: pageSize, filter: filter });
+    debounceFetch({ page, perPage: pageSize, filter });
   }, [page, pageSize, filter]);
 
   columns = columns.map((column) =>
