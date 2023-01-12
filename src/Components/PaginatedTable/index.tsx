@@ -1,10 +1,9 @@
 import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Space, Table } from 'antd';
 import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
-import { SearchOutlined } from '@ant-design/icons';
 import { debounce } from 'lodash';
 
-import { FilterDropdown, Input } from './styles';
+import { FilterDropdown, Input, SearchIcon } from './styles';
 import Button from '../Button';
 
 export interface FilterType {
@@ -91,7 +90,7 @@ const PaginatedTable = <T extends TableRecord>({
         </Space>
       </FilterDropdown>
     ),
-    filterIcon: (filtered: boolean) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    filterIcon: () => <SearchIcon />,
   });
 
   const onTableChange = (pagination: TablePaginationConfig) => {
@@ -124,9 +123,9 @@ const PaginatedTable = <T extends TableRecord>({
       loading={loading}
       pagination={{
         current: page,
-        pageSize: pageSize,
-        total: total,
-        pageSizeOptions: pageSizeOptions,
+        pageSize,
+        total,
+        pageSizeOptions,
       }}
       onChange={onTableChange}
       rowKey={(record) => record.id}
