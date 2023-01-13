@@ -8,9 +8,9 @@ const styles = css`
 `;
 
 export const StyledInput = styled(Input)`
-  ${styles}
+  ${styles};
 `;
 
 export const StyledInputPassword = styled(Input.Password)`
-  ${styles}
+  ${styles};
 `;
