@@ -1,75 +1,62 @@
-import React from 'react';
-import { Space, Table } from 'antd';
+import { ReactNode, useEffect, useState } from 'react';
+import { Table as TableAntd } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
-interface DataType {
-  key: React.Key;
-  id: number;
-  name: string;
-  age: number;
-  date: Date;
+interface ErrorType {
+  [field: string]: string[];
+}
+export interface FetchResponse<T extends TableRecord> {
+  data: T[];
+  errors?: ErrorType;
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'Id',
-    dataIndex: 'id',
-    key: 'id',
-    render: (text) => <p>{text}</p>,
-  },
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <p>{text}</p>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Date',
-    dataIndex: 'date',
-    key: 'date',
-    render: (date) => <p>{date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}</p>,
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Postpone {record.name}</a>
-        <a>Cancel</a>
-      </Space>
-    ),
-  },
-];
+export type TableRecord = {
+  id: number;
+};
 
-const data: DataType[] = [
-  {
-    key: '1',
-    id: 1,
-    name: 'John Brown',
-    age: 32,
-    date: new Date(2022, 11, 21, 8, 30),
-  },
-  {
-    key: '2',
-    id: 2,
-    name: 'Jim Green',
-    age: 42,
-    date: new Date(2022, 11, 21, 10, 30),
-  },
-  {
-    key: '3',
-    id: 3,
-    name: 'Joe Black',
-    age: 22,
-    date: new Date(2022, 11, 22, 8, 30),
-  },
-];
+interface TableProps<T extends TableRecord> {
+  columns: ColumnsType<T>;
+  fetchData: () => Promise<FetchResponse<T>>;
+  actions?: (text: any, record: T, index: number) => ReactNode;
+}
 
-const TableExample = () => <Table columns={columns} dataSource={data} />;
+const Table = <T extends TableRecord>({ columns, fetchData, actions }: TableProps<T>) => {
+  const [data, setData] = useState<T[]>([]);
+  const [loading, setLoading] = useState(false);
 
-export default TableExample;
+  const loadData = async () => {
+    setLoading(true);
+
+    const data = await fetchData();
+    if (!data) return;
+
+    setData(data.data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  actions &&
+    (columns = [
+      ...columns,
+      {
+        title: 'Actions',
+        key: 'actions',
+        render: actions,
+      },
+    ]);
+
+  return (
+    <TableAntd
+      columns={columns}
+      dataSource={data}
+      loading={loading}
+      rowKey={(record) => record.id}
+      pagination={false}
+    />
+  );
+};
+
+export default Table;

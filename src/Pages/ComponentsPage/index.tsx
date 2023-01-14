@@ -121,11 +121,6 @@ const ComponentsPage = () => {
         </Row>
         <Row gutter={[0, 12]}>
           <Col className="gutter-row" span={24}>
-            <Table />
-          </Col>
-        </Row>
-        <Row gutter={[0, 12]}>
-          <Col className="gutter-row" span={24}>
             <Input password />
           </Col>
         </Row>
