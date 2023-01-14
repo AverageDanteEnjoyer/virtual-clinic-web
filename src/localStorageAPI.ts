@@ -35,4 +35,4 @@ export const getDataFromToken = (token = getLocalStorageResource('token')) => {
 
 export const getAccountType = () => getLocalStorageResource('accountType') || userType.GUEST;
 
-export const getAccountId = () => getLocalStorageResource('id');
+export const getAccountId = (): number | undefined => getLocalStorageResource('id');

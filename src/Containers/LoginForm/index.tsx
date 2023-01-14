@@ -57,6 +57,7 @@ const LoginForm = () => {
 
     if (response.ok) {
       setLocalStorageResources({
+        id: responseBody.id,
         token: response.headers.get('Authorization'),
         accountType: responseBody.account_type,
         first_name: responseBody.first_name,

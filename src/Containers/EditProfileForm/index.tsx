@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Col, Form, FormItemProps, Row } from 'antd';
+import { Col, Form, FormItemProps, Row, Space } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
@@ -13,6 +13,7 @@ import { API_URL } from '../../api';
 import { clearLocalStorage, getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
 import { SessionInfoContext, userType } from '../../SessionInfoContext';
 import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
+import ScheduleAddForm from '../DoctorsSecheduleForm';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -27,7 +28,7 @@ type userInfo = {
 };
 
 const ProfileEditForm = () => {
-  const { accountType , setAccountType } = useContext(SessionInfoContext);
+  const { accountType, setAccountType } = useContext(SessionInfoContext);
 
   const navigate = useNavigate();
 
@@ -204,6 +205,7 @@ const ProfileEditForm = () => {
           </Col>
         </Row>
       </Form>
+      <Space>{accountType === userType.DOCTOR && <ScheduleAddForm />}</Space>
     </Spin>
   );
 };
