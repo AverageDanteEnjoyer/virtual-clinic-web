@@ -1,6 +1,5 @@
 import { API_URL } from '../../api';
 import { getAccountId, getLocalStorageResource } from '../../localStorageAPI';
-import { StyledTitle } from '../../Components/Typography/styles';
 
 type data = {
   id: number;
@@ -20,21 +19,20 @@ type plan = {
 };
 
 const ScheduleAddForm = () => {
-  const fetchWorkPlanData = async (credentials: plan) => {
+  const fetchWorkPlanData = async () => {
     const token = getLocalStorageResource('token');
     const id = getAccountId();
 
-    return await fetch(`${API_URL}/api/v1/doctors/${id}/work_plans/`, {
+    const response = await fetch(`${API_URL}/api/v1/doctors/${id}/work_plans/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
       },
-      body: JSON.stringify(credentials),
     });
-  };
 
-  return <StyledTitle>Work plan edit</StyledTitle>;
+    return response.json();
+  };
 };
 
 export default ScheduleAddForm;
