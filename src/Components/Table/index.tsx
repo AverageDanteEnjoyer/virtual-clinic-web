@@ -5,6 +5,7 @@ import type { ColumnsType } from 'antd/es/table';
 interface ErrorType {
   [field: string]: string[];
 }
+
 export interface FetchResponse<T extends TableRecord> {
   data: T[];
   errors?: ErrorType;
@@ -18,9 +19,10 @@ interface TableProps<T extends TableRecord> {
   columns: ColumnsType<T>;
   fetchData: () => Promise<FetchResponse<T>>;
   actions?: (text: any, record: T, index: number) => ReactNode;
+  rowKey?: (record: T) => string;
 }
 
-const Table = <T extends TableRecord>({ columns, fetchData, actions }: TableProps<T>) => {
+const Table = <T extends TableRecord>({ columns, fetchData, actions, rowKey }: TableProps<T>) => {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -48,15 +50,7 @@ const Table = <T extends TableRecord>({ columns, fetchData, actions }: TableProp
       },
     ]);
 
-  return (
-    <TableAntd
-      columns={columns}
-      dataSource={data}
-      loading={loading}
-      rowKey={(record) => record.id}
-      pagination={false}
-    />
-  );
+  return <TableAntd columns={columns} dataSource={data} loading={loading} rowKey={rowKey || 'id'} pagination={false} />;
 };
 
 export default Table;

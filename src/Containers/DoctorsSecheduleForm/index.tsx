@@ -1,10 +1,10 @@
-import { API_URL } from '../../api';
-import { InputNumber, TimePicker } from 'antd';
-import Table, { FetchResponse, TableRecord } from '../../Components/Table';
-import { getAccountId, getLocalStorageResource } from '../../localStorageAPI';
+import { useState } from 'react';
+import { InputNumber } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
-import dayjs from 'dayjs';
+import { API_URL } from '../../api';
+import { getAccountId, getLocalStorageResource } from '../../localStorageAPI';
+import Table, { FetchResponse, TableRecord } from '../../Components/Table';
 import Button from '../../Components/Button';
 
 interface WorkPlan extends TableRecord {
@@ -16,90 +16,79 @@ interface WorkPlan extends TableRecord {
   updated_at: string;
 }
 
-const defaultData: WorkPlan[] = [
-  {
-    id: 0,
-    day_of_week: 'sunday',
-    work_hour_start: 0,
-    work_hour_end: 0,
-  } as WorkPlan,
-  {
-    id: 0,
-    day_of_week: 'monday',
-    work_hour_start: 0,
-    work_hour_end: 0,
-  } as WorkPlan,
-  {
-    id: 0,
-    day_of_week: 'tuesday',
-    work_hour_start: 0,
-    work_hour_end: 0,
-  } as WorkPlan,
-  {
-    id: 0,
-    day_of_week: 'wednesday',
-    work_hour_start: 0,
-    work_hour_end: 0,
-  } as WorkPlan,
-  {
-    id: 0,
-    day_of_week: 'thursday',
-    work_hour_start: 0,
-    work_hour_end: 0,
-  } as WorkPlan,
-  {
-    id: 0,
-    day_of_week: 'friday',
-    work_hour_start: 0,
-    work_hour_end: 0,
-  } as WorkPlan,
-  {
-    id: 0,
-    day_of_week: 'saturday',
-    work_hour_start: 0,
-    work_hour_end: 0,
-  } as WorkPlan,
-];
+const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
-const columns: ColumnsType<WorkPlan> = [
-  {
-    title: 'Day of week',
-    dataIndex: 'day_of_week',
-    key: 'day_of_week',
-    render: (text: string) => {
-      return text[0].toUpperCase() + text.slice(1);
-    },
-  },
-  {
-    title: 'Work hour start',
-    dataIndex: 'work_hour_start',
-    key: 'work_hour_start',
-    render: (text: number, record: WorkPlan) => {
-      return <InputNumber min={0} max={23} defaultValue={text} />;
-    },
-  },
-  {
-    title: 'Work hour end',
-    dataIndex: 'work_hour_end',
-    key: 'work_hour_end',
-    render: (text: number, record: WorkPlan) => {
-      return (
-        <InputNumber
-          min={record.work_hour_start}
-          max={23}
-          defaultValue={text}
-          onChange={(e: any) => (record.work_hour_end = e.target.value)}
-        />
-      );
-    },
-  },
-];
+const defaultData: WorkPlan[] = days.map(
+  (day) =>
+    ({
+      id: 0,
+      day_of_week: day,
+      work_hour_start: 0,
+      work_hour_end: 0,
+    } as WorkPlan)
+);
 
 const ScheduleAddForm = () => {
+  const [workHourStart, setWorkHourStart] = useState(Array(7).fill(0));
+  const [workHourEnd, setWorkHourEnd] = useState(Array(7).fill(0));
+
+  const handleWorkHourStartChange = (value: number, index: number) => {
+    const newWorkHourStart = [...workHourStart];
+    newWorkHourStart[index] = value;
+    setWorkHourStart(newWorkHourStart);
+  };
+
+  const handleWorkHourEndChange = (value: number, index: number) => {
+    const newWorkHourEnd = [...workHourEnd];
+    newWorkHourEnd[index] = value;
+    setWorkHourEnd(newWorkHourEnd);
+  };
+
+  const columns: ColumnsType<WorkPlan> = [
+    {
+      title: 'Day of week',
+      dataIndex: 'day_of_week',
+      key: 'day_of_week',
+      render: (text: string) => {
+        return text[0].toUpperCase() + text.slice(1);
+      },
+    },
+    {
+      title: 'Work hour start',
+      dataIndex: 'work_hour_start',
+      key: 'work_hour_start',
+      render: (text: number, record: WorkPlan, index: number) => {
+        return (
+          <InputNumber
+            min={0}
+            max={23}
+            value={workHourStart[index]}
+            onChange={(val) => handleWorkHourStartChange(val, index)}
+          />
+        );
+      },
+    },
+    {
+      title: 'Work hour end',
+      dataIndex: 'work_hour_end',
+      key: 'work_hour_end',
+      render: (text: number, record: WorkPlan, index: number) => {
+        return (
+          <InputNumber
+            min={1}
+            max={24}
+            value={workHourEnd[index]}
+            onChange={(val) => handleWorkHourEndChange(val, index)}
+          />
+        );
+      },
+    },
+  ];
+
   const actions = (text: any, record: WorkPlan, index: number) => {
     return (
       <>
-        <Button onClick={() => console.log(text)}>Save</Button>
+        <Button onClick={() => console.log(workHourStart[index], workHourEnd[index])}>Save</Button>
         <Button>Delete</Button>
       </>
     );
@@ -109,7 +98,6 @@ const ScheduleAddForm = () => {
     if (!token) return { data: [] };
 
     const doctorId = getAccountId();
-    console.log(doctorId, token);
     const response = await fetch(`${API_URL}/api/v1/doctors/${doctorId}/work_plans/`, {
       method: 'GET',
       headers: {
@@ -133,7 +121,7 @@ const ScheduleAddForm = () => {
     return Promise.resolve(data);
   };
 
-  return <Table fetchData={fetchData} columns={columns} actions={actions} />;
+  return <Table fetchData={fetchData} columns={columns} actions={actions} rowKey={(record) => record.day_of_week} />;
 };
 
 export default ScheduleAddForm;
