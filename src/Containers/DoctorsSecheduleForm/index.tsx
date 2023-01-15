@@ -18,15 +18,15 @@ interface WorkPlan extends TableRecord {
 
 const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
-const defaultData: WorkPlan[] = days.map(
-  (day) =>
-    ({
-      id: 0,
-      day_of_week: day,
-      work_hour_start: 0,
-      work_hour_end: 0,
-    } as WorkPlan)
-);
+const defaultData: WorkPlan[] = days.map((day) => ({
+  id: 0,
+  user_id: 0,
+  day_of_week: day,
+  work_hour_start: 0,
+  work_hour_end: 0,
+  created_at: '',
+  updated_at: '',
+}));
 
 const ScheduleAddForm = () => {
   const [workHourStart, setWorkHourStart] = useState(Array(7).fill(0));
