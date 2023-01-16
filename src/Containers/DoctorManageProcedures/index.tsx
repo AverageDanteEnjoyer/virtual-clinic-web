@@ -26,65 +26,75 @@ const DoctorManageProcedures = () => {
     const token = getLocalStorageResource('token');
     if (!token) return;
     const { userID } = getDataFromToken();
-    const response = await fetch(`${API_URL}/api/v1/doctors/${userID}/procedures/?per_page=${100}&page=${1}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-    });
-    const responseDetails = await response.json();
-    setLoading(false);
-    setDoctorProcedures(responseDetails.data);
-    setTotalPages(responseDetails.data.length);
-    console.log(totalPages);
+    try {
+      const response = await fetch(`${API_URL}/api/v1/doctors/${userID}/procedures/?per_page=${100}&page=${1}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      });
+      if (response) {
+        setLoading(false);
+        const responseDetails = await response.json();
+        setDoctorProcedures(responseDetails.data);
+        setTotalPages(responseDetails.data.length);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
   };
 
   const handleSumbit = async (event: FormEvent<HTMLFormElement>) => {
     const token = getLocalStorageResource('token');
     if (!token) return;
 
-    await fetch(`${API_URL}/api/v1/procedures`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        procedure: {
-          name: procedureName,
-          needed_time_min: neededTime,
+    try {
+      const response = await fetch(`${API_URL}/api/v1/procedures`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
         },
-      }),
-    }).then(function (response) {
-      console.log(response);
-    });
-    getDoctorProcedures();
+        method: 'POST',
+        body: JSON.stringify({
+          procedure: {
+            name: procedureName,
+            needed_time_min: neededTime,
+          },
+        }),
+      });
+      if (response) {
+        getDoctorProcedures();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDelete = async (record: any) => {
     const token = getLocalStorageResource('token');
     if (!token) return;
-
-    await fetch(`${API_URL}/api/v1/procedures/${record.id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      method: 'DELETE',
-      body: JSON.stringify({
-        procedure: {
-          name: procedureName,
-          needed_time_min: neededTime,
+    try {
+      const response = await fetch(`${API_URL}/api/v1/procedures/${record.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
         },
-      }),
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error('error');
-      } else {
+        method: 'DELETE',
+        body: JSON.stringify({
+          procedure: {
+            name: procedureName,
+            needed_time_min: neededTime,
+          },
+        }),
+      });
+      if (response) {
         getDoctorProcedures();
       }
-    });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
