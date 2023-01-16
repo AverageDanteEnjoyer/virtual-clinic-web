@@ -1,6 +1,7 @@
-import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
-import { Table, Form, Input, Button, Spin } from 'antd';
 import { useState, useEffect, FormEvent } from 'react';
+import { Table, Form, Input, Button, Spin } from 'antd';
+
+import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 import './index.css';
 
@@ -11,7 +12,6 @@ type doctorProceduresType = {
 };
 
 const DoctorManageProcedures = () => {
-  const [totalPages, setTotalPages] = useState<number>(0);
   const [doctorProcedures, setDoctorProcedures] = useState<doctorProceduresType[]>([]);
   const [procedureName, setProcedureName] = useState<string>('');
   const [neededTime, setNeededTime] = useState<string | number>('');
@@ -27,7 +27,7 @@ const DoctorManageProcedures = () => {
     if (!token) return;
     const { userID } = getDataFromToken();
     try {
-      const response = await fetch(`${API_URL}/api/v1/doctors/${userID}/procedures/?per_page=${100}&page=${1}`, {
+      const response = await fetch(`${API_URL}/api/v1/doctors/${userID}/procedures/?per_page=${100}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -38,7 +38,6 @@ const DoctorManageProcedures = () => {
         setLoading(false);
         const responseDetails = await response.json();
         setDoctorProcedures(responseDetails.data);
-        setTotalPages(responseDetails.data.length);
       }
     } catch (error) {
       setLoading(false);
@@ -49,7 +48,6 @@ const DoctorManageProcedures = () => {
   const handleSumbit = async (event: FormEvent<HTMLFormElement>) => {
     const token = getLocalStorageResource('token');
     if (!token) return;
-
     try {
       const response = await fetch(`${API_URL}/api/v1/procedures`, {
         headers: {
@@ -171,7 +169,6 @@ const DoctorManageProcedures = () => {
           dataSource={doctorProcedures}
           pagination={{
             pageSize: 5,
-            total: totalPages,
           }}
         ></Table>
       </Spin>
