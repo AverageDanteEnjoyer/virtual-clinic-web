@@ -1,9 +1,8 @@
-import './index.css';
-import { API_URL } from '../../api';
 import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
-import Spin from '../../Components/Spin';
+import { Table, Form, Input, Button, Spin } from 'antd';
 import { useState, useEffect, FormEvent } from 'react';
-import { Col, Form, FormItemProps, Row, Table } from 'antd';
+import { API_URL } from '../../api';
+import './index.css';
 
 type doctorProceduresType = {
   id: number;
@@ -12,12 +11,11 @@ type doctorProceduresType = {
 };
 
 const DoctorManageProcedures = () => {
-  const [actualPage, setActualPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [doctorProcedures, setDoctorProcedures] = useState<doctorProceduresType[]>([]);
   const [procedureName, setProcedureName] = useState<string>('');
   const [neededTime, setNeededTime] = useState<string | number>('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChangeNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNeededTime(+event.target.value);
@@ -36,16 +34,13 @@ const DoctorManageProcedures = () => {
       },
     });
     const responseDetails = await response.json();
-    console.log(responseDetails);
     setLoading(false);
     setDoctorProcedures(responseDetails.data);
     setTotalPages(responseDetails.data.length);
-    console.log(responseDetails.data);
-    console.log(doctorProcedures);
+    console.log(totalPages);
   };
 
   const handleSumbit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
     const token = getLocalStorageResource('token');
     if (!token) return;
 
@@ -64,12 +59,10 @@ const DoctorManageProcedures = () => {
     }).then(function (response) {
       console.log(response);
     });
-    console.log('wywołaj get');
     getDoctorProcedures();
   };
 
   const handleDelete = async (record: any) => {
-    console.log('essa del');
     const token = getLocalStorageResource('token');
     if (!token) return;
 
@@ -116,13 +109,24 @@ const DoctorManageProcedures = () => {
     },
     {
       title: 'Actions',
-      key: 'delete',
+      key: 'actions',
       render: (record: any) => {
-        // return <button style={{ color: 'white', backgroundColor: '#6C0C99' }}>delete</button>;
         return (
-          <button className="btn-del" onClick={() => handleDelete(record)}>
-            delete
-          </button>
+          <>
+            {/* <button}>
+              DELETE
+            </button> */}
+            <Button
+              type="primary"
+              shape="round"
+              htmlType="submit"
+              size="large"
+              loading={loading}
+              onClick={() => handleDelete(record)}
+            >
+              DELETE
+            </Button>
+          </>
         );
       },
     },
@@ -131,31 +135,24 @@ const DoctorManageProcedures = () => {
   return (
     <>
       <div className="center">
-        <form className="wrap" onSubmit={handleSumbit}>
-          <fieldset className="field-area">
-            <label htmlFor="name">Procedure name:</label>
-            <input
+        <Form className="wrap" onFinish={handleSumbit}>
+          <Form.Item label="Procedure name:" name="procedure">
+            <Input
               type="text"
               id="name"
               required
               placeholder="Input your new procedure"
               value={procedureName}
               onChange={(e) => setProcedureName(e.target.value)}
-            />
-          </fieldset>
-          <fieldset className="field-area">
-            <label htmlFor="num">Needed time:</label>
-            <input
-              type="number"
-              id="number"
-              required
-              value={neededTime}
-              onChange={handleChangeNumber}
-              className="inp-num"
-            />
-          </fieldset>
-          <button type="submit">Add</button>
-        </form>
+            ></Input>
+          </Form.Item>
+          <Form.Item label="Needed time:" name="time">
+            <Input min="1" type="number" id="number" required value={neededTime} onChange={handleChangeNumber} />
+          </Form.Item>
+          <Button type="primary" shape="round" htmlType="submit" size="large" loading={loading}>
+            Submit
+          </Button>
+        </Form>
       </div>
       <Spin spinning={loading} tip="waiting for server response...">
         <Table
@@ -165,10 +162,6 @@ const DoctorManageProcedures = () => {
           pagination={{
             pageSize: 5,
             total: totalPages,
-            onChange: (page) => {
-              console.log(page);
-              setActualPage(page);
-            },
           }}
         ></Table>
       </Spin>
