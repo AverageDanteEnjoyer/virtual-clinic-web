@@ -1,9 +1,9 @@
 import { ColumnsType } from 'antd/es/table';
 
-import { API_URL } from '../../api';
-import { getAccountId, getLocalStorageResource } from '../../localStorageAPI';
-import Table, { FetchResponse, TableRecord } from '../../Components/Table';
-import Button from '../../Components/Button';
+import { API_URL } from '../../../api';
+import { getAccountId, getLocalStorageResource } from '../../../localStorageAPI';
+import Table, { FetchResponse, TableRecord } from '../../../Components/Table';
+import Button from '../../../Components/Button';
 
 interface WorkPlan extends TableRecord {
   user_id: number;
@@ -14,7 +14,7 @@ interface WorkPlan extends TableRecord {
   updated_at: string;
 }
 
-const ScheduleAddForm = () => {
+const WorkPlanTable = () => {
   const columns: ColumnsType<WorkPlan> = [
     {
       title: 'Day of week',
@@ -63,4 +63,4 @@ const ScheduleAddForm = () => {
   return <Table fetchData={fetchData} columns={columns} actions={actions} />;
 };
 
-export default ScheduleAddForm;
+export default WorkPlanTable;
