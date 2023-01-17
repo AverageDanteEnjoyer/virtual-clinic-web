@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Col, Form, FormItemProps, Row, Space } from 'antd';
+import { Form, FormItemProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
@@ -188,16 +188,20 @@ const ProfileEditForm = () => {
             />
           </Form.Item>
         )}
-        <Row gutter={[0, 12]}>
-          <Col span={12} offset={6}>
-            <Button shape="round" htmlType="submit" size="large" loading={loading}>
-              Submit
-            </Button>
-          </Col>
-          <Col span={12} offset={6}>
-            {alertsJSX}
-          </Col>
-        </Row>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            gap: '10px 100%',
+          }}
+        >
+          <Button shape="round" htmlType="submit" size="large" loading={loading}>
+            Submit
+          </Button>
+          {alertsJSX}
+        </div>
       </Form>
     </Spin>
   );
