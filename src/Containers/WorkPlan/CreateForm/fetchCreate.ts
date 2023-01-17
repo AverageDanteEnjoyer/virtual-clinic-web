@@ -11,7 +11,7 @@ const fetchCreate = async (body: WorkPlanBody) => {
   const token = getLocalStorageResource('token');
   if (!token) return;
 
-  const response = await fetch(`${ API_URL }/api/v1/work_plans/`, {
+  const response = await fetch(`${API_URL}/api/v1/work_plans/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -21,6 +21,6 @@ const fetchCreate = async (body: WorkPlanBody) => {
   });
 
   return response.json();
-}
+};
 
 export default fetchCreate;

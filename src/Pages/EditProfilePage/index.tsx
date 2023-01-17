@@ -6,6 +6,7 @@ import Navbar from '../../Components/Navbar';
 import WorkPlanTable from '../../Containers/WorkPlan/WorkPlanTable';
 import { StyledTitle } from '../../Components/Typography/styles';
 import { SessionInfoContext, userType } from '../../SessionInfoContext';
+import CreateForm from '../../Containers/WorkPlan/CreateForm';
 
 const ProfileEditPage = () => {
   const { accountType } = useContext(SessionInfoContext);
@@ -22,6 +23,10 @@ const ProfileEditPage = () => {
           <Col span={12} offset={6}>
             <StyledTitle>Edit work plan</StyledTitle>
             <WorkPlanTable />
+            <>
+              <StyledTitle level={3}>Add new one</StyledTitle>
+              <CreateForm />
+            </>
           </Col>
         )}
       </Row>
