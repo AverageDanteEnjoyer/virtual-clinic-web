@@ -175,13 +175,7 @@ const ProfileEditForm = () => {
 
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 12 }}
-        autoComplete="off"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-      >
+      <Form labelCol={{ span: 4 }} autoComplete="off" onFinish={onFinish} onFinishFailed={onFinishFailed}>
         {formItemsJSX}
         {accountType === userType.DOCTOR && (
           <Form.Item label="Professions">
@@ -205,7 +199,6 @@ const ProfileEditForm = () => {
           </Col>
         </Row>
       </Form>
-      <Space>{accountType === userType.DOCTOR && <ScheduleAddForm />}</Space>
     </Spin>
   );
 };
