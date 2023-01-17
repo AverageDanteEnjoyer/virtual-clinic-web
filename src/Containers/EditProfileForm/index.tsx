@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
-import { Form, FormItemProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { Form, FormItemProps } from 'antd';
 
 import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
@@ -13,7 +13,7 @@ import { API_URL } from '../../api';
 import { clearLocalStorage, getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
 import { SessionInfoContext, userType } from '../../SessionInfoContext';
 import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
-import ScheduleAddForm from '../DoctorsSecheduleForm';
+import { CenteredContainer } from './styles';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -188,20 +188,12 @@ const ProfileEditForm = () => {
             />
           </Form.Item>
         )}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            gap: '10px 100%',
-          }}
-        >
+        <CenteredContainer>
           <Button shape="round" htmlType="submit" size="large" loading={loading}>
             Submit
           </Button>
           {alertsJSX}
-        </div>
+        </CenteredContainer>
       </Form>
     </Spin>
   );
