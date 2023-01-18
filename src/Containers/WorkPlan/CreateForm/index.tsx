@@ -67,7 +67,7 @@ const CreateForm = () => {
       ]);
     } else {
       setAlerts(
-        Object.entries(responseBody.errors).map(([message]) => ({
+        Object.entries(responseBody.errors).map(([key, message]) => ({
           type: 'error',
           message: `Day ${message}`,
         }))
