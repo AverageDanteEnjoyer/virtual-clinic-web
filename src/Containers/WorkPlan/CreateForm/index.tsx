@@ -98,7 +98,6 @@ const CreateForm = () => {
           rules={[{ required: true, message: 'Please input day of week' }]}
         >
           <Select
-            mode={undefined}
             placeholder="Select day of week"
             customOptions={[
               {
@@ -119,14 +118,14 @@ const CreateForm = () => {
                 ],
               },
             ]}
-          ></Select>
+          />
         </Form.Item>
         <Form.Item
           name="time_range"
           label="Work hours"
           rules={[{ required: true, message: 'Please select your work hours' }]}
         >
-          <TimePicker.RangePicker format={'H'} allowClear={false}></TimePicker.RangePicker>
+          <TimePicker.RangePicker format={'H'} allowClear={false} />
         </Form.Item>
 
         <CenteredContainer>

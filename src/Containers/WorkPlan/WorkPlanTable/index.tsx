@@ -1,4 +1,5 @@
 import { ColumnsType } from 'antd/es/table';
+import _ from 'lodash';
 
 import { API_URL } from '../../../api';
 import { getAccountId, getLocalStorageResource } from '../../../localStorageAPI';
@@ -21,7 +22,7 @@ const WorkPlanTable = () => {
       dataIndex: 'day_of_week',
       key: 'day_of_week',
       render: (text: string) => {
-        return text[0].toUpperCase() + text.slice(1);
+        return _.capitalize(text);
       },
     },
     {
@@ -36,14 +37,12 @@ const WorkPlanTable = () => {
     },
   ];
 
-  const actions = (text: any, record: WorkPlan, index: number) => {
-    return (
-      <>
-        <Button>Edit</Button>
-        <Button>Delete</Button>
-      </>
-    );
-  };
+  const actions = (text: any, record: WorkPlan, index: number) => (
+    <>
+      <Button>Edit</Button>
+      <Button>Delete</Button>
+    </>
+  );
   const fetchData = async (): Promise<FetchResponse<WorkPlan>> => {
     const token = getLocalStorageResource('token');
     if (!token) return { data: [] };
