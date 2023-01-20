@@ -15,6 +15,13 @@ interface WorkPlan extends TableRecord {
   updated_at: string;
 }
 
+interface ResponseBodyType {
+  data: WorkPlan[];
+  total: number;
+  page: number;
+  per_page: number;
+}
+
 const WorkPlanTable = () => {
   const columns: ColumnsType<WorkPlan> = [
     {
@@ -43,23 +50,17 @@ const WorkPlanTable = () => {
       <Button>Delete</Button>
     </>
   );
-  const fetchData = async (): Promise<FetchResponse<WorkPlan>> => {
-    const token = getLocalStorageResource('token');
-    if (!token) return { data: [] };
 
-    const doctorId = getAccountId();
-    const response = await fetch(`${API_URL}/api/v1/doctors/${doctorId}/work_plans/`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-    });
+  const doctorId = getAccountId();
 
-    return response.json();
-  };
-
-  return <Table fetchData={fetchData} columns={columns} actions={actions} />;
+  return (
+    <Table<WorkPlan, ResponseBodyType>
+      columns={columns}
+      url={`${API_URL}/api/v1/doctors/${doctorId}/work_plans/?page=1&per_page=7`}
+      extractData={(response: ResponseBodyType) => response.data}
+      actions={actions}
+    />
+  );
 };
 
 export default WorkPlanTable;
