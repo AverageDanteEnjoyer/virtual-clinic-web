@@ -1,6 +1,6 @@
-import { Col, Modal, Row } from 'antd';
-import { InfoCircleFilled } from '@ant-design/icons';
-import { ColumnsType } from 'antd/es/table';
+import {Col, Modal, Row} from 'antd';
+import {InfoCircleFilled} from '@ant-design/icons';
+import {ColumnsType} from 'antd/es/table';
 
 import Carousel from '../../Components/Carousel';
 import Spin from '../../Components/Spin';
@@ -12,10 +12,10 @@ import Select from '../../Components/Select';
 import Button from '../../Components/Button';
 import ComponentsStyles from './Components.module.css';
 import Navbar from '../../Components/Navbar';
-import PaginatedTable, { FetchParams, FetchResponse, TableRecord } from '../../Components/PaginatedTable';
-import { getLocalStorageResource } from '../../localStorageAPI';
-import { API_URL } from '../../api';
-import { useState } from 'react';
+import PaginatedTable, {FetchParams, FetchResponse, TableRecord} from '../../Components/PaginatedTable';
+import {getLocalStorageResource} from '../../localStorageAPI';
+import {API_URL} from '../../api';
+import {useState} from 'react';
 
 interface Procedure extends TableRecord {
   user_id: number;
@@ -29,9 +29,9 @@ const ComponentsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // I leave it here to others, who may not know how to correctly use it.
-  const paginatedTableFetchData = async ({ page, perPage, filter }: FetchParams): Promise<FetchResponse<Procedure>> => {
+  const paginatedTableFetchData = async ({page, perPage, filter}: FetchParams): Promise<FetchResponse<Procedure>> => {
     const token = getLocalStorageResource('token');
-    if (!token) return { data: [], page, per_page: perPage, total: 0 };
+    if (!token) return {data: [], page, per_page: perPage, total: 0};
 
     const filterString = Object.keys(filter)
       .map((key) => `${key}=${filter[key] as string}`)
@@ -47,25 +47,6 @@ const ComponentsPage = () => {
 
     return response.json();
   };
-
-  const paginatedTableColumns: ColumnsType<Procedure> = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      filtered: true,
-    },
-    {
-      title: 'Needed time',
-      dataIndex: 'needed_time_min',
-      key: 'needed_time_min',
-    },
-  ];
 
   const paginatedTableActions = (text: any, record: Procedure, index: number) => {
     const showModal = () => {
@@ -98,16 +79,42 @@ const ComponentsPage = () => {
     );
   };
 
+  const paginatedTableColumns: ColumnsType<Procedure> = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      filtered: true,
+    },
+    {
+      title: 'Needed time',
+      dataIndex: 'needed_time_min',
+      key: 'needed_time_min',
+    },
+    {
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
+      render: paginatedTableActions
+    },
+
+  ];
+
   return (
     <>
-      <Navbar />
+      <Navbar/>
       <div className={ComponentsStyles.wrapper}>
         <Row gutter={[14, 12]}>
           <Col className="gutter-row" span={12}>
-            <Typography />
+            <Typography/>
           </Col>
           <Col className="gutter-row" span={12}>
-            <Carousel />
+            <Carousel/>
           </Col>
         </Row>
         <Row gutter={[14, 12]}>
@@ -115,17 +122,16 @@ const ComponentsPage = () => {
             <PaginatedTable<Procedure>
               fetchData={paginatedTableFetchData}
               columns={paginatedTableColumns}
-              actions={paginatedTableActions}
             />
           </Col>
         </Row>
         <Row gutter={[0, 12]}>
           <Col className="gutter-row" span={24}>
-            <Input password />
+            <Input password/>
           </Col>
         </Row>
         <Row gutter={[12, 12]}>
-          <Col className="gutter-row" span={2} />
+          <Col className="gutter-row" span={2}/>
           <Col className="gutter-row" span={4}>
             <Button shape="round">Button</Button>
           </Col>
@@ -133,12 +139,12 @@ const ComponentsPage = () => {
             <Alert
               message="Our website uses cookies to improve your experience"
               type="info"
-              icon={<InfoCircleFilled style={{ color: 'white' }} />}
+              icon={<InfoCircleFilled style={{color: 'white'}}/>}
             />
           </Col>
           <Col className="gutter-row" span={9}>
             <Spin tip="loading" size="small">
-              <Alert />
+              <Alert/>
             </Spin>
           </Col>
         </Row>
@@ -149,8 +155,8 @@ const ComponentsPage = () => {
               {
                 label: 'gr1',
                 children: [
-                  { label: 'item1', value: 'item1' },
-                  { label: 'item2', value: 'item2' },
+                  {label: 'item1', value: 'item1'},
+                  {label: 'item2', value: 'item2'},
                 ],
               },
             ]}

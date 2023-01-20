@@ -42,14 +42,18 @@ const WorkPlanTable = () => {
       dataIndex: 'work_hour_end',
       key: 'work_hour_end',
     },
+    {
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
+      render: (text: any, record: WorkPlan, index: number) => (
+        <>
+          <Button>Edit</Button>
+          <Button>Delete</Button>
+        </>
+      ),
+    },
   ];
-
-  const actions = (text: any, record: WorkPlan, index: number) => (
-    <>
-      <Button>Edit</Button>
-      <Button>Delete</Button>
-    </>
-  );
 
   const doctorId = getAccountId();
 
@@ -58,7 +62,6 @@ const WorkPlanTable = () => {
       columns={columns}
       url={`${API_URL}/api/v1/doctors/${doctorId}/work_plans/?page=1&per_page=7`}
       extractData={(response: ResponseBodyType) => response.data}
-      actions={actions}
     />
   );
 };

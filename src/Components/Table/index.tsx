@@ -21,23 +21,12 @@ interface TableProps<T extends TableRecord, R> {
   columns: ColumnsType<T>;
   url: string;
   extractData: (response: R) => T[];
-  actions?: (text: any, record: T, index: number) => ReactNode;
   rowKey?: (record: T) => string;
 }
 
-const Table = <T extends TableRecord, R>({ columns, url, extractData, actions, rowKey }: TableProps<T, R>) => {
+const Table = <T extends TableRecord, R>({ columns, url, extractData, rowKey }: TableProps<T, R>) => {
   const isComponentMounted = useRef(true);
   const { loading, responseData } = useFetch<R>(url, isComponentMounted, {} as R);
-
-  actions &&
-    (columns = [
-      ...columns,
-      {
-        title: 'Actions',
-        key: 'actions',
-        render: actions,
-      },
-    ]);
 
   return (
     <TableAntd
