@@ -1,5 +1,5 @@
 import { ColumnsType } from 'antd/es/table';
-import _ from 'lodash';
+import { capitalize } from 'lodash';
 
 import { API_URL } from '../../../api';
 import { getAccountId, getLocalStorageResource } from '../../../localStorageAPI';
@@ -22,7 +22,7 @@ const WorkPlanTable = () => {
       dataIndex: 'day_of_week',
       key: 'day_of_week',
       render: (text: string) => {
-        return _.capitalize(text);
+        return capitalize(text);
       },
     },
     {

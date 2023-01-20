@@ -75,23 +75,13 @@ const CreateForm = () => {
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
-
   const alertsJSX = alerts.map(({ type, message, description }, idx) => (
     <Alert key={idx} type={type} message={message} description={description} />
   ));
 
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 12 }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
+      <Form labelCol={{ span: 6 }} wrapperCol={{ span: 12 }} onFinish={onFinish} autoComplete="off">
         <Form.Item
           name="day_of_week"
           label="Day of week"
