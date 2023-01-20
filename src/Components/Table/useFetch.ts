@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 
 import { getLocalStorageResource } from '../../localStorageAPI';
 
+const noBodyResponseStatuses = [204, 401];
+
 export const useFetch = <T>(url: string, ref: any, initialValue: T) => {
   const [responseData, setResponseData] = useState<T>(initialValue);
   const [error, setError] = useState(null);
@@ -20,8 +22,10 @@ export const useFetch = <T>(url: string, ref: any, initialValue: T) => {
               Authorization: token,
             },
           });
-          const responseBody = await response.json();
-          setResponseData(responseBody);
+          if (!noBodyResponseStatuses.includes(response.status)) {
+            const responseBody = await response.json();
+            setResponseData(responseBody);
+          }
         } catch (err: any) {
           setError(err);
         } finally {
