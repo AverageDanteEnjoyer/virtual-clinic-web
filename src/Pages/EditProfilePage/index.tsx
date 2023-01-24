@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import ProfileEditForm from '../../Containers/EditProfileForm';
 import { StyledTitle } from '../../Components/Typography/styles';
@@ -8,7 +8,9 @@ import { TitleContext } from '../../Contexts/TitleContext';
 const ProfileEditPage = () => {
   const { updateTitle } = useContext(TitleContext);
 
-  updateTitle('Profile edit');
+  useEffect(() => {
+    updateTitle('Virtual Clinic - Edit profile');
+  }, [updateTitle]);
 
   return (
     <>

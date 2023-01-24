@@ -1,14 +1,18 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Col, Row } from 'antd';
 
 import Navbar from '../../Components/Navbar';
 import { StyledTitle } from '../../Components/Typography/styles';
 import { TitleContext } from '../../Contexts/TitleContext';
+import PaginatedSelect from '../../Components/PaginatedSelect';
+import fetchAllDoctors from './fetchDoctors';
 
 const MakeAppointmentPage = () => {
   const { updateTitle } = useContext(TitleContext);
 
-  updateTitle('Make an appointment');
+  useEffect(() => {
+    updateTitle('Make an appointment');
+  }, [updateTitle]);
 
   return (
     <>
@@ -18,6 +22,13 @@ const MakeAppointmentPage = () => {
           <StyledTitle>Make an appointment</StyledTitle>
           <div>
             <p>Choose a doctor</p>
+            <PaginatedSelect
+              fetchOptions={fetchAllDoctors}
+              fetchInitialValues={() => Promise.resolve([])}
+              createNewOption={() => Promise.resolve({ success: true, message: '' })}
+              values={[]}
+              setValues={() => {}}
+            />
 
             <p>Choose a procedure</p>
 

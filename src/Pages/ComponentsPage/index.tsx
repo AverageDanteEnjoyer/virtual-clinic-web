@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Col, Modal, Row } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 
@@ -101,7 +101,9 @@ const ComponentsPage = () => {
     );
   };
 
-  updateTitle('Components');
+  useEffect(() => {
+    updateTitle('Virtual Clinic - Components');
+  }, [updateTitle]);
 
   return (
     <>

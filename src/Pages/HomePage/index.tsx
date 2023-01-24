@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import Navbar from '../../Components/Navbar';
 import { TitleContext } from '../../Contexts/TitleContext';
@@ -6,7 +6,9 @@ import { TitleContext } from '../../Contexts/TitleContext';
 const HomePage = () => {
   const { updateTitle } = useContext(TitleContext);
 
-  updateTitle('Virtual Clinic');
+  useEffect(() => {
+    updateTitle('Virtual Clinic');
+  }, [updateTitle]);
 
   return <Navbar />;
 };
