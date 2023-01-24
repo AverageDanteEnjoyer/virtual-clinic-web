@@ -19,7 +19,7 @@ function getItem(label: ReactNode, children?: MenuItem[], condition: () => boole
   return {
     key: keyCounter++,
     label,
-    children,
+    children: children?.length ? children : undefined,
   };
 }
 
@@ -44,17 +44,17 @@ const Navbar = () => {
     const items: MenuItem[] | null = [
       getItem(<Link to={routes.components}>components</Link>),
       getItem(<Link to={routes.home}>home</Link>),
-      getItem(<Link to={routes.makeAppointment}>Make an appointment</Link>, undefined, () => equals(userType.PATIENT)),
+      getItem(<Link to={routes.makeAppointment}>Make an appointment</Link>, [], () => equals(userType.PATIENT)),
       getItem(<UserOutlined />, [
-        getItem(<Link to={routes.logIn}>Log in</Link>, undefined, () => equals(userType.GUEST)),
-        getItem(<Link to={routes.register}>Register</Link>, undefined, () => equals(userType.GUEST)),
-        getItem(<Link to={routes.editProfile}>Edit profile</Link>, undefined, () => notEquals(userType.GUEST)),
-        getItem('Appointments', undefined, () => notEquals(userType.GUEST)),
+        getItem(<Link to={routes.logIn}>Log in</Link>, [], () => equals(userType.GUEST)),
+        getItem(<Link to={routes.register}>Register</Link>, [], () => equals(userType.GUEST)),
+        getItem(<Link to={routes.editProfile}>Edit profile</Link>, [], () => notEquals(userType.GUEST)),
+        getItem('Appointments', [], () => notEquals(userType.GUEST)),
         getItem(
           <Link to={routes.home} onClick={logOut}>
             Log out
           </Link>,
-          undefined,
+          [],
           () => notEquals(userType.GUEST)
         ),
       ]),
