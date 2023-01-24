@@ -1,4 +1,4 @@
-import { Key, ReactNode, useContext } from 'react';
+import { ReactNode, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
@@ -7,19 +7,24 @@ import routes from '../../routes';
 import { clearLocalStorage, getLocalStorageResource } from '../../localStorageAPI';
 import { SessionInfoContext, userType } from '../../SessionInfoContext';
 import { API_URL } from '../../api';
+import { equals, notEquals } from '../../privateRoute';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-function getItem(label: ReactNode, key: Key, children?: MenuItem[]): MenuItem {
+let keyCounter: number = 0;
+
+function getItem(label: ReactNode, children?: MenuItem[], condition: () => boolean = () => true): MenuItem | null {
+  if (!condition()) return null;
+
   return {
+    key: keyCounter++,
     label,
-    key,
     children,
-  } as MenuItem;
+  };
 }
 
 const Navbar = () => {
-  const { accountType, setAccountType } = useContext(SessionInfoContext);
+  const { setAccountType } = useContext(SessionInfoContext);
 
   const logOut = async () => {
     const token = getLocalStorageResource('token');
@@ -35,29 +40,29 @@ const Navbar = () => {
     setAccountType(userType.GUEST);
   };
 
-  const items: MenuItem[] = [
-    getItem(<Link to={routes.components}>components</Link>, '1'),
-    getItem(<Link to={routes.home}>home</Link>, '2'),
-    getItem(
-      <UserOutlined />,
-      'user',
-      accountType !== userType.GUEST
-        ? [
-            getItem(<Link to={routes.editProfile}>Edit profile</Link>, '3'),
-            getItem('Appointments', '4'),
-            getItem(
-              <Link to={routes.home} onClick={logOut}>
-                log out
-              </Link>,
-              '5'
-            ),
-          ]
-        : [
-            getItem(<Link to={routes.logIn}>log in</Link>, '3'),
-            getItem(<Link to={routes.register}>register</Link>, '4'),
-          ]
-    ),
-  ];
+  const getMenuItems = (): MenuItem[] => {
+    const items: MenuItem[] | null = [
+      getItem(<Link to={routes.components}>components</Link>),
+      getItem(<Link to={routes.home}>home</Link>),
+      getItem(<Link to={routes.makeAppointment}>Make an appointment</Link>, undefined, () => equals(userType.PATIENT)),
+      getItem(<UserOutlined />, [
+        getItem(<Link to={routes.logIn}>Log in</Link>, undefined, () => equals(userType.GUEST)),
+        getItem(<Link to={routes.register}>Register</Link>, undefined, () => equals(userType.GUEST)),
+        getItem(<Link to={routes.editProfile}>Edit profile</Link>, undefined, () => notEquals(userType.GUEST)),
+        getItem('Appointments', undefined, () => notEquals(userType.GUEST)),
+        getItem(
+          <Link to={routes.home} onClick={logOut}>
+            Log out
+          </Link>,
+          undefined,
+          () => notEquals(userType.GUEST)
+        ),
+      ]),
+    ];
+
+    return items.filter((item) => item !== null);
+  };
+
   return (
     <Row align="middle" justify="end">
       <Col flex={1}>
@@ -66,7 +71,7 @@ const Navbar = () => {
       </Col>
       <Col>
         <nav>
-          <Menu defaultSelectedKeys={['2']} mode="horizontal" theme="light" items={items} />
+          <Menu defaultSelectedKeys={['2']} mode="horizontal" theme="light" items={getMenuItems()} />
         </nav>
       </Col>
     </Row>

@@ -25,14 +25,16 @@ const Application = () => {
   }, [setAccountType]);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={routes.home} element={<HomePage />} />
-        <Route path={routes.components} element={<ComponentsPage />} />
-        {mappedPrivateRoutes}
-      </Routes>
-      <AuthVerify />
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path={routes.home} element={<HomePage />} />
+          <Route path={routes.components} element={<ComponentsPage />} />
+          {mappedPrivateRoutes}
+        </Routes>
+        <AuthVerify />
+      </BrowserRouter>
+    </>
   );
 };
 
