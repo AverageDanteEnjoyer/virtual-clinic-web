@@ -37,10 +37,6 @@ const CreateForm = () => {
       work_hour_end: values.time_range[1].$H.toString(),
     };
 
-    const credentials = {
-      work_plan: workPlan,
-    };
-
     const token = getLocalStorageResource('token');
     return await fetch(`${API_URL}/api/v1/work_plans/`, {
       method: 'POST',
@@ -48,7 +44,9 @@ const CreateForm = () => {
         'Content-Type': 'application/json',
         Authorization: token,
       },
-      body: JSON.stringify(credentials),
+      body: JSON.stringify({
+        work_plan: workPlan,
+      }),
     });
   };
 

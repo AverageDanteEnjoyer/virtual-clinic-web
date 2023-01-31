@@ -4,7 +4,9 @@ import { getLocalStorageResource } from '../../localStorageAPI';
 
 const noBodyResponseStatuses = [204, 401];
 
-export const useFetch = <T>(url: string, ref: any, initialValue: T) => {
+type methodType = 'GET' | 'PUT' | 'POST' | 'DELETE';
+
+export const useFetch = <T>(url: string, ref: any, initialValue: T, method: methodType = 'GET') => {
   const [responseData, setResponseData] = useState<T>(initialValue);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -16,7 +18,7 @@ export const useFetch = <T>(url: string, ref: any, initialValue: T) => {
         try {
           setLoading(true);
           const response = await fetch(url, {
-            method: 'GET',
+            method: method,
             headers: {
               'Content-Type': 'application/json',
               Authorization: token,

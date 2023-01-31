@@ -23,10 +23,8 @@ const ProfileEditPage = () => {
           <Col span={12} offset={6}>
             <StyledTitle>Edit work plan</StyledTitle>
             <WorkPlanTable />
-            <>
-              <StyledTitle level={3}>Add new one</StyledTitle>
-              <CreateForm />
-            </>
+            <StyledTitle level={3}>Add new one</StyledTitle>
+            <CreateForm />
           </Col>
         )}
       </Row>
