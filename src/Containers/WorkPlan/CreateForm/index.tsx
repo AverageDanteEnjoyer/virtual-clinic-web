@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Ref, useState } from 'react';
 import { Col, Form, TimePicker } from 'antd';
 
 import Spin from '../../../Components/Spin';
@@ -20,7 +20,11 @@ interface WorkPlan {
   work_hour_end: string;
 }
 
-const CreateForm = () => {
+interface CreateFormProps {
+  tableRerenderRef: any;
+}
+
+const CreateForm = ({ tableRerenderRef }: CreateFormProps) => {
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<
     {
@@ -63,6 +67,7 @@ const CreateForm = () => {
           message: 'Work plan for ' + values.day_of_week + ' has been created successfully',
         },
       ]);
+      tableRerenderRef.current = true;
     } else {
       setAlerts(
         Object.entries(responseBody.errors).map(([key, message]) => ({

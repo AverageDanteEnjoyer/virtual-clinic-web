@@ -26,6 +26,7 @@ export const useFetch = <T>(url: string, ref: any, initialValue: T, method: meth
           });
           if (!noBodyResponseStatuses.includes(response.status)) {
             const responseBody = await response.json();
+            console.log('useFetch', responseBody);
             setResponseData(responseBody);
           }
         } catch (err: any) {

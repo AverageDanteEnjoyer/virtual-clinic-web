@@ -5,8 +5,9 @@ import { API_URL } from '../../../api';
 import { getAccountId, getLocalStorageResource } from '../../../localStorageAPI';
 import Table, { FetchResponse, TableRecord } from '../../../Components/Table';
 import Button from '../../../Components/Button';
+import { Ref } from 'react';
 
-interface WorkPlan extends TableRecord {
+export interface WorkPlan extends TableRecord {
   user_id: number;
   day_of_week: string;
   work_hour_start: number;
@@ -22,7 +23,23 @@ interface ResponseBodyType {
   per_page: number;
 }
 
-const WorkPlanTable = () => {
+interface WorkPlanTableProps {
+  tableRerenderRef: any;
+}
+
+const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
+  const removeWorkDay = async (id: number) => {
+    const token = getLocalStorageResource('token');
+
+    await fetch(`${API_URL}/api/v1/work_plans/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    });
+  };
+
   const columns: ColumnsType<WorkPlan> = [
     {
       title: 'Day of week',
@@ -49,7 +66,7 @@ const WorkPlanTable = () => {
       render: (text: any, record: WorkPlan, index: number) => (
         <>
           <Button>Edit</Button>
-          <Button>Delete</Button>
+          <Button onClick={() => removeWorkDay(record.id)}>Delete</Button>
         </>
       ),
     },
@@ -62,6 +79,7 @@ const WorkPlanTable = () => {
       columns={columns}
       url={`${API_URL}/api/v1/doctors/${doctorId}/work_plans/?page=1&per_page=7`}
       extractData={(response: ResponseBodyType) => response.data}
+      tableRerenderRef={tableRerenderRef}
     />
   );
 };
