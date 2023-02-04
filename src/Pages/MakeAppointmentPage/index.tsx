@@ -7,6 +7,7 @@ import { TitleContext } from '../../Contexts/TitleContext';
 import PaginatedSelect from '../../Components/PaginatedSelect';
 import fetchAllDoctors from './fetchDoctors';
 import { DoctorEmail, DoctorIcon, DoctorInfo, DoctorOption, Paragraph } from './styles';
+import { getFetchDoctorProcedures } from './fetchDoctorProcedures';
 
 export interface Doctor {
   id: number;
@@ -15,9 +16,16 @@ export interface Doctor {
   email: string;
 }
 
+export interface Procedure {
+  id: number;
+  name: string;
+  needed_time_min: number;
+}
+
 const MakeAppointmentPage = () => {
   const { updateTitle } = useContext(TitleContext);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [procedures, setProcedures] = useState<Procedure[]>([]);
 
   useEffect(() => {
     updateTitle('Make an appointment');
@@ -54,14 +62,20 @@ const MakeAppointmentPage = () => {
               placeholder="Search for a doctor"
               notFoundContent={(searchValue) => <p>No doctors found for {searchValue}</p>}
             />
-            {doctors.length > 0 && doctors[0].id !== 0 && (
-              <p>
-                {doctors[0].id} {doctors[0].first_name} {doctors[0].last_name} {doctors[0].email}
-              </p>
+            {doctors.length > 0 && (
+              <div>
+                <p>Choose a procedure</p>
+                <PaginatedSelect<Procedure>
+                  size="large"
+                  fetchOptions={getFetchDoctorProcedures(doctors[0].id)}
+                  values={procedures}
+                  setValues={setProcedures}
+                  renderOption={(procedure) => <p>{procedure.name}</p>}
+                  placeholder="Search for a procedure"
+                  notFoundContent={(searchValue) => <p>No procedures found for {searchValue}</p>}
+                />
+              </div>
             )}
-            <p>Choose a date</p>
-            <p>Summary</p>
-            <button>Make an appointment</button>
           </div>
         </Col>
       </Row>

@@ -1,13 +1,9 @@
-import { message, Pagination, Select } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Pagination, Select } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 
 import CustomSelect from '../Select';
-import Button from '../Button';
-import { StyledTypography as Typography } from '../Typography/styles';
-import { NoContentFrame, PaginationFrame, StyledDivider as Divider } from './styles';
-import ClearableLabeledInput from 'antd/es/input/ClearableLabeledInput';
+import { PaginationFrame, StyledDivider as Divider } from './styles';
 
 interface ErrorType {
   [field: string]: string[];
