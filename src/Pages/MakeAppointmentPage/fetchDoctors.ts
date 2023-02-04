@@ -1,24 +1,27 @@
-import { searchParameters } from '../../Components/PaginatedSelect';
+import { SearchParameters, FetchResponse } from '../../Components/PaginatedSelect';
+import { Doctor } from '.';
 import { getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
 
-export const fetchAllDoctors = async ({ name, perPage, pageIndex }: searchParameters) => {
+export const fetchAllDoctors = async ({
+  searchValue,
+  perPage,
+  pageIndex,
+}: SearchParameters): Promise<FetchResponse<Doctor>> => {
   const token = getLocalStorageResource('token');
-  if (!token) return;
+  if (!token) return { data: [], total: 0 };
 
-  const response = await fetch(`${API_URL}/api/v1/doctors?per_page${perPage}&page=${pageIndex}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token,
-    },
-  });
-  const responseBody = await response.json();
-  console.log(responseBody);
-  return {
-    options: responseBody.data.map((value: { key: number; email: string }) => value.email),
-    total: responseBody.total,
-  };
+  const response = await fetch(
+    `${API_URL}/api/v1/doctors/?first_name=${searchValue}&per_page=${perPage}&page=${pageIndex}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    }
+  );
+  return response.json();
 };
 
 export default fetchAllDoctors;

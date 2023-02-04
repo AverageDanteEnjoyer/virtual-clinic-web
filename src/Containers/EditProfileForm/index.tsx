@@ -26,12 +26,17 @@ type userInfo = {
   password: string;
 };
 
+export interface Profession {
+  id: number;
+  name: string;
+}
+
 const ProfileEditForm = () => {
-  const { accountType , setAccountType } = useContext(SessionInfoContext);
+  const { accountType, setAccountType } = useContext(SessionInfoContext);
 
   const navigate = useNavigate();
 
-  const [professions, setProfessions] = useState<string[]>([]);
+  const [professions, setProfessions] = useState<Profession[]>([]);
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<
     {
@@ -55,7 +60,7 @@ const ProfileEditForm = () => {
 
   const onFinish = async (values: userInfo) => {
     const credentials = {
-      user: { ...values, professions: professions },
+      user: { ...values, professions: professions.map((profession) => profession.name) },
     };
 
     setLoading(true);
@@ -184,12 +189,14 @@ const ProfileEditForm = () => {
         {formItemsJSX}
         {accountType === userType.DOCTOR && (
           <Form.Item label="Professions">
-            <PaginatedSelect
+            <PaginatedSelect<Profession>
               fetchOptions={fetchAllProfessions}
               fetchInitialValues={fetchDoctorProfessions}
               createNewOption={createNewProfession}
               values={professions}
               setValues={setProfessions}
+              mode="multiple"
+              renderOption={(profession: Profession) => profession.name}
             />
           </Form.Item>
         )}

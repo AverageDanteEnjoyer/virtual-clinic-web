@@ -1,28 +1,32 @@
-import { searchParameters } from '../../Components/PaginatedSelect';
+import { FetchResponse, SearchParameters } from '../../Components/PaginatedSelect';
 import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
+import { Profession } from './index';
 
-export const fetchAllProfessions = async ({ name, perPage, pageIndex }: searchParameters) => {
+export const fetchAllProfessions = async ({
+  searchValue,
+  perPage,
+  pageIndex,
+}: SearchParameters): Promise<FetchResponse<Profession>> => {
   const token = getLocalStorageResource('token');
-  if (!token) return;
+  if (!token) return { data: [], total: 0 };
 
-  const response = await fetch(`${API_URL}/api/v1/professions/?name=${name}&per_page=${perPage}&page=${pageIndex}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token,
-    },
-  });
-  const responseBody = await response.json();
-  return {
-    options: responseBody.data.map((value: { key: number; name: string }) => value.name),
-    total: responseBody.total,
-  };
+  const response = await fetch(
+    `${API_URL}/api/v1/professions/?name=${searchValue}&per_page=${perPage}&page=${pageIndex}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    }
+  );
+  return response.json();
 };
 
-export const fetchDoctorProfessions = async () => {
+export const fetchDoctorProfessions = async (): Promise<Profession[]> => {
   const token = getLocalStorageResource('token');
-  if (!token) return;
+  if (!token) return [];
   const { userID } = getDataFromToken();
 
   const response = await fetch(`${API_URL}/api/v1/doctors/${userID}/professions/`, {
@@ -32,8 +36,9 @@ export const fetchDoctorProfessions = async () => {
       Authorization: token,
     },
   });
+
   const responseBody = await response.json();
-  return responseBody.data.map((value: { key: number; name: string }) => value.name);
+  return responseBody.data;
 };
 
 export const createNewProfession = async (option: string) => {

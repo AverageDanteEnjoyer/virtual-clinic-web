@@ -27,6 +27,8 @@ const Select = ({
   value,
   searchValue,
   notFoundContent,
+  showSearch,
+  size,
 }: StyledSelectProps) => {
   const { Option, OptGroup } = StyledSelect;
   const groups = customOptions?.map(({ children, label }) => {
@@ -43,6 +45,8 @@ const Select = ({
   });
   return (
     <StyledSelect
+      size={size}
+      showSearch={showSearch}
       mode={mode}
       defaultValue={defaultValue}
       options={options}

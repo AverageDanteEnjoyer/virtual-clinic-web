@@ -4,6 +4,7 @@ const palette = {
   white: '#ffffff',
   black: '#000000',
   sonicSilver: '#777777',
+  deepViolet: '#250054',
 };
 
 export default palette;
