@@ -29,7 +29,7 @@ const MakeAppointmentPage = () => {
 
   useEffect(() => {
     updateTitle('Make an appointment');
-  }, [updateTitle, doctors]);
+  }, [updateTitle]);
 
   const renderOption = (doctor: Doctor) => (
     <DoctorOption>
@@ -57,7 +57,10 @@ const MakeAppointmentPage = () => {
               size="large"
               fetchOptions={fetchAllDoctors}
               values={doctors}
-              setValues={setDoctors}
+              setValues={(values: Doctor[]) => {
+                setDoctors(values);
+                setProcedures([]);
+              }}
               renderOption={renderOption}
               placeholder="Search for a doctor"
               notFoundContent={(searchValue) => <p>No doctors found for {searchValue}</p>}
@@ -70,10 +73,16 @@ const MakeAppointmentPage = () => {
                   fetchOptions={getFetchDoctorProcedures(doctors[0].id)}
                   values={procedures}
                   setValues={setProcedures}
-                  renderOption={(procedure) => <p>{procedure.name}</p>}
+                  renderOption={(procedure) => <>{procedure.name}</>}
                   placeholder="Search for a procedure"
                   notFoundContent={(searchValue) => <p>No procedures found for {searchValue}</p>}
                 />
+              </div>
+            )}
+            {procedures.length > 0 && (
+              <div>
+                <p>Choose a date</p>
+                <p>Choose a time</p>
               </div>
             )}
           </div>
