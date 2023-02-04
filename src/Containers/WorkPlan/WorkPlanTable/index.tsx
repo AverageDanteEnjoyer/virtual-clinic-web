@@ -1,11 +1,12 @@
+import { useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import { capitalize } from 'lodash';
+import { Modal } from 'antd';
 
 import { API_URL } from '../../../api';
 import { getAccountId, getLocalStorageResource } from '../../../localStorageAPI';
-import Table, { FetchResponse, TableRecord } from '../../../Components/Table';
+import Table, { TableRecord } from '../../../Components/Table';
 import Button from '../../../Components/Button';
-import { Ref } from 'react';
 
 export interface WorkPlan extends TableRecord {
   user_id: number;
@@ -40,6 +41,23 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
     });
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(0);
+
+  const showModal = (id: number) => {
+    setIsModalOpen(true);
+    setModalData(id);
+  };
+
+  const handleOk = async () => {
+    await removeWorkDay(modalData);
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const columns: ColumnsType<WorkPlan> = [
     {
       title: 'Day of week',
@@ -66,7 +84,7 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
       render: (text: any, record: WorkPlan, index: number) => (
         <>
           <Button>Edit</Button>
-          <Button onClick={() => removeWorkDay(record.id)}>Delete</Button>
+          <Button onClick={() => showModal(record.id)}>Delete</Button>
         </>
       ),
     },
@@ -75,12 +93,20 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
   const doctorId = getAccountId();
 
   return (
-    <Table<WorkPlan, ResponseBodyType>
-      columns={columns}
-      url={`${API_URL}/api/v1/doctors/${doctorId}/work_plans/?page=1&per_page=7`}
-      extractData={(response: ResponseBodyType) => response.data}
-      tableRerenderRef={tableRerenderRef}
-    />
+    <>
+      <Table<WorkPlan, ResponseBodyType>
+        columns={columns}
+        url={`${API_URL}/api/v1/doctors/${doctorId}/work_plans/?page=1&per_page=7`}
+        extractData={(response: ResponseBodyType) => response.data}
+        tableRerenderRef={tableRerenderRef}
+      />
+      <Modal
+        title="Do you want to remove this workday?"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      ></Modal>
+    </>
   );
 };
 
