@@ -30,7 +30,7 @@ interface PaginatedSelectProps<T> {
   fetchInitialValues?: () => Promise<T[]>;
   values: T[];
   setValues: (values: T[]) => void;
-  createNewOption?: (value: string) => Promise<{ success: boolean; message: string }>;
+  notFoundContent?: (searchValue: string) => React.ReactNode;
   mode?: 'multiple' | 'tags';
   size?: 'large' | 'middle' | 'small';
   renderOption: (item: T) => React.ReactNode;
@@ -40,7 +40,7 @@ interface PaginatedSelectProps<T> {
 const PaginatedSelect = <T,>({
   fetchOptions,
   fetchInitialValues,
-  createNewOption,
+  notFoundContent,
   values,
   setValues,
   renderOption,
@@ -48,14 +48,13 @@ const PaginatedSelect = <T,>({
   mode,
   placeholder,
 }: PaginatedSelectProps<T>) => {
-  const fetchRef = useRef(0);
-
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [searchInput, setSearchInput] = useState('');
 
+  const [searchInput, setSearchInput] = useState('');
   const [options, setOptions] = useState<T[]>([]);
+  const fetchRef = useRef(0);
 
   const debounceFetch = useMemo(() => {
     const loadOptions = async ({ searchValue, perPage, pageIndex }: SearchParameters) => {
@@ -79,12 +78,11 @@ const PaginatedSelect = <T,>({
       });
 
     debounceFetch({ searchValue: searchInput, pageIndex: page, perPage: pageSize });
-  }, [debounceFetch, page, pageSize, searchInput]);
+  }, [debounceFetch, fetchInitialValues]);
 
   const onChange = (value: string | string[]) => {
-    console.log(value);
-    const data = JSON.parse(value as string);
-    setValues(data.isArray ? data : [data]);
+    const parsedValue = Array.isArray(value) ? value.map((item) => JSON.parse(item)) : [JSON.parse(value)];
+    setValues(parsedValue);
   };
 
   const onSearch = (searchValue: string) => {
@@ -111,34 +109,17 @@ const PaginatedSelect = <T,>({
     </>
   );
 
-  // return (
-  //   <CustomSelect
-  //     size={size}
-  //     showSearch={true}
-  //     mode={mode}
-  //     value={values}
-  //     searchValue={searchInput}
-  //     filterOption={() => true}
-  //     onChange={onChange}
-  //     onSearch={onSearch}
-  //     // notFoundContent={notFoundContent}
-  //     dropdownRender={dropdownRender}
-  //     showArrow
-  //   >
-  //     {options.map((item) => renderOption(item))}
-  //   </CustomSelect>
-  // );
-
   return (
     <CustomSelect
       showSearch
+      optionLabelProp="label"
       mode={mode}
       size={size}
       placeholder={placeholder}
       value={
         values.length > 0
-          ? values.map((item, idx) => {
-              return { key: (page - 1) * pageSize + idx, value: idx, label: renderOption(item) };
+          ? values.map((item) => {
+              return { value: JSON.stringify(item), label: renderOption(item) };
             })
           : undefined
       }
@@ -146,10 +127,11 @@ const PaginatedSelect = <T,>({
       onSearch={onSearch}
       filterOption={false}
       dropdownRender={dropdownRender}
+      notFoundContent={notFoundContent ? notFoundContent(searchInput) : undefined}
     >
       {options.map((item, idx) => {
         return (
-          <Select.Option key={(page - 1) * pageSize + idx} value={JSON.stringify(item)}>
+          <Select.Option key={idx} value={JSON.stringify(item)}>
             {renderOption(item)}
           </Select.Option>
         );

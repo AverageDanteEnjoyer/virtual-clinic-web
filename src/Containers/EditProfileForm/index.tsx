@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
-import { Col, Form, FormItemProps, Row } from 'antd';
+import { Col, Form, FormItemProps, message, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { PlusOutlined } from '@ant-design/icons';
 
 import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
@@ -8,11 +9,12 @@ import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
 import PaginatedSelect from '../../Components/PaginatedSelect';
 
+import { SessionInfoContext, userType } from '../../SessionInfoContext';
 import routes from '../../routes';
 import { API_URL } from '../../api';
 import { clearLocalStorage, getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
-import { SessionInfoContext, userType } from '../../SessionInfoContext';
 import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
+import { StyledTypography as Typography } from '../../Components/Typography/styles';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -177,6 +179,29 @@ const ProfileEditForm = () => {
     <Alert key={idx} type={type} message={message} description={description} />
   ));
 
+  const notFoundContent = (searchValue: string) => (
+    <>
+      <Typography>Profession "{searchValue}" not found. Would you like to add it to the list?</Typography>
+      <Button
+        size="large"
+        icon={<PlusOutlined />}
+        onClick={async () => {
+          const response = await createNewProfession(searchValue);
+          if (response.success) {
+            message.success(
+              `${searchValue} was successfully added to profession pool. Please press submit before leaving!`
+            );
+            setProfessions([...professions, response.data]);
+          } else {
+            message.error(response.message);
+          }
+        }}
+      >
+        Add
+      </Button>
+    </>
+  );
+
   return (
     <Spin spinning={loading} tip="waiting for server response...">
       <Form
@@ -192,9 +217,9 @@ const ProfileEditForm = () => {
             <PaginatedSelect<Profession>
               fetchOptions={fetchAllProfessions}
               fetchInitialValues={fetchDoctorProfessions}
-              createNewOption={createNewProfession}
               values={professions}
               setValues={setProfessions}
+              notFoundContent={notFoundContent}
               mode="multiple"
               renderOption={(profession: Profession) => profession.name}
             />

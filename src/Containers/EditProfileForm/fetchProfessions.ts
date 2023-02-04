@@ -43,7 +43,7 @@ export const fetchDoctorProfessions = async (): Promise<Profession[]> => {
 
 export const createNewProfession = async (option: string) => {
   const token = getLocalStorageResource('token');
-  if (!token) return { success: false, message: 'Token expired' };
+  if (!token) return { success: false, data: {}, message: 'Token expired' };
 
   const response = await fetch(`${API_URL}/api/v1/professions/`, {
     method: 'POST',
@@ -56,6 +56,7 @@ export const createNewProfession = async (option: string) => {
   const responseBody = await response.json();
   return {
     success: Boolean(responseBody.data),
+    data: responseBody.data,
     message: responseBody.errors ? responseBody.errors.name : '',
   };
 };

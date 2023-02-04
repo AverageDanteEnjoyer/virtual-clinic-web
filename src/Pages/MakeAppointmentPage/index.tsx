@@ -52,6 +52,7 @@ const MakeAppointmentPage = () => {
               setValues={setDoctors}
               renderOption={renderOption}
               placeholder="Search for a doctor"
+              notFoundContent={(searchValue) => <p>No doctors found for {searchValue}</p>}
             />
             {doctors.length > 0 && doctors[0].id !== 0 && (
               <p>
