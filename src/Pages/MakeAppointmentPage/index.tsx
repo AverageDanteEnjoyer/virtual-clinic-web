@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
-import { Col, Row } from 'antd';
+import { Col, DatePicker, Row, Table } from 'antd';
+import dayjs from 'dayjs';
 
 import Navbar from '../../Components/Navbar';
 import { StyledTitle } from '../../Components/Typography/styles';
@@ -26,6 +27,7 @@ const MakeAppointmentPage = () => {
   const { updateTitle } = useContext(TitleContext);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [procedures, setProcedures] = useState<Procedure[]>([]);
+  const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
 
   useEffect(() => {
     updateTitle('Make an appointment');
@@ -80,10 +82,26 @@ const MakeAppointmentPage = () => {
               </div>
             )}
             {procedures.length > 0 && (
-              <div>
-                <p>Choose a date</p>
-                <p>Choose a time</p>
-              </div>
+              <>
+                <div>
+                  <p>Choose a date</p>
+                  <DatePicker
+                    presets={[
+                      { label: 'Today', value: dayjs() },
+                      { label: 'Tomorrow', value: dayjs().add(1, 'day') },
+                      { label: 'Next week', value: dayjs().add(1, 'week') },
+                    ]}
+                    format="YYYY-MM-DD"
+                    disabledDate={(current) => current && current < dayjs().startOf('day')}
+                    value={date ? dayjs(date) : dayjs()}
+                    onChange={(date) => setDate(date?.format('YYYY-MM-DD') || '')}
+                  />
+                </div>
+                <div>
+                  <p>Choose a time</p>
+                  <Table></Table>
+                </div>
+              </>
             )}
           </div>
         </Col>
