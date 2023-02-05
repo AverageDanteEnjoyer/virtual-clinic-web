@@ -7,6 +7,7 @@ import { API_URL } from '../../../api';
 import { getAccountId, getLocalStorageResource } from '../../../localStorageAPI';
 import Table, { TableRecord } from '../../../Components/Table';
 import Button from '../../../Components/Button';
+import useModal from './useModal';
 
 export interface WorkPlan extends TableRecord {
   user_id: number;
@@ -41,21 +42,26 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
     });
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isOpened: isEditOpened, openModal: openEditModal, closeModal: closeEditModal } = useModal();
+  const { isOpened: isDeleteOpened, openModal: openDeleteModal, closeModal: closeDeleteModal } = useModal();
   const [modalData, setModalData] = useState(0);
 
-  const showModal = (id: number) => {
-    setIsModalOpen(true);
+  const showDeleteModal = (id: number) => {
+    openDeleteModal();
     setModalData(id);
   };
 
-  const handleOk = async () => {
+  const handleRemoveOk = async () => {
     await removeWorkDay(modalData);
-    setIsModalOpen(false);
+    closeDeleteModal();
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const showEditModal = () => {
+    openEditModal();
+  };
+
+  const handleEditOk = () => {
+    closeEditModal();
   };
 
   const columns: ColumnsType<WorkPlan> = [
@@ -63,9 +69,7 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
       title: 'Day of week',
       dataIndex: 'day_of_week',
       key: 'day_of_week',
-      render: (text: string) => {
-        return capitalize(text);
-      },
+      render: (text: string) => capitalize(text),
     },
     {
       title: 'Work hour start',
@@ -81,31 +85,33 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
       title: 'Actions',
       dataIndex: 'actions',
       key: 'actions',
-      render: (text: any, record: WorkPlan, index: number) => (
+      render: (text: any, record: WorkPlan) => (
         <>
-          <Button>Edit</Button>
-          <Button onClick={() => showModal(record.id)}>Delete</Button>
+          <Button onClick={() => showEditModal()}>Edit</Button>
+          <Button onClick={() => showDeleteModal(record.id)}>Delete</Button>
         </>
       ),
     },
   ];
 
   const doctorId = getAccountId();
+  const perPage = 7;
 
   return (
     <>
       <Table<WorkPlan, ResponseBodyType>
         columns={columns}
-        url={`${API_URL}/api/v1/doctors/${doctorId}/work_plans/?page=1&per_page=7`}
+        url={`${API_URL}/api/v1/doctors/${doctorId}/work_plans/?page=1&per_page=${perPage}`}
         extractData={(response: ResponseBodyType) => response.data}
         tableRerenderRef={tableRerenderRef}
       />
       <Modal
         title="Do you want to remove this workday?"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      ></Modal>
+        open={isDeleteOpened}
+        onOk={handleRemoveOk}
+        onCancel={closeDeleteModal}
+      />
+      <Modal title="Edit workday" open={isEditOpened} onOk={handleEditOk} onCancel={closeEditModal} />
     </>
   );
 };

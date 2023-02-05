@@ -1,4 +1,3 @@
-import { ReactNode, useEffect, useRef, useState, Ref } from 'react';
 import { Table as TableAntd } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
@@ -27,13 +26,6 @@ interface TableProps<T extends TableRecord, R> {
 
 const Table = <T extends TableRecord, R>({ columns, url, extractData, tableRerenderRef, rowKey }: TableProps<T, R>) => {
   const { loading, responseData } = useFetch<R>(url, tableRerenderRef, {} as R);
-
-  // useEffect(() => {
-  //   console.log('ResponseBody', responseData);
-  //   const extractedData = extractData(responseData);
-  //   setData(extractedData);
-  //   console.log('Data', data);
-  // }, [responseData]);
 
   return (
     <TableAntd
