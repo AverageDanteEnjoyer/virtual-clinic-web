@@ -8,6 +8,7 @@ import { getAccountId, getLocalStorageResource } from '../../../localStorageAPI'
 import Table, { TableRecord } from '../../../Components/Table';
 import Button from '../../../Components/Button';
 import useModal from './useModal';
+import EditForm from '../EditForm';
 
 export interface WorkPlan extends TableRecord {
   user_id: number;
@@ -111,7 +112,16 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
         onOk={handleRemoveOk}
         onCancel={closeDeleteModal}
       />
-      <Modal title="Edit workday" open={isEditOpened} onOk={handleEditOk} onCancel={closeEditModal} />
+      <Modal
+        title="Edit workday"
+        open={isEditOpened}
+        onOk={handleEditOk}
+        onCancel={closeEditModal}
+        okButtonProps={{ style: { display: 'none' } }}
+        cancelButtonProps={{ style: { display: 'none' } }}
+      >
+        <EditForm />
+      </Modal>
     </>
   );
 };
