@@ -57,10 +57,10 @@ const TimeTable = ({ setSelectedTime, procedureId, date }: TimeTableProps) => {
 
   const fetchData = async () => {
     setLoading(true);
-    const responseBody = await fetchAvailableAppointmentHours(date, procedureId);
+    const { data, error } = await fetchAvailableAppointmentHours(date, procedureId);
     setLoading(false);
-    if (responseBody.error) {
-      console.log(responseBody.error);
+    if (error) {
+      console.log(error);
       return;
     } else {
       const categorizedData: RecordType[] = [
@@ -70,7 +70,7 @@ const TimeTable = ({ setSelectedTime, procedureId, date }: TimeTableProps) => {
         { key: 'night', time_of_day: 'Night', times: [] },
       ];
 
-      responseBody.data.forEach((time) => {
+      data.forEach((time) => {
         const category = categorizeData(time);
         const timeOfDay = categorizedData.find((data) => data.time_of_day === category);
         timeOfDay?.times.push(time);
