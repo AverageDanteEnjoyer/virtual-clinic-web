@@ -60,7 +60,7 @@ const PaginatedSelect = <T,>({
       const optionData = await fetchOptions({ searchValue, perPage, pageIndex });
       if (fetchId !== fetchRef.current || !optionData) return;
 
-      setTotalPages(optionData.total ? optionData.total : 1);
+      setTotalPages(optionData.total || 1);
       setOptions(optionData.data);
     };
 
