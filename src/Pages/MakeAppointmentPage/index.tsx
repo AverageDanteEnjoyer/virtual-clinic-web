@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Col, DatePicker, Row, Table } from 'antd';
+import { Col, DatePicker, Row, Typography } from 'antd';
 import dayjs from 'dayjs';
 
 import Navbar from '../../Components/Navbar';
@@ -9,6 +9,7 @@ import PaginatedSelect from '../../Components/PaginatedSelect';
 import fetchAllDoctors from './fetchDoctors';
 import { DoctorEmail, DoctorIcon, DoctorInfo, DoctorOption, Paragraph } from './styles';
 import { getFetchDoctorProcedures } from './fetchDoctorProcedures';
+import TimeTable from '../../Containers/TimeTable';
 
 export interface Doctor {
   id: number;
@@ -37,44 +38,16 @@ const timeTableColumns = [
   },
 ];
 
-const mockData = {
-  data: [
-    '5:40',
-    '10:20',
-    '10:40',
-    '11:00',
-    '11:20',
-    '11:40',
-    '12:00',
-    '12:20',
-    '12:40',
-    '13:00',
-    '13:20',
-    '13:40',
-    '14:00',
-    '14:20',
-    '14:40',
-    '15:00',
-    '15:20',
-    '15:40',
-    '16:00',
-    '16:20',
-    '16:40',
-    '17:00',
-    '18:00',
-    '22:00',
-  ],
-};
-
 const MakeAppointmentPage = () => {
   const { updateTitle } = useContext(TitleContext);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
+  const [selectedTime, setSelectedTime] = useState('');
 
   useEffect(() => {
     updateTitle('Make an appointment');
-  }, [updateTitle]);
+  }, []);
 
   const renderOption = (doctor: Doctor) => (
     <DoctorOption>
@@ -89,31 +62,6 @@ const MakeAppointmentPage = () => {
       </DoctorInfo>
     </DoctorOption>
   );
-
-  const categorizeData = (time: string): string => {
-    const [hour, _] = time.split(':').map(Number);
-    if (hour < 6) return 'Night';
-    if (hour < 12) return 'Morning';
-    if (hour < 18) return 'Afternoon';
-    return 'Evening';
-  };
-
-  const categorizedData: { time_of_day: string; times: string[] }[] = [
-    { time_of_day: 'Morning', times: [] },
-    { time_of_day: 'Afternoon', times: [] },
-    { time_of_day: 'Evening', times: [] },
-    { time_of_day: 'Night', times: [] },
-  ];
-
-  mockData.data.forEach((time) => {
-    const timeOfDay = categorizeData(time);
-    const existingTimeOfDay = categorizedData.find((data) => data.time_of_day === timeOfDay);
-    if (existingTimeOfDay) {
-      existingTimeOfDay.times.push(time);
-    } else {
-      categorizedData.push({ time_of_day: timeOfDay, times: [time] });
-    }
-  });
 
   return (
     <>
@@ -171,7 +119,18 @@ const MakeAppointmentPage = () => {
           {procedures.length > 0 && date && (
             <>
               <p>Available times</p>
-              <Table dataSource={categorizedData} columns={timeTableColumns} />
+              <TimeTable setSelectedTime={setSelectedTime} procedureId={procedures[0].id} date={date} />
+              <StyledTitle>Selected time</StyledTitle>
+              <Typography>{selectedTime}</Typography>
+            </>
+          )}
+          {selectedTime && (
+            <>
+              <StyledTitle>
+                You are about to make an appointment with {doctors[0].first_name} {doctors[0].last_name} for the
+                procedure {procedures[0].name} on {date} at {selectedTime}
+              </StyledTitle>
+              <button>Make an appointment</button>
             </>
           )}
         </Col>
