@@ -21,8 +21,8 @@ export const fetchAvailableAppointmentHours = async (
   });
 
   if (res.ok) {
-    const data = await res.json();
-    return { data: data.data, error: false };
+    const { data } = await res.json();
+    return { data, error: false };
   } else {
     return { data: [], error: true };
   }
