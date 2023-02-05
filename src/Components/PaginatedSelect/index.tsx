@@ -114,9 +114,7 @@ const PaginatedSelect = <T,>({
       placeholder={placeholder}
       value={
         values.length > 0
-          ? values.map((item) => {
-              return { value: JSON.stringify(item), label: renderOption(item) };
-            })
+          ? values.map((item) => ({ value: JSON.stringify(item), label: renderOption(item) }))
           : undefined
       }
       onChange={onChange}
