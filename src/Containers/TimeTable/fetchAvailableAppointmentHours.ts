@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import { API_URL } from '../../api';
 import { getLocalStorageResource } from '../../localStorageAPI';
 
@@ -14,9 +16,8 @@ export const fetchAvailableAppointmentHours = async (
   const token = getLocalStorageResource('token');
   if (!token) return { data: [], status: Status.ERROR };
 
-  // Transform date from YYYY-MM-DD to DD-MM-YYYY format
-  const [year, month, day] = date.split('-');
-  date = `${day}-${month}-${year}`;
+  // Transform date from YYYY-MM-DD to DD-MM-YYYY format.
+  date = dayjs(date).format('DD-MM-YYYY');
 
   const res = await fetch(`${API_URL}/api/v1/appointments/availability?date=${date}&procedure_id=${procedureId}`, {
     method: 'GET',

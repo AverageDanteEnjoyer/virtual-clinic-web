@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { UserOutlined } from '@ant-design/icons';
 import { Col, Row } from 'antd';
+
 import palette from '../../palette';
 
 export const DoctorIcon = styled(UserOutlined)`
-  color: #1890ff;
+  color: ${palette.dodgerBlue};
   font-size: 36px;
 `;
 

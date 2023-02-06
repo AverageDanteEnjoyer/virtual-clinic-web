@@ -17,6 +17,12 @@ interface privateRouteItem {
 
 const privateRouteItems: privateRouteItem[] = [
   {
+    path: routes.makeAppointment,
+    children: <MakeAppointmentPage />,
+    redirectPath: routes.logIn,
+    condition: () => equals(userType.PATIENT),
+  },
+  {
     path: routes.logIn,
     children: <LoginPage />,
     redirectPath: routes.home,
@@ -33,12 +39,6 @@ const privateRouteItems: privateRouteItem[] = [
     children: <ProfileEditPage />,
     redirectPath: routes.logIn,
     condition: () => notEquals(userType.GUEST),
-  },
-  {
-    path: routes.makeAppointment,
-    children: <MakeAppointmentPage />,
-    redirectPath: routes.logIn,
-    condition: () => equals(userType.PATIENT),
   },
 ];
 
