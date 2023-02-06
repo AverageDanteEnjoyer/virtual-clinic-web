@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
-import { Col, DatePicker, Row, Typography } from 'antd';
+import { Col, DatePicker, Row } from 'antd';
 import dayjs from 'dayjs';
 
 import Navbar from '../../Components/Navbar';
-import { StyledTitle } from '../../Components/Typography/styles';
+import { StyledParagraph, StyledTitle } from '../../Components/Typography/styles';
 import { TitleContext } from '../../Contexts/TitleContext';
 import PaginatedSelect from '../../Components/PaginatedSelect';
 import fetchAllDoctors from './fetchDoctors';
@@ -11,6 +11,7 @@ import { DoctorEmail, DoctorIcon, DoctorInfo, DoctorOption, Paragraph } from './
 import { getFetchDoctorProcedures } from './fetchDoctorProcedures';
 import TimeTable from '../../Containers/TimeTable';
 import { SubmitBox } from '../../Containers/TimeTable/styles';
+import { StyledButton } from '../../Components/Button/styles';
 
 export interface Doctor {
   id: number;
@@ -123,18 +124,21 @@ const MakeAppointmentPage = () => {
         <Col xs={{ span: 20, offset: 2 }} md={{ span: 8, offset: 2 }} xl={{ span: 4, offset: 1 }}>
           {procedures.length > 0 && selectedTime && (
             <>
-              <Typography.Title level={2}>Summary</Typography.Title>
+              <StyledTitle level={2}>Summary</StyledTitle>
               <SubmitBox>
-                <Typography.Paragraph>
+                <StyledParagraph>
                   <b>Doctor:</b> {doctors[0].first_name} {doctors[0].last_name}
-                </Typography.Paragraph>
-                <Typography.Paragraph>
+                </StyledParagraph>
+                <StyledParagraph>
                   <b>Procedure:</b> {procedures[0].name}
-                </Typography.Paragraph>
-                <Typography.Paragraph>
+                </StyledParagraph>
+                <StyledParagraph>
                   <b>Date:</b> {dayjs(date).format('D MMMM YYYY')} {selectedTime} -{' '}
                   {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('HH:mm')}
-                </Typography.Paragraph>
+                </StyledParagraph>
+                <StyledButton type="primary" size="large">
+                  Submit
+                </StyledButton>
               </SubmitBox>
             </>
           )}
