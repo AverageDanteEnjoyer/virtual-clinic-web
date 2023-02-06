@@ -74,7 +74,7 @@ const PaginatedSelect = <T,>({
       });
 
     debounceFetch({ searchValue: searchInput, pageIndex: page, perPage: pageSize });
-  }, [debounceFetch, fetchInitialValues]);
+  }, []);
 
   const onChange = (value: string | string[]) => {
     const parsedValue = Array.isArray(value) ? value.map((item) => JSON.parse(item)) : [JSON.parse(value)];
