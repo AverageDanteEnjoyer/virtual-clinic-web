@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { message, Row, Table, Col } from 'antd';
+import { message, Row, Col } from 'antd';
+
 import { fetchAvailableAppointmentHours, Status } from './fetchAvailableAppointmentHours';
-import { TimeOption } from './styles';
+import { Table, TimeOption } from './styles';
 
 interface RecordType {
   key: string;
@@ -41,9 +42,9 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
       dataIndex: 'times',
       render: (record: string[]) => {
         return (
-          <Row gutter={[8, 8]} justify={'center'} align={'middle'}>
+          <Row gutter={[8, 8]}>
             {record.map((time) => (
-              <Col span={8} key={time} flex={'1 1 min-content'}>
+              <Col key={time}>
                 <TimeOption highlighted={selectedTime === time} onClick={() => setSelectedTime(time)}>
                   {time}
                 </TimeOption>

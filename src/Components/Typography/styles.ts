@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { Typography } from 'antd';
 
+import palette from '../../palette';
+
 const { Title, Paragraph } = Typography;
 
 export const StyledTypography = styled(Typography)`
@@ -11,9 +13,12 @@ export const StyledTypography = styled(Typography)`
   padding-right: 10px;
 `;
 
-export const StyledTitle = styled(Title)`
-  text-align: center;
-  margin-top: 14px;
+// StyledTitle with center parameter
+export const StyledTitle = styled(Title)<{ center?: string }>`
+  text-align: ${({ center }) => (center ? 'center' : 'left')};
+  font-size: 24px;
+  font-weight: 600;
+  color: ${palette.black};
 `;
 
 export const StyledParagraph = styled(Paragraph)`

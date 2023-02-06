@@ -15,7 +15,7 @@ const ProfileEditPage = () => {
   return (
     <>
       <Navbar />
-      <StyledTitle>Profile edit</StyledTitle>
+      <StyledTitle center="true">Profile edit</StyledTitle>
       <ProfileEditForm />
     </>
   );
