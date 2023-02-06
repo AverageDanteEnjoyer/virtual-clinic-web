@@ -1,41 +1,32 @@
+import { useEffect } from 'react';
 import { Table as TableAntd } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 import { useFetch } from './useFetch';
-
-interface ErrorType {
-  [field: string]: string[];
-}
-
-export interface FetchResponse<T extends TableRecord> {
-  data: T[];
-  errors?: ErrorType;
-}
 
 export type TableRecord = {
   id: number;
 };
 
 interface TableProps<T extends TableRecord, R> {
+  data: T[];
+  setData: (data: T[]) => void;
   columns: ColumnsType<T>;
   url: string;
   extractData: (response: R) => T[];
-  tableRerenderRef: any;
   rowKey?: (record: T) => string;
 }
 
-const Table = <T extends TableRecord, R>({ columns, url, extractData, tableRerenderRef, rowKey }: TableProps<T, R>) => {
-  const { loading, responseData } = useFetch<R>(url, tableRerenderRef, {} as R);
+const Table = <T extends TableRecord, R>({ data, setData, columns, url, extractData, rowKey }: TableProps<T, R>) => {
+  const { loading, responseData } = useFetch<R>(url, {} as R);
 
-  return (
-    <TableAntd
-      columns={columns}
-      dataSource={extractData(responseData)}
-      loading={loading}
-      rowKey={rowKey || 'id'}
-      pagination={false}
-    />
-  );
+  useEffect(() => {
+    if (responseData) {
+      setData(extractData(responseData));
+    }
+  }, [responseData]);
+
+  return <TableAntd columns={columns} dataSource={data} loading={loading} rowKey={rowKey || 'id'} pagination={false} />;
 };
 
 export default Table;

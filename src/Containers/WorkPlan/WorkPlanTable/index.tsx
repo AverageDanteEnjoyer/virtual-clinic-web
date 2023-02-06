@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
-import { capitalize } from 'lodash';
 import { Modal } from 'antd';
+import { capitalize } from 'lodash';
 
 import { API_URL } from '../../../api';
 import { getAccountId, getLocalStorageResource } from '../../../localStorageAPI';
@@ -9,15 +9,11 @@ import Table, { TableRecord } from '../../../Components/Table';
 import Button from '../../../Components/Button';
 import useModal from './useModal';
 import EditForm from '../EditForm';
-import { EditFormProps } from '../EditForm';
 
 export interface WorkPlan extends TableRecord {
-  user_id: number;
   day_of_week: string;
   work_hour_start: number;
   work_hour_end: number;
-  created_at: string;
-  updated_at: string;
 }
 
 interface ResponseBodyType {
@@ -28,10 +24,11 @@ interface ResponseBodyType {
 }
 
 interface WorkPlanTableProps {
-  tableRerenderRef: any;
+  data: WorkPlan[];
+  setData: (data: WorkPlan[]) => void;
 }
 
-const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
+const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
   const removeWorkDay = async (id: number) => {
     const token = getLocalStorageResource('token');
 
@@ -46,30 +43,12 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
 
   const { isOpened: isEditOpened, openModal: openEditModal, closeModal: closeEditModal } = useModal();
   const { isOpened: isDeleteOpened, openModal: openDeleteModal, closeModal: closeDeleteModal } = useModal();
-  const [modalData, setModalData] = useState(0);
-  const [editModalData, setEditModalData] = useState<EditFormProps>({} as EditFormProps);
-
-  const showDeleteModal = (id: number) => {
-    openDeleteModal();
-    setModalData(id);
-  };
+  const [record, setRecord] = useState<WorkPlan>({ id: 0, day_of_week: '', work_hour_start: 0, work_hour_end: 0 });
 
   const handleRemoveOk = async () => {
-    await removeWorkDay(modalData);
+    await removeWorkDay(record.id);
+    setData(data.filter((item) => item.id !== record.id));
     closeDeleteModal();
-  };
-
-  const showEditModal = (record: WorkPlan) => {
-    openEditModal();
-    const data = {
-      id: record.id,
-      day_of_week: record.day_of_week,
-    };
-    setEditModalData(data);
-  };
-
-  const handleEditOk = () => {
-    closeEditModal();
   };
 
   const columns: ColumnsType<WorkPlan> = [
@@ -95,8 +74,22 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
       key: 'actions',
       render: (text: any, record: WorkPlan) => (
         <>
-          <Button onClick={() => showEditModal(record)}>Edit</Button>
-          <Button onClick={() => showDeleteModal(record.id)}>Delete</Button>
+          <Button
+            onClick={() => {
+              openEditModal();
+              setRecord(record);
+            }}
+          >
+            Edit
+          </Button>
+          <Button
+            onClick={() => {
+              openDeleteModal();
+              setRecord(record);
+            }}
+          >
+            Delete
+          </Button>
         </>
       ),
     },
@@ -108,10 +101,11 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
   return (
     <>
       <Table<WorkPlan, ResponseBodyType>
+        data={data}
+        setData={setData}
         columns={columns}
         url={`${API_URL}/api/v1/doctors/${doctorId}/work_plans/?page=1&per_page=${perPage}`}
         extractData={(response: ResponseBodyType) => response.data}
-        tableRerenderRef={tableRerenderRef}
       />
       <Modal
         title="Do you want to remove this workday?"
@@ -122,12 +116,10 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
       <Modal
         title="Edit workday"
         open={isEditOpened}
-        onOk={handleEditOk}
-        onCancel={closeEditModal}
         okButtonProps={{ style: { display: 'none' } }}
         cancelButtonProps={{ style: { display: 'none' } }}
       >
-        <EditForm id={editModalData.id} day_of_week={editModalData.day_of_week} />
+        <EditForm data={data} setData={setData} workPlan={record} closeEditModal={closeEditModal} />
       </Modal>
     </>
   );

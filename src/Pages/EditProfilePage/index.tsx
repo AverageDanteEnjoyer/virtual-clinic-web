@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Col, Row } from 'antd';
 
 import ProfileEditForm from '../../Containers/EditProfileForm';
@@ -12,7 +12,6 @@ import { WorkPlan } from '../../Containers/WorkPlan/WorkPlanTable';
 const ProfileEditPage = () => {
   const { accountType } = useContext(SessionInfoContext);
   const [workPlan, setWorkPlan] = useState<WorkPlan[]>([]);
-  const tableRerender = useRef(true);
 
   return (
     <>
@@ -25,9 +24,9 @@ const ProfileEditPage = () => {
         {accountType === userType.DOCTOR && (
           <Col span={12} offset={6}>
             <StyledTitle>Edit work plan</StyledTitle>
-            <WorkPlanTable tableRerenderRef={tableRerender} />
+            <WorkPlanTable data={workPlan} setData={setWorkPlan} />
             <StyledTitle level={3}>Add new one</StyledTitle>
-            <CreateForm tableRerenderRef={tableRerender} />
+            <CreateForm data={workPlan} setData={setWorkPlan} />
           </Col>
         )}
       </Row>

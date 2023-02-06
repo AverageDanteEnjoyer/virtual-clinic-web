@@ -8,23 +8,19 @@ import Select from '../../../Components/Select';
 import { getLocalStorageResource } from '../../../localStorageAPI';
 import { API_URL } from '../../../api';
 import Alert from '../../../Components/Alert';
+import { WorkPlan } from '../WorkPlanTable';
 
 interface FormData {
   day_of_week: string;
   time_range: any;
 }
 
-export interface WorkPlan {
-  day_of_week: string;
-  work_hour_start: string;
-  work_hour_end: string;
-}
-
 interface CreateFormProps {
-  tableRerenderRef: any;
+  data: WorkPlan[];
+  setData: (data: WorkPlan[]) => void;
 }
 
-const CreateForm = ({ tableRerenderRef }: CreateFormProps) => {
+const CreateForm = ({ data, setData }: CreateFormProps) => {
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<
     {
@@ -36,6 +32,7 @@ const CreateForm = ({ tableRerenderRef }: CreateFormProps) => {
 
   const setWorkPlan = async (values: FormData) => {
     const workPlan: WorkPlan = {
+      id: 0,
       day_of_week: values.day_of_week,
       work_hour_start: values.time_range[0].$H.toString(),
       work_hour_end: values.time_range[1].$H.toString(),
@@ -67,7 +64,7 @@ const CreateForm = ({ tableRerenderRef }: CreateFormProps) => {
           message: 'Work plan for ' + values.day_of_week + ' has been created successfully',
         },
       ]);
-      tableRerenderRef.current = true;
+      setData([...data, responseBody.data as WorkPlan]);
     } else {
       setAlerts(
         Object.entries(responseBody.errors).map(([key, message]) => ({

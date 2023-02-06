@@ -1,24 +1,26 @@
 import { useState } from 'react';
-import { Col, Form, Space, TimePicker } from 'antd';
+import { Form, Space, TimePicker } from 'antd';
 
 import Spin from '../../../Components/Spin';
 import { CenteredContainer } from '../../EditProfileForm/styles';
 import Button from '../../../Components/Button';
 import { getLocalStorageResource } from '../../../localStorageAPI';
 import { API_URL } from '../../../api';
-import { WorkPlan } from '../CreateForm';
 import Alert from '../../../Components/Alert';
+import { WorkPlan } from '../WorkPlanTable';
 
 interface FormData {
   time_range: any;
 }
 
-export interface EditFormProps {
-  id: number;
-  day_of_week: string;
+interface EditWorkPlanProps {
+  data: WorkPlan[];
+  setData: (data: WorkPlan[]) => void;
+  workPlan: WorkPlan;
+  closeEditModal: () => void;
 }
 
-const EditForm = ({ id, day_of_week }: EditFormProps) => {
+const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps) => {
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<
     {
@@ -29,21 +31,22 @@ const EditForm = ({ id, day_of_week }: EditFormProps) => {
   >([]);
 
   const editWorkPlan = async (values: FormData) => {
-    const workPlan: WorkPlan = {
-      day_of_week: day_of_week,
+    const body: WorkPlan = {
+      id: workPlan.id,
+      day_of_week: workPlan.day_of_week,
       work_hour_start: values.time_range[0].$H.toString(),
       work_hour_end: values.time_range[1].$H.toString(),
     };
 
     const token = getLocalStorageResource('token');
-    return await fetch(`${API_URL}/api/v1/work_plans/${id}`, {
+    return await fetch(`${API_URL}/api/v1/work_plans/${workPlan.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
       },
       body: JSON.stringify({
-        work_plan: workPlan,
+        work_plan: body,
       }),
     });
   };
@@ -61,6 +64,9 @@ const EditForm = ({ id, day_of_week }: EditFormProps) => {
           message: 'Work plan has been edited successfully',
         },
       ]);
+      console.log('data', data, 'responseBody', responseBody, 'workplan', workPlan);
+      setData(data.map((item) => (item.id === workPlan.id ? responseBody.data : item)));
+      closeEditModal();
     } else {
       setAlerts(
         Object.entries(responseBody.errors).map(([key, message]) => ({
