@@ -1,15 +1,15 @@
-import { SessionInfoContextProvider } from './SessionInfoContext';
+import { SessionProvider } from './store';
 import './App.css';
 import Application from './Application';
 import { TitleProvider } from './Contexts/TitleContext';
 
 function App() {
   return (
-    <SessionInfoContextProvider>
+    <SessionProvider>
       <TitleProvider>
         <Application />
       </TitleProvider>
-    </SessionInfoContextProvider>
+    </SessionProvider>
   );
 }
 

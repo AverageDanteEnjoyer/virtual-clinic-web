@@ -9,10 +9,10 @@ import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
 import PaginatedSelect from '../../Components/PaginatedSelect';
 
-import { SessionInfoContext, userType } from '../../SessionInfoContext';
 import routes from '../../routes';
 import { API_URL } from '../../api';
-import { clearLocalStorage, getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
+import { getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
+import { Store, userType } from '../../store';
 import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
 import { StyledTypography as Typography } from '../../Components/Typography/styles';
 
@@ -34,7 +34,7 @@ export interface Profession {
 }
 
 const ProfileEditForm = () => {
-  const { accountType, setAccountType } = useContext(SessionInfoContext);
+  const { state, dispatch } = useContext(Store);
 
   const navigate = useNavigate();
 
@@ -105,8 +105,7 @@ const ProfileEditForm = () => {
         //Token is either expired or doesn't exist somehow
         if (response.status === 401) {
           setTimeout(() => {
-            setAccountType(userType.GUEST);
-            clearLocalStorage();
+            dispatch({ type: 'logout' });
             navigate(routes.logIn, {
               state: {
                 errors: [{ type: 'info', message: 'You have been logged out, please log in again!' }],
@@ -208,7 +207,7 @@ const ProfileEditForm = () => {
         onFinishFailed={onFinishFailed}
       >
         {formItemsJSX}
-        {accountType === userType.DOCTOR && (
+        {state.accountType === userType.DOCTOR && (
           <Form.Item label="Professions">
             <PaginatedSelect<Profession>
               fetchOptions={fetchAllProfessions}

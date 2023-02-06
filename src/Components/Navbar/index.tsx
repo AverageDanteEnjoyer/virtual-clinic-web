@@ -4,8 +4,8 @@ import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
 import routes from '../../routes';
-import { clearLocalStorage, getLocalStorageResource } from '../../localStorageAPI';
-import { SessionInfoContext, userType } from '../../SessionInfoContext';
+import { getLocalStorageResource } from '../../localStorageAPI';
+import { Store, userType } from '../../store';
 import { API_URL } from '../../api';
 import { equals, notEquals } from '../../privateRoute';
 
@@ -24,7 +24,7 @@ function getItem(label: ReactNode, children?: MenuItem[], condition: () => boole
 }
 
 const Navbar = () => {
-  const { setAccountType } = useContext(SessionInfoContext);
+  const { state, dispatch } = useContext(Store);
 
   const logOut = async () => {
     const token = getLocalStorageResource('token');
@@ -36,8 +36,7 @@ const Navbar = () => {
         Authorization: token,
       },
     });
-    clearLocalStorage();
-    setAccountType(userType.GUEST);
+    dispatch({ type: 'logout' });
   };
 
   const getMenuItems = (): MenuItem[] => {
