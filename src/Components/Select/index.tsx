@@ -20,7 +20,7 @@ const Select = ({
   className,
   onSearch,
   onChange,
-  filterOption,
+  filterOption = false,
   dropdownRender,
   showArrow,
   children,
@@ -48,7 +48,6 @@ const Select = ({
     <StyledSelect
       optionLabelProp={optionLabelProp}
       size={size}
-      showSearch={showSearch}
       mode={mode}
       defaultValue={defaultValue}
       options={options}
@@ -58,10 +57,11 @@ const Select = ({
       onSearch={onSearch}
       filterOption={filterOption}
       dropdownRender={dropdownRender}
-      showArrow={showArrow}
       value={value}
       searchValue={searchValue}
       notFoundContent={notFoundContent}
+      showArrow={showArrow}
+      showSearch={showSearch}
     >
       {groups}
       {children}

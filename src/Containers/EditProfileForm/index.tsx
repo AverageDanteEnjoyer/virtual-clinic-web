@@ -179,25 +179,21 @@ const ProfileEditForm = () => {
     <Alert key={idx} type={type} message={message} description={description} />
   ));
 
+  const notFoundContentOnClick = async (searchValue: string) => {
+    const response = await createNewProfession(searchValue);
+    if (response.success) {
+      message.success(`${searchValue} was successfully added to profession pool. Please press submit before leaving!`);
+      setProfessions([...professions, response.data]);
+    } else {
+      message.error(response.message);
+    }
+  };
+
   const notFoundContent = (searchValue: string) => (
     <>
       <Typography>Profession "{searchValue}" not found. Would you like to add it to the list?</Typography>
-      <Button
-        size="large"
-        icon={<PlusOutlined />}
-        onClick={async () => {
-          const response = await createNewProfession(searchValue);
-          if (response.success) {
-            message.success(
-              `${searchValue} was successfully added to profession pool. Please press submit before leaving!`
-            );
-            setProfessions([...professions, response.data]);
-          } else {
-            message.error(response.message);
-          }
-        }}
-      >
-        Add
+      <Button size="large" icon={<PlusOutlined />} onClick={() => notFoundContentOnClick(searchValue)}>
+        Add Profession
       </Button>
     </>
   );

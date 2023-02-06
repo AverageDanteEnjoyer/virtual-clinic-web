@@ -107,8 +107,6 @@ const PaginatedSelect = <T,>({
 
   return (
     <CustomSelect
-      showSearch
-      optionLabelProp="label"
       mode={mode}
       size={size}
       placeholder={placeholder}
@@ -119,9 +117,9 @@ const PaginatedSelect = <T,>({
       }
       onChange={onChange}
       onSearch={onSearch}
-      filterOption={false}
       dropdownRender={dropdownRender}
       notFoundContent={notFoundContent ? notFoundContent(searchInput) : undefined}
+      showSearch
     >
       {options.map((item, idx) => {
         return (

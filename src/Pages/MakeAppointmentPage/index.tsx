@@ -24,20 +24,6 @@ export interface Procedure {
   needed_time_min: number;
 }
 
-const timeTableColumns = [
-  {
-    key: 'time_of_day',
-    title: 'Time of day',
-    dataIndex: 'time_of_day',
-  },
-  {
-    key: 'times',
-    title: 'Times',
-    dataIndex: 'times',
-    render: (record: string[]) => record.join(', '),
-  },
-];
-
 const MakeAppointmentPage = () => {
   const { updateTitle } = useContext(TitleContext);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
@@ -118,13 +104,16 @@ const MakeAppointmentPage = () => {
           )}
           {procedures.length > 0 && date && (
             <>
-              <p>Available times</p>
-              <TimeTable setSelectedTime={setSelectedTime} procedureId={procedures[0].id} date={date} />
-              <StyledTitle>Selected time</StyledTitle>
-              <Typography>{selectedTime}</Typography>
+              <p>Pick a hour</p>
+              <TimeTable
+                selectedTime={selectedTime}
+                setSelectedTime={setSelectedTime}
+                procedureId={procedures[0].id}
+                date={date}
+              />
             </>
           )}
-          {selectedTime && (
+          {procedures.length > 0 && selectedTime && (
             <>
               <StyledTitle>
                 You are about to make an appointment with {doctors[0].first_name} {doctors[0].last_name} for the
