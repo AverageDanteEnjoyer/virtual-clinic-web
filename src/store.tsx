@@ -7,6 +7,7 @@ export enum userType {
   PATIENT = 'patient',
   DOCTOR = 'doctor',
 }
+
 type payloadType = {
   accountType: userType;
   localStorage?: {

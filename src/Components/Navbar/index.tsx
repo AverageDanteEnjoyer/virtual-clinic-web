@@ -24,7 +24,7 @@ function getItem(label: ReactNode, children?: MenuItem[], condition: () => boole
 }
 
 const Navbar = () => {
-  const { state, dispatch } = useContext(Store);
+  const { dispatch } = useContext(Store);
 
   const logOut = async () => {
     const token = getLocalStorageResource('token');
