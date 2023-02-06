@@ -68,6 +68,7 @@ const MakeAppointmentPage = () => {
                   setDoctors(values);
                   setProcedures([]);
                   setDate(dayjs().format('YYYY-MM-DD'));
+                  setSelectedTime('');
                 }}
                 renderOption={renderOption}
                 placeholder="Search for a doctor"
@@ -83,6 +84,7 @@ const MakeAppointmentPage = () => {
                     setValues={(values: Procedure[]) => {
                       setProcedures(values);
                       setDate(dayjs().format('YYYY-MM-DD'));
+                      setSelectedTime('');
                     }}
                     renderOption={(procedure) => <>{procedure.name}</>}
                     placeholder="Search for a procedure"
@@ -101,8 +103,11 @@ const MakeAppointmentPage = () => {
                     ]}
                     format="YYYY-MM-DD"
                     disabledDate={(current) => current && current < dayjs().startOf('day')}
-                    value={date ? dayjs(date) : dayjs()}
-                    onChange={(date) => setDate(date?.format('YYYY-MM-DD') || '')}
+                    value={date ? dayjs(date) : undefined}
+                    onChange={(date) => {
+                      setDate(date?.format('YYYY-MM-DD') || '');
+                      setSelectedTime('');
+                    }}
                     size="large"
                   />
                 </>
@@ -122,7 +127,7 @@ const MakeAppointmentPage = () => {
           </Row>
         </Col>
         <Col xs={{ span: 20, offset: 2 }} md={{ span: 8, offset: 2 }} xl={{ span: 4, offset: 1 }}>
-          {procedures.length > 0 && selectedTime && (
+          {procedures.length > 0 && date !== '' && selectedTime !== '' && (
             <>
               <StyledTitle level={2}>Summary</StyledTitle>
               <SubmitBox>
