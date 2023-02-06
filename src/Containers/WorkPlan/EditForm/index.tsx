@@ -64,9 +64,8 @@ const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps
           message: 'Work plan has been edited successfully',
         },
       ]);
-      console.log('data', data, 'responseBody', responseBody, 'workplan', workPlan);
       setData(data.map((item) => (item.id === workPlan.id ? responseBody.data : item)));
-      closeEditModal();
+      setTimeout(closeEditModal, 5000);
     } else {
       setAlerts(
         Object.entries(responseBody.errors).map(([key, message]) => ({

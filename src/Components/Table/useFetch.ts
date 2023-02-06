@@ -27,7 +27,6 @@ export const useFetch = <T>(url: string, initialValue: T, method: methodType = '
           });
           if (!noBodyResponseStatuses.includes(response.status)) {
             const responseBody = await response.json();
-            console.log('useFetch', responseBody);
             setResponseData(responseBody);
           }
         } catch (err: any) {
