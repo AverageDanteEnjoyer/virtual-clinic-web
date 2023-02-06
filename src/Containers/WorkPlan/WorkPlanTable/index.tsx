@@ -9,6 +9,7 @@ import Table, { TableRecord } from '../../../Components/Table';
 import Button from '../../../Components/Button';
 import useModal from './useModal';
 import EditForm from '../EditForm';
+import { EditFormProps } from '../EditForm';
 
 export interface WorkPlan extends TableRecord {
   user_id: number;
@@ -46,6 +47,7 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
   const { isOpened: isEditOpened, openModal: openEditModal, closeModal: closeEditModal } = useModal();
   const { isOpened: isDeleteOpened, openModal: openDeleteModal, closeModal: closeDeleteModal } = useModal();
   const [modalData, setModalData] = useState(0);
+  const [editModalData, setEditModalData] = useState<EditFormProps>({} as EditFormProps);
 
   const showDeleteModal = (id: number) => {
     openDeleteModal();
@@ -57,8 +59,13 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
     closeDeleteModal();
   };
 
-  const showEditModal = () => {
+  const showEditModal = (record: WorkPlan) => {
     openEditModal();
+    const data = {
+      id: record.id,
+      day_of_week: record.day_of_week,
+    };
+    setEditModalData(data);
   };
 
   const handleEditOk = () => {
@@ -88,7 +95,7 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
       key: 'actions',
       render: (text: any, record: WorkPlan) => (
         <>
-          <Button onClick={() => showEditModal()}>Edit</Button>
+          <Button onClick={() => showEditModal(record)}>Edit</Button>
           <Button onClick={() => showDeleteModal(record.id)}>Delete</Button>
         </>
       ),
@@ -120,7 +127,7 @@ const WorkPlanTable = ({ tableRerenderRef }: WorkPlanTableProps) => {
         okButtonProps={{ style: { display: 'none' } }}
         cancelButtonProps={{ style: { display: 'none' } }}
       >
-        <EditForm />
+        <EditForm id={editModalData.id} day_of_week={editModalData.day_of_week} />
       </Modal>
     </>
   );

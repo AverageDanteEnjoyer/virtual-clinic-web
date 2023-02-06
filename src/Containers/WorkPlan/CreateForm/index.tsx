@@ -14,7 +14,7 @@ interface FormData {
   time_range: any;
 }
 
-interface WorkPlan {
+export interface WorkPlan {
   day_of_week: string;
   work_hour_start: string;
   work_hour_end: string;
