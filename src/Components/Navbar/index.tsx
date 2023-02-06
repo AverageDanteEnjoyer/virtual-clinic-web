@@ -4,8 +4,8 @@ import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
 import routes from '../../routes';
-import { clearLocalStorage, getLocalStorageResource } from '../../localStorageAPI';
-import { SessionInfoContext, userType } from '../../SessionInfoContext';
+import { getLocalStorageResource } from '../../localStorageAPI';
+import { Store, userType } from '../../store';
 import { API_URL } from '../../api';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -19,7 +19,7 @@ function getItem(label: ReactNode, key: Key, children?: MenuItem[]): MenuItem {
 }
 
 const Navbar = () => {
-  const { accountType, setAccountType } = useContext(SessionInfoContext);
+  const { state, dispatch } = useContext(Store);
 
   const logOut = async () => {
     const token = getLocalStorageResource('token');
@@ -31,8 +31,7 @@ const Navbar = () => {
         Authorization: token,
       },
     });
-    clearLocalStorage();
-    setAccountType(userType.GUEST);
+    dispatch({ type: 'logout' });
   };
 
   const items: MenuItem[] = [
@@ -41,7 +40,7 @@ const Navbar = () => {
     getItem(
       <UserOutlined />,
       'user',
-      accountType !== userType.GUEST
+      state.accountType !== userType.GUEST
         ? [
             getItem(<Link to={routes.editProfile}>Edit profile</Link>, '3'),
             getItem('Appointments', '4'),

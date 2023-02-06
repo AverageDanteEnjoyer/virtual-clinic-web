@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 
-import { userType } from './SessionInfoContext';
+import { userType } from './store';
 
 export const getLocalStorageResource = (key: string | undefined) => {
   if (!key) return;
