@@ -1,16 +1,10 @@
-import { useContext, useEffect } from 'react';
-
 import LoginForm from '../../Containers/LoginForm';
 import Navbar from '../../Components/Navbar';
-import { TitleContext } from '../../Contexts/TitleContext';
+import useTitle from '../../useTitle';
 
 const LoginPage = () => {
-  const { updateTitle } = useContext(TitleContext);
-
-  useEffect(() => {
-    updateTitle('Login');
-  }, [updateTitle]);
-
+  useTitle();
+  
   return (
     <>
       <Navbar />

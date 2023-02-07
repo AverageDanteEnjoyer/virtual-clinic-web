@@ -1,17 +1,11 @@
-import { useContext, useEffect } from 'react';
-
 import ProfileEditForm from '../../Containers/EditProfileForm';
 import { StyledTitle } from '../../Components/Typography/styles';
 import Navbar from '../../Components/Navbar';
-import { TitleContext } from '../../Contexts/TitleContext';
+import useTitle from '../../useTitle';
 
 const ProfileEditPage = () => {
-  const { updateTitle } = useContext(TitleContext);
-
-  useEffect(() => {
-    updateTitle('Virtual Clinic - Edit profile');
-  }, [updateTitle]);
-
+  useTitle();
+  
   return (
     <>
       <Navbar />

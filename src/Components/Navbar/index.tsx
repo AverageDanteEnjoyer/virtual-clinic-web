@@ -41,16 +41,16 @@ const Navbar = () => {
 
   const getMenuItems = (): MenuItem[] => {
     const items: MenuItem[] | null = [
-      getItem(<Link to={routes.components}>components</Link>),
-      getItem(<Link to={routes.home}>home</Link>),
-      getItem(<Link to={routes.makeAppointment}>Make an appointment</Link>, [], () => equals(userType.PATIENT)),
+      getItem(<Link to={routes.components.path}>components</Link>),
+      getItem(<Link to={routes.home.path}>home</Link>),
+      getItem(<Link to={routes.makeAppointment.path}>Make an appointment</Link>, [], () => equals(userType.PATIENT)),
       getItem(<UserOutlined />, [
-        getItem(<Link to={routes.logIn}>Log in</Link>, [], () => equals(userType.GUEST)),
-        getItem(<Link to={routes.register}>Register</Link>, [], () => equals(userType.GUEST)),
-        getItem(<Link to={routes.editProfile}>Edit profile</Link>, [], () => notEquals(userType.GUEST)),
+        getItem(<Link to={routes.logIn.path}>Log in</Link>, [], () => equals(userType.GUEST)),
+        getItem(<Link to={routes.register.path}>Register</Link>, [], () => equals(userType.GUEST)),
+        getItem(<Link to={routes.editProfile.path}>Edit profile</Link>, [], () => notEquals(userType.GUEST)),
         getItem('Appointments', [], () => notEquals(userType.GUEST)),
         getItem(
-          <Link to={routes.home} onClick={logOut}>
+          <Link to={routes.home.path} onClick={logOut}>
             Log out
           </Link>,
           [],

@@ -27,8 +27,8 @@ const Application = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={routes.home} element={<HomePage />} />
-        <Route path={routes.components} element={<ComponentsPage />} />
+        <Route path={routes.home.path} element={<HomePage />} />
+        <Route path={routes.components.path} element={<ComponentsPage />} />
         {mappedPrivateRoutes}
       </Routes>
       <AuthVerify />

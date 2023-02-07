@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Col, Modal, Row } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 
@@ -16,7 +16,7 @@ import Navbar from '../../Components/Navbar';
 import PaginatedTable, { FetchParams, FetchResponse, TableRecord } from '../../Components/PaginatedTable';
 import { getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
-import { TitleContext } from '../../Contexts/TitleContext';
+import useTitle from '../../useTitle';
 
 interface Procedure extends TableRecord {
   user_id: number;
@@ -27,8 +27,8 @@ interface Procedure extends TableRecord {
 }
 
 const ComponentsPage = () => {
-  const { updateTitle } = useContext(TitleContext);
-
+  useTitle();
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // I leave it here to others, who may not know how to correctly use it.
@@ -100,10 +100,6 @@ const ComponentsPage = () => {
       </>
     );
   };
-
-  useEffect(() => {
-    updateTitle('Virtual Clinic - Components');
-  }, [updateTitle]);
 
   return (
     <>

@@ -106,7 +106,7 @@ const ProfileEditForm = () => {
         if (response.status === 401) {
           setTimeout(() => {
             dispatch({ type: 'logout' });
-            navigate(routes.logIn, {
+            navigate(routes.logIn.path, {
               state: {
                 errors: [{ type: 'info', message: 'You have been logged out, please log in again!' }],
               },

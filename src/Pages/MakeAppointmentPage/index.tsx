@@ -1,10 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Col, DatePicker, Row } from 'antd';
 import dayjs from 'dayjs';
 
 import Navbar from '../../Components/Navbar';
 import { StyledParagraph, StyledTitle } from '../../Components/Typography/styles';
-import { TitleContext } from '../../Contexts/TitleContext';
 import PaginatedSelect from '../../Components/PaginatedSelect';
 import fetchAllDoctors from './fetchDoctors';
 import { DoctorEmail, DoctorIcon, DoctorInfo, DoctorOption, Paragraph } from './styles';
@@ -12,6 +11,7 @@ import { getFetchDoctorProcedures } from './fetchDoctorProcedures';
 import TimeTable from '../../Containers/TimeTable';
 import { SubmitBox } from '../../Containers/TimeTable/styles';
 import { StyledButton } from '../../Components/Button/styles';
+import useTitle from '../../useTitle';
 
 export interface Doctor {
   id: number;
@@ -27,15 +27,12 @@ export interface Procedure {
 }
 
 const MakeAppointmentPage = () => {
-  const { updateTitle } = useContext(TitleContext);
+  useTitle();
+  
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
   const [selectedTime, setSelectedTime] = useState('');
-
-  useEffect(() => {
-    updateTitle('Make an appointment');
-  }, []);
 
   const renderOption = (doctor: Doctor) => (
     <DoctorOption>
