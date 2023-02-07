@@ -113,13 +113,7 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
         onOk={handleRemoveOk}
         onCancel={closeDeleteModal}
       />
-      <Modal
-        title="Edit workday"
-        open={isEditOpened}
-        onCancel={closeEditModal}
-        okButtonProps={{ style: { display: 'none' } }}
-        cancelButtonProps={{ style: { display: 'none' } }}
-      >
+      <Modal title="Edit workday" open={isEditOpened} onCancel={closeEditModal} footer={null}>
         <EditForm data={data} setData={setData} workPlan={record} closeEditModal={closeEditModal} />
       </Modal>
     </>
