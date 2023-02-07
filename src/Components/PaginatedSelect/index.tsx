@@ -93,7 +93,7 @@ const PaginatedSelect = <T,>({
       <Divider />
       <PaginationFrame>
         <Pagination
-          hideOnSinglePage={true}
+          hideOnSinglePage
           current={page}
           total={totalPages}
           onChange={(newPage, newSize) => {
