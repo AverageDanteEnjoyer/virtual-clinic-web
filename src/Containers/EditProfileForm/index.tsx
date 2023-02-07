@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
-import { Col, Form, FormItemProps, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { Form, FormItemProps } from 'antd';
 
 import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
@@ -13,6 +13,7 @@ import { API_URL } from '../../api';
 import { getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
 import { Store, userType } from '../../store';
 import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
+import { CenteredContainer } from './styles';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -173,13 +174,7 @@ const ProfileEditForm = () => {
 
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 12 }}
-        autoComplete="off"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-      >
+      <Form labelCol={{ span: 4 }} autoComplete="off" onFinish={onFinish} onFinishFailed={onFinishFailed}>
         {formItemsJSX}
         {state.accountType === userType.DOCTOR && (
           <Form.Item label="Professions">
@@ -192,16 +187,12 @@ const ProfileEditForm = () => {
             />
           </Form.Item>
         )}
-        <Row gutter={[0, 12]}>
-          <Col span={12} offset={6}>
-            <Button shape="round" htmlType="submit" size="large" loading={loading}>
-              Submit
-            </Button>
-          </Col>
-          <Col span={12} offset={6}>
-            {alertsJSX}
-          </Col>
-        </Row>
+        <CenteredContainer>
+          <Button shape="round" htmlType="submit" size="large" loading={loading}>
+            Submit
+          </Button>
+          {alertsJSX}
+        </CenteredContainer>
       </Form>
     </Spin>
   );

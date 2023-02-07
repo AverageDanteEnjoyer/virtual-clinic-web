@@ -4,7 +4,6 @@ import { ColumnsType } from 'antd/es/table';
 
 import Carousel from '../../Components/Carousel';
 import Spin from '../../Components/Spin';
-import Table from '../../Components/Table';
 import Alert from '../../Components/Alert';
 import Typography from '../../Components/Typography';
 import Input from '../../Components/Input';
@@ -48,25 +47,6 @@ const ComponentsPage = () => {
     return response.json();
   };
 
-  const paginatedTableColumns: ColumnsType<Procedure> = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      filtered: true,
-    },
-    {
-      title: 'Needed time',
-      dataIndex: 'needed_time_min',
-      key: 'needed_time_min',
-    },
-  ];
-
   const paginatedTableActions = (text: any, record: Procedure, index: number) => {
     const showModal = () => {
       setIsModalOpen(true);
@@ -98,6 +78,31 @@ const ComponentsPage = () => {
     );
   };
 
+  const paginatedTableColumns: ColumnsType<Procedure> = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      filtered: true,
+    },
+    {
+      title: 'Needed time',
+      dataIndex: 'needed_time_min',
+      key: 'needed_time_min',
+    },
+    {
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
+      render: paginatedTableActions,
+    },
+  ];
+
   return (
     <>
       <Navbar />
@@ -112,16 +117,7 @@ const ComponentsPage = () => {
         </Row>
         <Row gutter={[14, 12]}>
           <Col className="gutter-row" span={24}>
-            <PaginatedTable<Procedure>
-              fetchData={paginatedTableFetchData}
-              columns={paginatedTableColumns}
-              actions={paginatedTableActions}
-            />
-          </Col>
-        </Row>
-        <Row gutter={[0, 12]}>
-          <Col className="gutter-row" span={24}>
-            <Table />
+            <PaginatedTable<Procedure> fetchData={paginatedTableFetchData} columns={paginatedTableColumns} />
           </Col>
         </Row>
         <Row gutter={[0, 12]}>

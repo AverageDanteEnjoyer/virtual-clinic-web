@@ -35,14 +35,12 @@ export type TableRecord = {
 interface PaginatedTableProps<T extends TableRecord> {
   columns: ColumnsType<T>;
   fetchData: ({ page, perPage, filter }: FetchParams) => Promise<FetchResponse<T>>;
-  actions?: (text: any, record: T, index: number) => ReactNode;
   pageSizeOptions?: number[];
 }
 
 const PaginatedTable = <T extends TableRecord>({
   columns,
   fetchData,
-  actions,
   pageSizeOptions = [5, 10, 50],
 }: PaginatedTableProps<T>) => {
   const [data, setData] = useState<T[]>([]);
@@ -106,16 +104,6 @@ const PaginatedTable = <T extends TableRecord>({
   columns = columns.map((column) =>
     column.filtered ? { ...column, ...getColumnSearchProps(column.key as string) } : column
   );
-
-  actions &&
-    (columns = [
-      ...columns,
-      {
-        title: 'Actions',
-        key: 'actions',
-        render: actions,
-      },
-    ]);
 
   return (
     <Table

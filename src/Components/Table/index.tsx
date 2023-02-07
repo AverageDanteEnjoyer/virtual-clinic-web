@@ -1,75 +1,32 @@
-import React from 'react';
-import { Space, Table } from 'antd';
+import { useEffect } from 'react';
+import { Table as TableAntd } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
-interface DataType {
-  key: React.Key;
+import { useFetch } from './useFetch';
+
+export type TableRecord = {
   id: number;
-  name: string;
-  age: number;
-  date: Date;
+};
+
+interface TableProps<T extends TableRecord, R> {
+  data: T[];
+  setData: (data: T[]) => void;
+  columns: ColumnsType<T>;
+  url: string;
+  extractData: (response: R) => T[];
+  rowKey?: (record: T) => string;
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'Id',
-    dataIndex: 'id',
-    key: 'id',
-    render: (text) => <p>{text}</p>,
-  },
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <p>{text}</p>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Date',
-    dataIndex: 'date',
-    key: 'date',
-    render: (date) => <p>{date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}</p>,
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Postpone {record.name}</a>
-        <a>Cancel</a>
-      </Space>
-    ),
-  },
-];
+const Table = <T extends TableRecord, R>({ data, setData, columns, url, extractData, rowKey }: TableProps<T, R>) => {
+  const { loading, responseData } = useFetch<R>(url, {} as R);
 
-const data: DataType[] = [
-  {
-    key: '1',
-    id: 1,
-    name: 'John Brown',
-    age: 32,
-    date: new Date(2022, 11, 21, 8, 30),
-  },
-  {
-    key: '2',
-    id: 2,
-    name: 'Jim Green',
-    age: 42,
-    date: new Date(2022, 11, 21, 10, 30),
-  },
-  {
-    key: '3',
-    id: 3,
-    name: 'Joe Black',
-    age: 22,
-    date: new Date(2022, 11, 22, 8, 30),
-  },
-];
+  useEffect(() => {
+    if (responseData) {
+      setData(extractData(responseData));
+    }
+  }, [responseData]);
 
-const TableExample = () => <Table columns={columns} dataSource={data} />;
+  return <TableAntd columns={columns} dataSource={data} loading={loading} rowKey={rowKey || 'id'} pagination={false} />;
+};
 
-export default TableExample;
+export default Table;

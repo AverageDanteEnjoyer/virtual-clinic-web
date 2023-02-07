@@ -7,7 +7,6 @@ export const StyledButton = styled(Button)`
   background-color: ${colors.dodgerBlue};
   background-image: ${colors.dodgerBlueGradient};
   background-size: calc(100% + 20px) calc(100% + 20px);
-  cursor: pointer;
   display: inline-flex;
   font-family: CircularStd, sans-serif;
   font-size: 16px;

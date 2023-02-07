@@ -60,6 +60,7 @@ const LoginForm = () => {
         payload: {
           accountType: responseBody.account_type,
           localStorage: {
+            id: responseBody.id,
             token: response.headers.get('Authorization'),
             first_name: responseBody.first_name,
             last_name: responseBody.last_name,
