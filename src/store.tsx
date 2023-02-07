@@ -7,9 +7,11 @@ export enum userType {
   PATIENT = 'patient',
   DOCTOR = 'doctor',
 }
+
 type payloadType = {
   accountType: userType;
   localStorage?: {
+    id: number;
     token: string | null;
     first_name: string;
     last_name: string;
