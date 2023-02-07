@@ -1,4 +1,5 @@
 import { useContext, useMemo } from 'react';
+
 import { Store } from './store';
 import { useNavigate } from 'react-router-dom';
 import { getDataFromToken } from './localStorageAPI';
@@ -12,7 +13,7 @@ const AuthVerify = () => {
     const { tokenExp } = getDataFromToken();
     if (tokenExp && tokenExp < new Date()) {
       dispatch({ type: 'logout' });
-      navigate(routes.logIn, {
+      navigate(routes.logIn.path, {
         state: {
           errors: [{ type: 'info', message: 'You have been logged out, please log in again!' }],
         },

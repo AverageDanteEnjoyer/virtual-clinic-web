@@ -64,7 +64,7 @@ const RegistrationForm = () => {
         },
       ]);
       setTimeout(() => {
-        navigate(routes.logIn);
+        navigate(routes.logIn.path);
       }, 2000);
     } else {
       setAlerts(

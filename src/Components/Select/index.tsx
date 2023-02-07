@@ -20,13 +20,16 @@ const Select = ({
   className,
   onSearch,
   onChange,
-  filterOption,
+  filterOption = false,
   dropdownRender,
   showArrow,
   children,
   value,
   searchValue,
   notFoundContent,
+  showSearch,
+  size,
+  optionLabelProp = 'label',
 }: StyledSelectProps) => {
   const { Option, OptGroup } = StyledSelect;
   const groups = customOptions?.map(({ children, label }) => {
@@ -43,6 +46,8 @@ const Select = ({
   });
   return (
     <StyledSelect
+      optionLabelProp={optionLabelProp}
+      size={size}
       mode={mode}
       defaultValue={defaultValue}
       options={options}
@@ -52,10 +57,11 @@ const Select = ({
       onSearch={onSearch}
       filterOption={filterOption}
       dropdownRender={dropdownRender}
-      showArrow={showArrow}
       value={value}
       searchValue={searchValue}
       notFoundContent={notFoundContent}
+      showArrow={showArrow}
+      showSearch={showSearch}
     >
       {groups}
       {children}

@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
+import { Form, FormItemProps, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { Form, FormItemProps } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
@@ -14,6 +15,7 @@ import { getLocalStorageResource, setLocalStorageResources } from '../../localSt
 import { Store, userType } from '../../store';
 import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
 import { CenteredContainer } from './styles';
+import { StyledTypography as Typography } from '../../Components/Typography/styles';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -27,12 +29,17 @@ type userInfo = {
   password: string;
 };
 
+export interface Profession {
+  id: number;
+  name: string;
+}
+
 const ProfileEditForm = () => {
   const { state, dispatch } = useContext(Store);
 
   const navigate = useNavigate();
 
-  const [professions, setProfessions] = useState<string[]>([]);
+  const [professions, setProfessions] = useState<Profession[]>([]);
   const [loading, setLoading] = useState(false);
   const [alerts, setAlerts] = useState<
     {
@@ -56,7 +63,7 @@ const ProfileEditForm = () => {
 
   const onFinish = async (values: userInfo) => {
     const credentials = {
-      user: { ...values, professions: professions },
+      user: { ...values, professions: professions.map((profession) => profession.name) },
     };
 
     setLoading(true);
@@ -100,7 +107,7 @@ const ProfileEditForm = () => {
         if (response.status === 401) {
           setTimeout(() => {
             dispatch({ type: 'logout' });
-            navigate(routes.logIn, {
+            navigate(routes.logIn.path, {
               state: {
                 errors: [{ type: 'info', message: 'You have been logged out, please log in again!' }],
               },
@@ -172,18 +179,39 @@ const ProfileEditForm = () => {
     <Alert key={idx} type={type} message={message} description={description} />
   ));
 
+  const notFoundContentOnClick = async (searchValue: string) => {
+    const response = await createNewProfession(searchValue);
+    if (response.success) {
+      message.success(`${searchValue} was successfully added to profession pool. Please press submit before leaving!`);
+      setProfessions([...professions, response.data]);
+    } else {
+      message.error(response.message);
+    }
+  };
+
+  const notFoundContent = (searchValue: string) => (
+    <>
+      <Typography>Profession "{searchValue}" not found. Would you like to add it to the list?</Typography>
+      <Button size="large" icon={<PlusOutlined />} onClick={() => notFoundContentOnClick(searchValue)}>
+        Add Profession
+      </Button>
+    </>
+  );
+
   return (
     <Spin spinning={loading} tip="waiting for server response...">
       <Form labelCol={{ span: 4 }} autoComplete="off" onFinish={onFinish} onFinishFailed={onFinishFailed}>
         {formItemsJSX}
         {state.accountType === userType.DOCTOR && (
           <Form.Item label="Professions">
-            <PaginatedSelect
+            <PaginatedSelect<Profession>
               fetchOptions={fetchAllProfessions}
               fetchInitialValues={fetchDoctorProfessions}
-              createNewOption={createNewProfession}
               values={professions}
               setValues={setProfessions}
+              notFoundContent={notFoundContent}
+              mode="multiple"
+              renderOption={(profession: Profession) => profession.name}
             />
           </Form.Item>
         )}

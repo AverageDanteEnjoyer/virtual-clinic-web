@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { Col, Modal, Row } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
-import { ColumnsType } from 'antd/es/table';
 
+import { ColumnsType } from 'antd/es/table';
 import Carousel from '../../Components/Carousel';
 import Spin from '../../Components/Spin';
 import Alert from '../../Components/Alert';
@@ -14,7 +15,7 @@ import Navbar from '../../Components/Navbar';
 import PaginatedTable, { FetchParams, FetchResponse, TableRecord } from '../../Components/PaginatedTable';
 import { getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
-import { useState } from 'react';
+import useTitle from '../../useTitle';
 
 interface Procedure extends TableRecord {
   user_id: number;
@@ -25,6 +26,8 @@ interface Procedure extends TableRecord {
 }
 
 const ComponentsPage = () => {
+  useTitle();
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // I leave it here to others, who may not know how to correctly use it.

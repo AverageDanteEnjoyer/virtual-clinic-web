@@ -1,103 +1,91 @@
-import { message, Pagination, Select } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Pagination, Select } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 
 import CustomSelect from '../Select';
-import Button from '../Button';
-import { StyledTypography as Typography } from '../Typography/styles';
-import { NoContentFrame, PaginationFrame, StyledDivider as Divider } from './styles';
+import { PaginationFrame, StyledDivider as Divider } from './styles';
 
-export interface searchParameters {
-  name: string;
-  pageIndex: number;
+interface ErrorType {
+  [field: string]: string[];
+}
+
+export interface SearchParameters {
+  searchValue: string;
   perPage: number;
+  pageIndex: number;
 }
 
-export interface PaginatedSelectProps {
-  fetchOptions: ({
-    name,
-    perPage,
-    pageIndex,
-  }: searchParameters) => Promise<{ total: number; options: string[] } | undefined>;
-  fetchInitialValues: () => Promise<string[]>;
-  createNewOption: (option: string) => Promise<{ success: boolean; message: string }>;
-  values: string[];
-  setValues: (values: string[]) => void;
+export interface FetchResponse<T> {
+  data: T[];
+  errors?: ErrorType;
+  total: number;
 }
 
-const PaginatedSelect = ({
+interface PaginatedSelectProps<T> {
+  fetchOptions: ({ searchValue, perPage, pageIndex }: SearchParameters) => Promise<FetchResponse<T>>;
+  fetchInitialValues?: () => Promise<T[]>;
+  values: T[];
+  setValues: (values: T[]) => void;
+  notFoundContent?: (searchValue: string) => React.ReactNode;
+  mode?: 'multiple' | 'tags';
+  size?: 'large' | 'middle' | 'small';
+  renderOption: (item: T) => React.ReactNode;
+  placeholder?: string;
+}
+
+const PaginatedSelect = <T,>({
   fetchOptions,
   fetchInitialValues,
-  createNewOption,
+  notFoundContent,
   values,
   setValues,
-}: PaginatedSelectProps) => {
+  renderOption,
+  size = 'middle',
+  mode,
+  placeholder,
+}: PaginatedSelectProps<T>) => {
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+
+  const [searchInput, setSearchInput] = useState('');
+  const [options, setOptions] = useState<T[]>([]);
   const fetchRef = useRef(0);
 
-  const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(10);
-  const [searchInput, setSearchInput] = useState<string>('');
-
-  const [options, setOptions] = useState<string[]>([]);
-
   const debounceFetch = useMemo(() => {
-    const loadOptions = ({ name, perPage, pageIndex }: searchParameters) => {
+    const loadOptions = async ({ searchValue, perPage, pageIndex }: SearchParameters) => {
       fetchRef.current += 1;
       const fetchId = fetchRef.current;
 
-      fetchOptions({ name: name, perPage: perPage, pageIndex: pageIndex }).then((optionData) => {
-        if (fetchId !== fetchRef.current || !optionData) {
-          return;
-        }
-        setTotalPages(optionData.total ? optionData.total : 1);
-        setOptions(optionData.options);
-      });
+      const optionData = await fetchOptions({ searchValue, perPage, pageIndex });
+      if (fetchId !== fetchRef.current || !optionData) return;
+
+      setTotalPages(optionData.total || 1);
+      setOptions(optionData.data);
     };
-    return debounce(loadOptions, 600);
+
+    return debounce(loadOptions, 275);
   }, [fetchOptions]);
 
   useEffect(() => {
-    fetchInitialValues().then((initialValues) => {
-      setValues(initialValues);
-    });
-    debounceFetch({ name: searchInput, pageIndex: page, perPage: pageSize });
-  }, [debounceFetch, fetchInitialValues]);
+    fetchInitialValues &&
+      fetchInitialValues().then((initialValues) => {
+        setValues(initialValues);
+      });
 
-  const onChange = (newValues: string[]) => {
-    setValues(newValues);
+    debounceFetch({ searchValue: searchInput, pageIndex: page, perPage: pageSize });
+  }, []);
+
+  const onChange = (value: string | string[]) => {
+    const parsedValue = Array.isArray(value) ? value.map((item) => JSON.parse(item)) : [JSON.parse(value)];
+    setValues(parsedValue);
   };
 
   const onSearch = (searchValue: string) => {
     setPage(1);
     setSearchInput(searchValue);
-    debounceFetch({ name: searchValue, pageIndex: 1, perPage: pageSize });
+    debounceFetch({ searchValue, pageIndex: 1, perPage: pageSize });
   };
-
-  const notFoundContent = (
-    <NoContentFrame>
-      <Typography>
-        '{searchInput}' not found <br /> Would you like to add it?
-      </Typography>
-      <Button
-        size="large"
-        icon={<PlusOutlined />}
-        onClick={() => {
-          createNewOption(searchInput).then((response) => {
-            response.success
-              ? message.success(
-                  `${searchInput} was successfully added to profession pool. Please press submit before leaving!`
-                )
-              : message.error(`${searchInput} ${response.message}`);
-            response.success && setValues([...values, searchInput]);
-          });
-        }}
-      >
-        Add item
-      </Button>
-    </NoContentFrame>
-  );
 
   const dropdownRender = (menu: React.ReactNode) => (
     <>
@@ -105,12 +93,13 @@ const PaginatedSelect = ({
       <Divider />
       <PaginationFrame>
         <Pagination
+          hideOnSinglePage
           current={page}
           total={totalPages}
           onChange={(newPage, newSize) => {
             setPage(newPage);
             setPageSize(newSize);
-            debounceFetch({ name: searchInput, pageIndex: newPage, perPage: newSize });
+            debounceFetch({ searchValue: searchInput, pageIndex: newPage, perPage: newSize });
           }}
         />
       </PaginationFrame>
@@ -119,20 +108,24 @@ const PaginatedSelect = ({
 
   return (
     <CustomSelect
-      mode="multiple"
-      value={values}
-      searchValue={searchInput}
-      filterOption={false}
+      mode={mode}
+      size={size}
+      placeholder={placeholder}
+      value={
+        values.length > 0
+          ? values.map((item) => ({ value: JSON.stringify(item), label: renderOption(item) }))
+          : undefined
+      }
       onChange={onChange}
       onSearch={onSearch}
-      notFoundContent={notFoundContent}
       dropdownRender={dropdownRender}
-      showArrow
+      notFoundContent={notFoundContent ? notFoundContent(searchInput) : undefined}
+      showSearch
     >
       {options.map((item, idx) => {
         return (
-          <Select.Option key={(page - 1) * pageSize + idx} value={item}>
-            {item}
+          <Select.Option key={idx} value={JSON.stringify(item)}>
+            {renderOption(item)}
           </Select.Option>
         );
       })}

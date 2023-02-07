@@ -1,9 +1,10 @@
 const routes = {
-  home: '/',
-  components: '/Components',
-  logIn: '/log-in',
-  register: '/register',
-  editProfile: '/edit-profile',
+  home: { path: '/', title: 'Virtual Clinic' },
+  components: { path: '/components', title: 'Virtual Clinic - Components' },
+  logIn: { path: '/log-in', title: 'Virtual Clinic - Log In' },
+  register: { path: '/register', title: 'Virtual Clinic - Register' },
+  editProfile: { path: '/edit-profile', title: 'Virtual Clinic - Edit Profile' },
+  makeAppointment: { path: '/make-appointment', title: 'Virtual Clinic - Make Appointment' },
 };
 
 export default routes;

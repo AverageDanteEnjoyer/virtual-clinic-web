@@ -76,7 +76,7 @@ const LoginForm = () => {
         },
       ]);
       setTimeout(() => {
-        navigate(routes.home);
+        navigate(routes.home.path);
       }, 2000);
     } else {
       setAlerts([

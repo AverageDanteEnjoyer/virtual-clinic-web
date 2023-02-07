@@ -9,7 +9,7 @@ export enum userType {
 }
 
 type payloadType = {
-  accountType: userType;
+  accountType?: userType;
   localStorage?: {
     id: number;
     token: string | null;
@@ -17,18 +17,23 @@ type payloadType = {
     last_name: string;
     email: string;
   };
+  title?: string;
 };
+
 type SessionAction = {
-  type: 'login' | 'logout';
+  type: 'login' | 'logout' | 'setTitle';
   payload?: payloadType;
 };
+
 type SessionState = {
   accountType: userType;
 };
+
 type StoreType = {
   state: SessionState;
   dispatch: React.Dispatch<SessionAction>;
 };
+
 const initialState = {
   accountType: userType.GUEST,
 };
@@ -47,9 +52,15 @@ const SessionReducer = (state: SessionState, action: SessionAction) => {
         setLocalStorageResources({ ...localStorage, accountType: accountType });
       }
       return { ...state, accountType: payload?.accountType || userType.PATIENT };
+
     case 'logout':
       clearLocalStorage();
       return { ...state, accountType: userType.GUEST };
+
+    case 'setTitle':
+      document.title = payload?.title || 'Virtual Clinic';
+      return state;
+
     default:
       return state;
   }
