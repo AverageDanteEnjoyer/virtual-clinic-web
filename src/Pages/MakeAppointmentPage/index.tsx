@@ -28,7 +28,7 @@ export interface Procedure {
 
 const MakeAppointmentPage = () => {
   useTitle();
-  
+
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
@@ -138,7 +138,7 @@ const MakeAppointmentPage = () => {
                   <b>Date:</b> {dayjs(date).format('D MMMM YYYY')} {selectedTime} -{' '}
                   {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('HH:mm')}
                 </StyledParagraph>
-                <StyledButton type="primary" size="large">
+                <StyledButton type="primary" size="large" disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs())}>
                   Submit
                 </StyledButton>
               </SubmitBox>
