@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
@@ -8,9 +8,8 @@ import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
-import { setLocalStorageResources } from '../../localStorageAPI';
 import { API_URL } from '../../api';
-import { SessionInfoContext } from '../../SessionInfoContext';
+import { Store } from '../../store';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -26,7 +25,7 @@ const LoginForm = () => {
   const location = useLocation();
 
   const [loading, setLoading] = useState(false);
-  const { setAccountType } = useContext(SessionInfoContext);
+  const { dispatch } = useContext(Store);
   const [alerts, setAlerts] = useState<
     {
       type: 'success' | 'warning' | 'error' | 'info';
@@ -56,15 +55,19 @@ const LoginForm = () => {
     setLoading(false);
 
     if (response.ok) {
-      setLocalStorageResources({
-        id: responseBody.id,
-        token: response.headers.get('Authorization'),
-        accountType: responseBody.account_type,
-        first_name: responseBody.first_name,
-        last_name: responseBody.last_name,
-        email: responseBody.email,
+      dispatch({
+        type: 'login',
+        payload: {
+          accountType: responseBody.account_type,
+          localStorage: {
+            id: responseBody.id,
+            token: response.headers.get('Authorization'),
+            first_name: responseBody.first_name,
+            last_name: responseBody.last_name,
+            email: responseBody.email,
+          },
+        },
       });
-      setAccountType(responseBody.account_type);
 
       setAlerts([
         {
