@@ -11,6 +11,7 @@ export enum userType {
 type payloadType = {
   accountType?: userType;
   localStorage?: {
+    id: number;
     token: string | null;
     first_name: string;
     last_name: string;
