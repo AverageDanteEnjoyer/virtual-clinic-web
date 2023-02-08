@@ -8,7 +8,11 @@ const palette = {
   eggShell: '#E7DFC6',
   lightGray: '#cccccc',
   veryLightGray: '#e5e5e5',
+  whiteSmoke: '#F3F3F3',
   spaceCadet: '#2B3A67',
+  ultraViolet: '#574696',
+  tekhelet: '#3B258C',
+  russianViolet: '#250054',
 };
 
 export default palette;
