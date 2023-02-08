@@ -1,9 +1,8 @@
-import { useContext, useState } from 'react';
-import { Col, FormItemProps, Row } from 'antd';
+import { useContext, useEffect, useState } from 'react';
+import { Col, Row, notification, FormItemProps } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
-import Alert from '../../Components/Alert';
 import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
@@ -20,19 +19,39 @@ type loginInfo = {
   password: string;
 };
 
+type AlertType = 'success' | 'info' | 'warning' | 'error';
+
 const LoginForm = () => {
+  const { dispatch } = useContext(Store);
   const navigate = useNavigate();
   const location = useLocation();
+  const [api, contextHolder] = notification.useNotification();
 
+  const [timeoutId, setTimeoutId] = useState<null | NodeJS.Timeout>(null);
   const [loading, setLoading] = useState(false);
-  const { dispatch } = useContext(Store);
   const [alerts, setAlerts] = useState<
     {
-      type: 'success' | 'warning' | 'error' | 'info';
+      type: AlertType;
       message: string;
       description?: string;
     }[]
   >(location.state ? location.state.errors : []);
+
+  useEffect(() => {
+    alerts.forEach((alert) => {
+      api[alert.type]({
+        message: alert.message,
+        description: alert.description,
+        placement: 'bottomRight',
+      });
+    });
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [alerts]);
 
   const requestLogin = async (credentials: { user: loginInfo }) => {
     return await fetch(`${API_URL}/users/sign_in/`, {
@@ -50,41 +69,55 @@ const LoginForm = () => {
     };
 
     setLoading(true);
-    const response = await requestLogin(credentials);
-    const responseBody = await response.json();
-    setLoading(false);
+    try {
+      const response = await requestLogin(credentials);
+      const responseBody = await response.json();
 
-    if (response.ok) {
-      dispatch({
-        type: 'login',
-        payload: {
-          accountType: responseBody.account_type,
-          localStorage: {
-            id: responseBody.id,
-            token: response.headers.get('Authorization'),
-            first_name: responseBody.first_name,
-            last_name: responseBody.last_name,
-            email: responseBody.email,
+      if (response.ok) {
+        setAlerts([
+          {
+            type: 'success',
+            message: 'You successfully logged in. Redirecting to home page...',
           },
-        },
-      });
+        ]);
 
+        dispatch({
+          type: 'login',
+          payload: {
+            accountType: responseBody.account_type,
+            localStorage: {
+              id: responseBody.id,
+              token: response.headers.get('Authorization'),
+              first_name: responseBody.first_name,
+              last_name: responseBody.last_name,
+              email: responseBody.email,
+            },
+          },
+        });
+
+        setTimeoutId(
+          setTimeout(() => {
+            navigate(routes.home.path);
+          }, 2000)
+        );
+      } else {
+        setAlerts([
+          {
+            type: 'warning',
+            message: responseBody.error,
+          },
+        ]);
+      }
+    } catch (error) {
       setAlerts([
         {
-          type: 'success',
-          message: 'Success',
+          type: 'error',
+          message: 'Server Error',
+          description: 'Please try again later',
         },
       ]);
-      setTimeout(() => {
-        navigate(routes.home.path);
-      }, 2000);
-    } else {
-      setAlerts([
-        {
-          type: 'info',
-          message: responseBody.error,
-        },
-      ]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -121,12 +154,9 @@ const LoginForm = () => {
     </StyledForm.Item>
   ));
 
-  const alertsJSX = alerts.map(({ type, message, description }, idx) => (
-    <Alert key={idx} type={type} message={message} description={description} />
-  ));
-
   return (
     <Spin spinning={loading} tip="waiting for server response...">
+      {contextHolder}
       <StyledForm onFinish={onFinish} onFinishFailed={onFinishFailed} layout="vertical" requiredMark={false}>
         <Row>
           <Col span={24}>
