@@ -1,15 +1,15 @@
 import { useContext, useState } from 'react';
-import { Col, Form, FormItemProps, Row } from 'antd';
+import { Col, FormItemProps, Row } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
 import Alert from '../../Components/Alert';
-import Button from '../../Components/Button';
 import Spin from '../../Components/Spin';
 
 import routes from '../../routes';
 import { API_URL } from '../../api';
 import { Store } from '../../store';
+import { StyledButton, StyledForm } from './styles';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -101,7 +101,12 @@ const LoginForm = () => {
   };
 
   const formItems: formItem[] = [
-    { label: 'Email', name: 'email', type: 'email', rules: [{ required: true, message: 'Please input your email' }] },
+    {
+      label: 'E-mail',
+      name: 'email',
+      type: 'email',
+      rules: [{ required: true, message: 'Please input your email' }],
+    },
     {
       label: 'Password',
       name: 'password',
@@ -109,36 +114,29 @@ const LoginForm = () => {
       rules: [{ required: true, message: 'Please input your password' }],
     },
   ];
+
   const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
-    <Form.Item key={idx} label={label} name={name} rules={rules}>
-      <Input type={type} placeholder={`Enter your ${label}`} password={name === 'password'} />
-    </Form.Item>
+    <StyledForm.Item key={idx} label={label} name={name} rules={rules}>
+      <Input type={type} password={name === 'password'} />
+    </StyledForm.Item>
   ));
 
   const alertsJSX = alerts.map(({ type, message, description }, idx) => (
     <Alert key={idx} type={type} message={message} description={description} />
   ));
+
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 12 }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        {formItemsJSX}
-        <Row gutter={[0, 12]}>
-          <Col span={4} offset={6}>
-            <Button htmlType="submit" size="large" loading={loading}>
-              Submit
-            </Button>
-          </Col>
-          <Col span={12} offset={6}>
-            {alertsJSX}
+      <StyledForm onFinish={onFinish} onFinishFailed={onFinishFailed} layout="vertical" requiredMark={false}>
+        <Row>
+          <Col span={24}>
+            {formItemsJSX}
+            <StyledButton htmlType="submit" size="large" loading={loading} type="primary" shape="round">
+              Log in
+            </StyledButton>
           </Col>
         </Row>
-      </Form>
+      </StyledForm>
     </Spin>
   );
 };
