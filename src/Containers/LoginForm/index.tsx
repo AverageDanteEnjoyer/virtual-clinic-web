@@ -131,7 +131,7 @@ const LoginForm = () => {
         <Row>
           <Col span={24}>
             {formItemsJSX}
-            <StyledButton htmlType="submit" size="large" loading={loading} type="primary" shape="round">
+            <StyledButton htmlType="submit" size="large" loading={loading}>
               Log in
             </StyledButton>
           </Col>

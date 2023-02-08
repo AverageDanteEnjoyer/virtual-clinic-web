@@ -38,7 +38,7 @@ const LoginPage = () => {
                 </Note>
               </Col>
               <EndCol span={18} offset={3}>
-                <StyledButton size="large" type="primary" shape="round" onClick={() => navigate(routes.register.path)}>
+                <StyledButton size="large" onClick={() => navigate(routes.register.path)}>
                   Register
                 </StyledButton>
               </EndCol>
