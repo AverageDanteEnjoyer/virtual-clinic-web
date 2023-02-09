@@ -14,6 +14,7 @@ export const Container = styled.div`
 
 export const FullHeightRow = styled(Row)`
   height: 100%;
+  max-width: 100vw;
 `;
 
 export const EndCol = styled(Col)`
@@ -23,7 +24,7 @@ export const EndCol = styled(Col)`
 
 export const Panel = styled(Col)`
   height: 450px;
-  max-width: 555px;
+  max-width: min(555px, 90vw);
 `;
 
 export const CardRow = styled(Row)`
