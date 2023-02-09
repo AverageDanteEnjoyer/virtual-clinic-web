@@ -25,12 +25,15 @@ export const EndCol = styled(Col)`
 export const Panel = styled(Col)`
   height: 450px;
   max-width: min(555px, 90vw);
+  margin-bottom: 30px;
 `;
 
 export const CardRow = styled(Row)`
   height: 100%;
   background-color: ${palette.whiteSmoke};
   border-radius: 15px;
+  padding: 30px 0;
+  margin: 30px 0;
 `;
 
 export const StyledButton = styled(Button)`
@@ -38,7 +41,7 @@ export const StyledButton = styled(Button)`
     &.ant-btn-lg {
       min-width: 200px;
       padding: 27px;
-      margin-bottom: 45px;
+      margin-bottom: 10px;
     }
   }
 `;
