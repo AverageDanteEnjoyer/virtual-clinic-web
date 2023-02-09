@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { Col, Form, FormItemProps, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import Input from '../../Components/Input';
-import Alert from '../../Components/Alert';
-import Button from '../../Components/Button';
-import Select from '../../Components/Select';
-import Spin from '../../Components/Spin';
+import Input from 'Components/Input';
+import Alert from 'Components/Alert';
+import Button from 'Components/Button';
+import Select from 'Components/Select';
+import Spin from 'Components/Spin';
 
-import routes from '../../routes';
-import { API_URL } from '../../api';
+import routes from 'routes';
+import { API_URL } from 'api';
 
 export interface formItem extends FormItemProps {
   type: string;

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Form, Space, TimePicker } from 'antd';
 
-import Spin from '../../../Components/Spin';
-import { CenteredContainer } from '../../EditProfileForm/styles';
-import Button from '../../../Components/Button';
-import { getLocalStorageResource } from '../../../localStorageAPI';
-import { API_URL } from '../../../api';
-import Alert from '../../../Components/Alert';
-import { WorkPlan } from '../WorkPlanTable';
+import Spin from 'Components/Spin';
+import { CenteredContainer } from 'Containers/EditProfileForm/styles';
+import Button from 'Components/Button';
+import { getLocalStorageResource } from 'localStorageAPI';
+import { API_URL } from 'api';
+import Alert from 'Components/Alert';
+import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
 
 interface FormData {
   time_range: any;

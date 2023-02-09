@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 
-import { getAccountType } from './localStorageAPI';
+import { getAccountType } from 'localStorageAPI';
 
 export const equals = (expectedAccountType: string): boolean => getAccountType() === expectedAccountType;
 

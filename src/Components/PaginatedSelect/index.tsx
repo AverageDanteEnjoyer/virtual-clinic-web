@@ -2,8 +2,8 @@ import { Pagination, Select } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 
-import CustomSelect from '../Select';
-import { PaginationFrame, StyledDivider as Divider } from './styles';
+import CustomSelect from 'Components/Select';
+import { PaginationFrame, StyledDivider as Divider } from 'Components/PaginatedSelect/styles';
 
 interface ErrorType {
   [field: string]: string[];

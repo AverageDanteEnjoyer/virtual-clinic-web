@@ -1,7 +1,7 @@
-import { FetchResponse, SearchParameters } from '../../Components/PaginatedSelect';
-import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
-import { API_URL } from '../../api';
-import { Profession } from './index';
+import { FetchResponse, SearchParameters } from 'Components/PaginatedSelect';
+import { getDataFromToken, getLocalStorageResource } from 'localStorageAPI';
+import { API_URL } from 'api';
+import { Profession } from 'Containers/EditProfileForm/index';
 
 export const fetchAllProfessions = async ({
   searchValue,

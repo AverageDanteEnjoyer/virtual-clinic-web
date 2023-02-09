@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Button } from 'antd';
 
-import colors from '../../palette';
+import colors from 'palette';
 
 export const StyledButton = styled(Button)`
   background-color: ${colors.dodgerBlue};

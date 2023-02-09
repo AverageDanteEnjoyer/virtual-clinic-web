@@ -1,7 +1,7 @@
 import { InputProps } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
-import { StyledInput, StyledInputPassword } from './styles';
+import { StyledInput, StyledInputPassword } from 'Components/Input/styles';
 
 interface StyledInputProps extends InputProps {
   password?: boolean;

@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
-import routes from '../../routes';
-import { getLocalStorageResource } from '../../localStorageAPI';
-import { Store, userType } from '../../store';
-import { API_URL } from '../../api';
-import { equals, notEquals } from '../../privateRoute';
+import routes from 'routes';
+import { getLocalStorageResource } from 'localStorageAPI';
+import { Store, userType } from 'store';
+import { API_URL } from 'api';
+import { equals, notEquals } from 'privateRoute';
 
 type MenuItem = Required<MenuProps>['items'][number];
 

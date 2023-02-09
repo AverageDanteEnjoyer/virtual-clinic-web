@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Table as TableAntd } from 'antd';
 
-import palette from '../../palette';
+import palette from 'palette';
 
 export const TimeOption = styled.div<{ highlighted: boolean }>`
   cursor: pointer;

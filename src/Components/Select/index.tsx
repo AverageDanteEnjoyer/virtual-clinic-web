@@ -1,6 +1,6 @@
 import { SelectProps } from 'antd';
 
-import { StyledSelect } from './styles';
+import { StyledSelect } from 'Components/Select/styles';
 
 interface StyledSelectProps extends SelectProps {
   customOptions?: {

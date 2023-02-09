@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-import { API_URL } from '../../api';
-import { getLocalStorageResource } from '../../localStorageAPI';
+import { API_URL } from 'api';
+import { getLocalStorageResource } from 'localStorageAPI';
 
 export enum Status {
   NON_WORKING_DAY = 'NON_WORKING_DAY',

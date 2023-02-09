@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Col, Form, TimePicker } from 'antd';
 
-import Spin from '../../../Components/Spin';
-import Button from '../../../Components/Button';
-import { CenteredContainer } from '../../EditProfileForm/styles';
-import Select from '../../../Components/Select';
-import { getLocalStorageResource } from '../../../localStorageAPI';
-import { API_URL } from '../../../api';
-import Alert from '../../../Components/Alert';
-import { WorkPlan } from '../WorkPlanTable';
+import Spin from 'Components/Spin';
+import Button from 'Components/Button';
+import { CenteredContainer } from 'Containers/EditProfileForm/styles';
+import Select from 'Components/Select';
+import { getLocalStorageResource } from 'localStorageAPI';
+import { API_URL } from 'api';
+import Alert from 'Components/Alert';
+import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
 
 interface FormData {
   day_of_week: string;

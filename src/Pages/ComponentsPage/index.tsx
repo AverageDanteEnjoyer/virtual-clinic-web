@@ -3,19 +3,19 @@ import { Col, Modal, Row } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 
 import { ColumnsType } from 'antd/es/table';
-import Carousel from '../../Components/Carousel';
-import Spin from '../../Components/Spin';
-import Alert from '../../Components/Alert';
-import Typography from '../../Components/Typography';
-import Input from '../../Components/Input';
-import Select from '../../Components/Select';
-import Button from '../../Components/Button';
-import ComponentsStyles from './Components.module.css';
-import Navbar from '../../Components/Navbar';
-import PaginatedTable, { FetchParams, FetchResponse, TableRecord } from '../../Components/PaginatedTable';
-import { getLocalStorageResource } from '../../localStorageAPI';
-import { API_URL } from '../../api';
-import useTitle from '../../useTitle';
+import Carousel from 'Components/Carousel';
+import Spin from 'Components/Spin';
+import Alert from 'Components/Alert';
+import Typography from 'Components/Typography';
+import Input from 'Components/Input';
+import Select from 'Components/Select';
+import Button from 'Components/Button';
+import ComponentsStyles from 'Pages/ComponentsPage/Components.module.css';
+import Navbar from 'Components/Navbar';
+import PaginatedTable, { FetchParams, FetchResponse, TableRecord } from 'Components/PaginatedTable';
+import { getLocalStorageResource } from 'localStorageAPI';
+import { API_URL } from 'api';
+import useTitle from 'useTitle';
 
 interface Procedure extends TableRecord {
   user_id: number;
@@ -27,7 +27,7 @@ interface Procedure extends TableRecord {
 
 const ComponentsPage = () => {
   useTitle();
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // I leave it here to others, who may not know how to correctly use it.

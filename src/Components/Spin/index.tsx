@@ -1,6 +1,7 @@
 import { SpinProps } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
-import { StyledSpin } from './styles';
+
+import { StyledSpin } from 'Components/Spin/styles';
 
 const Spin = ({ className, delay, size, spinning, tip, children }: SpinProps) => (
   <StyledSpin
