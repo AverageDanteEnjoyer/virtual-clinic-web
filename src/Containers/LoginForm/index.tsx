@@ -11,7 +11,7 @@ import { Store } from '../../store';
 import { StyledButton, StyledForm } from './styles';
 import pushNotification from '../../pushNotification';
 
-export interface formItem extends FormItemProps {
+interface formItem extends FormItemProps {
   type: string;
 }
 
@@ -24,8 +24,8 @@ const LoginForm = () => {
   const { dispatch } = useContext(Store);
   const navigate = useNavigate();
 
-  const [timeoutId, setTimeoutId] = useState<null | NodeJS.Timeout>(null);
   const [loading, setLoading] = useState(false);
+  const [timeoutId, setTimeoutId] = useState<null | NodeJS.Timeout>(null);
 
   useEffect(() => {
     return () => {
@@ -73,13 +73,13 @@ const LoginForm = () => {
         setTimeoutId(
           setTimeout(() => {
             navigate(routes.home.path);
-          }, 2000)
+          }, 3000)
         );
       } else {
-        pushNotification('warning', 'Login Failed', responseBody.error);
+        pushNotification('warning', 'Login Failed', responseBody.error, 10);
       }
     } catch (error) {
-      pushNotification('error', 'Server Error', 'Please try again later');
+      pushNotification('error', 'Server Error', 'Please try again later', 10);
     } finally {
       setLoading(false);
     }
