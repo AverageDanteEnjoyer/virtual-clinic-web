@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
-import { Col, Row, notification, FormItemProps } from 'antd';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Col, Row, FormItemProps } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
 import Spin from '../../Components/Spin';
@@ -9,6 +9,7 @@ import routes from '../../routes';
 import { API_URL } from '../../api';
 import { Store } from '../../store';
 import { StyledButton, StyledForm } from './styles';
+import pushNotification from '../../pushNotification';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -19,39 +20,18 @@ type loginInfo = {
   password: string;
 };
 
-type AlertType = 'success' | 'info' | 'warning' | 'error';
-
 const LoginForm = () => {
   const { dispatch } = useContext(Store);
   const navigate = useNavigate();
-  const location = useLocation();
-  const [api, contextHolder] = notification.useNotification();
 
   const [timeoutId, setTimeoutId] = useState<null | NodeJS.Timeout>(null);
   const [loading, setLoading] = useState(false);
-  const [alerts, setAlerts] = useState<
-    {
-      type: AlertType;
-      message: string;
-      description?: string;
-    }[]
-  >(location.state ? location.state.errors : []);
 
   useEffect(() => {
-    alerts.forEach((alert) => {
-      api[alert.type]({
-        message: alert.message,
-        description: alert.description,
-        placement: 'bottomRight',
-      });
-    });
-
     return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
+      timeoutId && clearTimeout(timeoutId);
     };
-  }, [alerts]);
+  }, [timeoutId]);
 
   const requestLogin = async (credentials: { user: loginInfo }) => {
     return await fetch(`${API_URL}/users/sign_in/`, {
@@ -74,12 +54,7 @@ const LoginForm = () => {
       const responseBody = await response.json();
 
       if (response.ok) {
-        setAlerts([
-          {
-            type: 'success',
-            message: 'You successfully logged in. Redirecting to home page...',
-          },
-        ]);
+        pushNotification('success', 'Login Success', `Welcome back, ${responseBody.first_name}!`);
 
         dispatch({
           type: 'login',
@@ -101,36 +76,13 @@ const LoginForm = () => {
           }, 2000)
         );
       } else {
-        setAlerts([
-          {
-            type: 'warning',
-            message: responseBody.error,
-          },
-        ]);
+        pushNotification('warning', 'Login Failed', responseBody.error);
       }
     } catch (error) {
-      setAlerts([
-        {
-          type: 'error',
-          message: 'Server Error',
-          description: 'Please try again later',
-        },
-      ]);
+      pushNotification('error', 'Server Error', 'Please try again later');
     } finally {
       setLoading(false);
     }
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    setAlerts([
-      {
-        type: 'error',
-        message: 'Error',
-        description: `Please input: ${errorInfo.errorFields
-          .map((field: any) => field.name.toString().replaceAll('_', ' '))
-          .join(', ')}`,
-      },
-    ]);
   };
 
   const formItems: formItem[] = [
@@ -156,8 +108,7 @@ const LoginForm = () => {
 
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      {contextHolder}
-      <StyledForm onFinish={onFinish} onFinishFailed={onFinishFailed} layout="vertical" requiredMark={false}>
+      <StyledForm onFinish={onFinish} layout="vertical" requiredMark={false}>
         <Row>
           <Col span={24}>
             {formItemsJSX}
