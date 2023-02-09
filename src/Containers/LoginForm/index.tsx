@@ -51,21 +51,22 @@ const LoginForm = () => {
     setLoading(true);
     try {
       const response = await requestLogin(credentials);
-      const responseBody = await response.json();
+      const { id, email, first_name, last_name, account_type, error } = await response.json();
 
       if (response.ok) {
-        pushNotification('success', 'Login Success', `Welcome back, ${responseBody.first_name}!`);
+        const description = `Welcome back, ${first_name} ${last_name}! Redirecting to home page...`;
+        pushNotification('success', 'Login Success', description);
 
         dispatch({
           type: 'login',
           payload: {
-            accountType: responseBody.account_type,
+            accountType: account_type,
             localStorage: {
-              id: responseBody.id,
+              id: id,
               token: response.headers.get('Authorization'),
-              first_name: responseBody.first_name,
-              last_name: responseBody.last_name,
-              email: responseBody.email,
+              first_name: first_name,
+              last_name: last_name,
+              email: email,
             },
           },
         });
@@ -76,7 +77,7 @@ const LoginForm = () => {
           }, 3000)
         );
       } else {
-        pushNotification('warning', 'Login Failed', responseBody.error, 10);
+        pushNotification('warning', 'Login Failed', error, 10);
       }
     } catch (error) {
       pushNotification('error', 'Server Error', 'Please try again later', 10);
