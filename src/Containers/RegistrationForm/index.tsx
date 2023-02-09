@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Row, Col, Radio, Space, FormItemProps } from 'antd';
+import { Row, Col, Space, FormItemProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
 import Spin from '../../Components/Spin';
+import Radio from '../../Components/Radio';
 
 import routes from '../../routes';
 import { API_URL } from '../../api';
-import { StyledForm } from './styles';
-import { StyledButton } from '../LoginForm/styles';
+import { StyledForm, StyledButton } from './styles';
 import pushNotification from '../../pushNotification';
 import { capitalize } from 'lodash';
 
