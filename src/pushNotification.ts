@@ -7,7 +7,7 @@ export const pushNotification = (type: NotificationType, message: string, descri
     message,
     description,
     placement: 'bottomRight',
-    duration: duration,
+    duration,
   });
 };
 
