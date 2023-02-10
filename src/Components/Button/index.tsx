@@ -1,6 +1,6 @@
 import { ButtonProps } from 'antd';
 
-import { StyledButton } from 'Components/Button/styles';
+import { StyledButton } from './styles';
 
 interface CustomButtonProps extends ButtonProps {}
 

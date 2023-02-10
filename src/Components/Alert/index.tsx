@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { StyledAlert } from 'Components/Alert/styles';
+import { StyledAlert } from './styles';
 
 interface StyledAlertProps {
   message?: string;

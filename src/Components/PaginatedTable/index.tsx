@@ -3,7 +3,7 @@ import { Space, Table } from 'antd';
 import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
 import { debounce } from 'lodash';
 
-import { FilterDropdown, Input, SearchIcon } from 'Components/PaginatedTable/styles';
+import { FilterDropdown, Input, SearchIcon } from './styles';
 import Button from 'Components/Button';
 
 export interface FilterType {

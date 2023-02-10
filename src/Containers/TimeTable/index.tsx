@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { message, Row, Col } from 'antd';
 
-import { fetchAvailableAppointmentHours, Status } from 'Containers/TimeTable/fetchAvailableAppointmentHours';
-import { Table, TimeOption } from 'Containers/TimeTable/styles';
+import { fetchAvailableAppointmentHours, Status } from './fetchAvailableAppointmentHours';
+import { Table, TimeOption } from './styles';
 
 interface RecordType {
   key: string;

@@ -10,7 +10,7 @@ import Typography from 'Components/Typography';
 import Input from 'Components/Input';
 import Select from 'Components/Select';
 import Button from 'Components/Button';
-import ComponentsStyles from 'Pages/ComponentsPage/Components.module.css';
+import ComponentsStyles from './Components.module.css';
 import Navbar from 'Components/Navbar';
 import PaginatedTable, { FetchParams, FetchResponse, TableRecord } from 'Components/PaginatedTable';
 import { getLocalStorageResource } from 'localStorageAPI';

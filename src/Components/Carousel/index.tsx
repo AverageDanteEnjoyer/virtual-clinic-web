@@ -1,5 +1,5 @@
 import { Carousel, Image } from 'antd';
-import CarouselStyles from 'Components/Carousel/StyledCarousel.module.css';
+import CarouselStyles from './StyledCarousel.module.css';
 
 interface StyledCarouselProps {
   autoplay?: boolean;

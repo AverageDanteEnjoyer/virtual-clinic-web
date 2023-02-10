@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 
 import CustomSelect from 'Components/Select';
-import { PaginationFrame, StyledDivider as Divider } from 'Components/PaginatedSelect/styles';
+import { PaginationFrame, StyledDivider as Divider } from './styles';
 
 interface ErrorType {
   [field: string]: string[];

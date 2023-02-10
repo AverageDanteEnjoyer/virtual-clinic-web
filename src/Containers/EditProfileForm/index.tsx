@@ -18,7 +18,7 @@ import {
   fetchDoctorProfessions,
   createNewProfession,
 } from 'Containers/EditProfileForm/fetchProfessions';
-import { CenteredContainer } from 'Containers/EditProfileForm/styles';
+import { CenteredContainer } from './styles';
 import { StyledTypography as Typography } from 'Components/Typography/styles';
 
 export interface formItem extends FormItemProps {

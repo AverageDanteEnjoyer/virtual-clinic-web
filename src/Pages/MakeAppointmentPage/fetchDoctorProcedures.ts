@@ -1,4 +1,4 @@
-import { Procedure } from 'Pages/MakeAppointmentPage';
+import { Procedure } from '.';
 import { FetchResponse, SearchParameters } from 'Components/PaginatedSelect';
 import { getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';

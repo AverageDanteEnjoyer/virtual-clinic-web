@@ -1,5 +1,5 @@
 import { SearchParameters, FetchResponse } from 'Components/PaginatedSelect';
-import { Doctor } from 'Pages/MakeAppointmentPage';
+import { Doctor } from '.';
 import { getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';
 
