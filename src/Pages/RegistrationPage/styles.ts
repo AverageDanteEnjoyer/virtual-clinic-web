@@ -1,6 +1,7 @@
+import { Col, Row, Space } from 'antd';
 import styled from 'styled-components';
-import { Col, Row } from 'antd';
-import { StyledTitle } from '../../Components/Typography/styles';
+
+import { StyledParagraph, StyledTitle } from '../../Components/Typography/styles';
 import palette from '../../palette';
 
 export const Container = styled.div`
@@ -32,4 +33,19 @@ export const CardTitle = styled(StyledTitle)`
     font-size: 32px;
     color: ${palette.russianViolet};
   }
+`;
+
+export const Note = styled(StyledParagraph)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: ${palette.russianViolet};
+`;
+
+export const Divider = styled(Space)`
+  width: 100%;
 `;

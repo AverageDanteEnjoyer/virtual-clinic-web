@@ -12,7 +12,7 @@ export const StyledButton = styled(Button)`
   font-size: 18px;
   font-weight: 700;
   line-height: 28px;
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,6 +36,24 @@ export const StyledButton = styled(Button)`
     &.ant-btn-lg {
       width: 100%;
       padding: 12px 24px;
+    }
+  }
+
+  &.ant-btn-link {
+    color: ${palette.russianViolet};
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    background-color: transparent;
+    border-color: transparent;
+    
+    display: inline-flex;
+    align-items: center;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: ${palette.tekhelet};
     }
   }
 `;

@@ -103,7 +103,7 @@ const LoginForm = () => {
 
   const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
     <StyledForm.Item key={idx} label={label} name={name} rules={rules}>
-      <Input type={type} password={name === 'password'} />
+      <Input type={type} placeholder={`Enter your ${label}`} password={name === 'password'} />
     </StyledForm.Item>
   ));
 
