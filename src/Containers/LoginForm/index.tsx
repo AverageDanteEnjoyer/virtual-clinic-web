@@ -62,11 +62,11 @@ const LoginForm = () => {
           payload: {
             accountType: account_type,
             localStorage: {
-              id: id,
+              id,
               token: response.headers.get('Authorization'),
-              first_name: first_name,
-              last_name: last_name,
-              email: email,
+              first_name,
+              last_name,
+              email,
             },
           },
         });
