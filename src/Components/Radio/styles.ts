@@ -14,9 +14,6 @@ export const StyledRadio = styled(Radio)`
     color: ${palette.russianViolet};
   }
 
-  &.ant-radio-wrapper-in-form-item {
-  }
-
   &.ant-radio-wrapper:hover .ant-radio-inner {
     border-color: ${palette.russianViolet};
   }
@@ -27,4 +24,4 @@ export const StyledRadio = styled(Radio)`
     height: 20px;
     width: 20px;
   }
-` as typeof Radio;
+`;

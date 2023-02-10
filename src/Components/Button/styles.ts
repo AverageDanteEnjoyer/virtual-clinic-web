@@ -12,8 +12,7 @@ export const StyledButton = styled(Button)`
   font-size: 18px;
   font-weight: 700;
   line-height: 28px;
-
-  // Center the text
+  
   display: flex;
   justify-content: center;
   align-items: center;

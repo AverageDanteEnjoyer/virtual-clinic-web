@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Row, Col, Space, FormItemProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { capitalize } from 'lodash';
 
 import Input from '../../Components/Input';
 import Spin from '../../Components/Spin';
@@ -10,7 +11,6 @@ import routes from '../../routes';
 import { API_URL } from '../../api';
 import { StyledForm, StyledButton } from './styles';
 import pushNotification from '../../pushNotification';
-import { capitalize } from 'lodash';
 
 interface formItem extends FormItemProps {
   type: string;
