@@ -2,33 +2,8 @@ import { ButtonProps } from 'antd';
 
 import { StyledButton } from './styles';
 
-interface CustomButtonProps extends ButtonProps {}
-
-const Button = ({
-  type = 'primary',
-  className,
-  disabled,
-  children,
-  shape = 'round',
-  htmlType,
-  size,
-  loading,
-  onClick,
-  icon,
-}: CustomButtonProps) => (
-  <StyledButton
-    className={className}
-    type={type}
-    disabled={disabled}
-    shape={shape}
-    htmlType={htmlType}
-    size={size}
-    loading={loading}
-    onClick={onClick}
-    icon={icon}
-  >
-    {children}
-  </StyledButton>
-);
+const Button = ({ type = 'primary', shape = 'round', ...rest }: ButtonProps) => {
+  return <StyledButton type={type} shape={shape} {...rest} />;
+};
 
 export default Button;

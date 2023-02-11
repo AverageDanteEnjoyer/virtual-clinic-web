@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
-import routes from 'routes';
-import { getLocalStorageResource } from 'localStorageAPI';
-import { Store, userType } from 'store';
-import { API_URL } from 'api';
-import { equals, notEquals } from 'privateRoute';
+import routes from '../../routes';
+import { getLocalStorageResource } from '../../localStorageAPI';
+import { Store, userType } from '../../store';
+import { API_URL } from '../../api';
+import { equals, notEquals } from '../../privateRoute';
+import pushNotification from '../../pushNotification';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -29,6 +30,7 @@ const Navbar = () => {
   const logOut = async () => {
     const token = getLocalStorageResource('token');
     if (!token) return;
+
     await fetch(`${API_URL}/users/sign_out/`, {
       method: 'DELETE',
       headers: {
@@ -36,6 +38,8 @@ const Navbar = () => {
         Authorization: token,
       },
     });
+
+    pushNotification('success', 'Logout Success', 'You have been logged out.');
     dispatch({ type: 'logout' });
   };
 
