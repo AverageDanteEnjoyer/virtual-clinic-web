@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Button } from 'antd';
 
-import palette from '../../palette';
+import palette from 'palette';
 
 export const StyledButton = styled(Button)`
   background-color: ${palette.ultraViolet};
@@ -46,7 +46,7 @@ export const StyledButton = styled(Button)`
     line-height: 24px;
     background-color: transparent;
     border-color: transparent;
-    
+
     display: inline-flex;
     align-items: center;
 

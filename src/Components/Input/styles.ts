@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Input } from 'antd';
 
-import palette from '../../palette';
+import palette from 'palette';
 
 const styles = css`
   border-radius: 20px;

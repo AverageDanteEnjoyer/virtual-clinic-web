@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-import { getLocalStorageResource } from '../../localStorageAPI';
+import { getLocalStorageResource } from 'localStorageAPI';
 
 const noBodyResponseStatuses = [204, 401];
 

@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { Col, DatePicker, Row } from 'antd';
 import dayjs from 'dayjs';
 
-import Navbar from '../../Components/Navbar';
-import { StyledParagraph, StyledTitle } from '../../Components/Typography/styles';
-import PaginatedSelect from '../../Components/PaginatedSelect';
+import Navbar from 'Components/Navbar';
+import { StyledParagraph, StyledTitle } from 'Components/Typography/styles';
+import PaginatedSelect from 'Components/PaginatedSelect';
 import fetchAllDoctors from './fetchDoctors';
 import { DoctorEmail, DoctorIcon, DoctorInfo, DoctorOption, Paragraph } from './styles';
 import { getFetchDoctorProcedures } from './fetchDoctorProcedures';
-import TimeTable from '../../Containers/TimeTable';
-import { SubmitBox } from '../../Containers/TimeTable/styles';
-import { StyledButton } from '../../Components/Button/styles';
-import useTitle from '../../useTitle';
+import TimeTable from 'Containers/TimeTable';
+import { SubmitBox } from 'Containers/TimeTable/styles';
+import { StyledButton } from 'Components/Button/styles';
+import useTitle from 'useTitle';
 
 export interface Doctor {
   id: number;

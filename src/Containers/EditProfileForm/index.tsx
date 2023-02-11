@@ -3,19 +3,19 @@ import { Form, FormItemProps, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
 
-import Input from '../../Components/Input';
-import Alert from '../../Components/Alert';
-import Button from '../../Components/Button';
-import Spin from '../../Components/Spin';
-import PaginatedSelect from '../../Components/PaginatedSelect';
+import Input from 'Components/Input';
+import Alert from 'Components/Alert';
+import Button from 'Components/Button';
+import Spin from 'Components/Spin';
+import PaginatedSelect from 'Components/PaginatedSelect';
 
-import routes from '../../routes';
-import { API_URL } from '../../api';
-import { getLocalStorageResource, setLocalStorageResources } from '../../localStorageAPI';
-import { Store, userType } from '../../store';
+import routes from 'routes';
+import { API_URL } from 'api';
+import { getLocalStorageResource, setLocalStorageResources } from 'localStorageAPI';
+import { Store, userType } from 'store';
 import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
 import { CenteredContainer } from './styles';
-import { StyledTypography as Typography } from '../../Components/Typography/styles';
+import { StyledTypography as Typography } from 'Components/Typography/styles';
 
 export interface formItem extends FormItemProps {
   type: string;

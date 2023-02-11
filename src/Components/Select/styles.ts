@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Select } from 'antd';
 
-import colors from '../../palette';
+import colors from 'palette';
 
 export const StyledSelect = styled(Select)`
   border-radius: 20px;

@@ -1,12 +1,12 @@
 import { Route } from 'react-router-dom';
 
-import routes from './routes';
-import LoginPage from './Pages/LoginPage';
-import { equals, notEquals, PrivateRoute } from './privateRoute';
-import { userType } from './store';
-import RegistrationPage from './Pages/RegistrationPage';
-import ProfileEditPage from './Pages/EditProfilePage';
-import MakeAppointmentPage from './Pages/MakeAppointmentPage';
+import routes from 'routes';
+import LoginPage from 'Pages/LoginPage';
+import { equals, notEquals, PrivateRoute } from 'privateRoute';
+import { userType } from 'store';
+import RegistrationPage from 'Pages/RegistrationPage';
+import ProfileEditPage from 'Pages/EditProfilePage';
+import MakeAppointmentPage from 'Pages/MakeAppointmentPage';
 
 interface privateRouteItem {
   path: string;

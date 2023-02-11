@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { Input as InputAntd } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import palette from '../../palette';
+
+import palette from 'palette';
 
 export const FilterDropdown = styled.div`
   padding: 8px;

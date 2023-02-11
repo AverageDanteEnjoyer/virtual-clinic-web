@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 
-import { clearLocalStorage, setLocalStorageResources } from './localStorageAPI';
+import { clearLocalStorage, setLocalStorageResources } from 'localStorageAPI';
 
 export enum userType {
   GUEST = 'guest',

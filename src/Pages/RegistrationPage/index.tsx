@@ -1,11 +1,11 @@
 import { Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import routes from '../../routes';
-import RegistrationForm from '../../Containers/RegistrationForm';
-import Navbar from '../../Components/Navbar';
-import Button from '../../Components/Button';
-import useTitle from '../../useTitle';
+import routes from 'routes';
+import RegistrationForm from 'Containers/RegistrationForm';
+import Navbar from 'Components/Navbar';
+import Button from 'Components/Button';
+import useTitle from 'useTitle';
 import { Container, FullHeightRow, Panel, CardRow, CardTitle, Note, Divider } from './styles';
 
 const RegistrationPage = () => {

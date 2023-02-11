@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Radio } from 'antd';
 
-import palette from '../../palette';
+import palette from 'palette';
 
 export const StyledRadio = styled(Radio)`
   line-height: 2;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Typography } from 'antd';
 
-import palette from '../../palette';
+import palette from 'palette';
 
 const { Title, Paragraph } = Typography;
 

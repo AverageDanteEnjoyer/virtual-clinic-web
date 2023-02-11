@@ -1,7 +1,7 @@
-import { SearchParameters, FetchResponse } from '../../Components/PaginatedSelect';
-import { Doctor } from '.';
-import { getLocalStorageResource } from '../../localStorageAPI';
-import { API_URL } from '../../api';
+import { SearchParameters, FetchResponse } from 'Components/PaginatedSelect';
+import { Doctor } from './index';
+import { getLocalStorageResource } from 'localStorageAPI';
+import { API_URL } from 'api';
 
 export const fetchAllDoctors = async ({
   searchValue,

@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import routes from './routes';
-import { Store } from './store';
+import routes from 'routes';
+import { Store } from 'store';
 
 const useTitle = (title?: string) => {
   const { dispatch } = useContext(Store);

@@ -3,12 +3,12 @@ import { ColumnsType } from 'antd/es/table';
 import { Modal } from 'antd';
 import { capitalize } from 'lodash';
 
-import { API_URL } from '../../../api';
-import { getAccountId, getLocalStorageResource } from '../../../localStorageAPI';
-import Table, { TableRecord } from '../../../Components/Table';
-import Button from '../../../Components/Button';
+import { API_URL } from 'api';
+import { getAccountId, getLocalStorageResource } from 'localStorageAPI';
+import Table, { TableRecord } from 'Components/Table';
+import Button from 'Components/Button';
 import useModal from './useModal';
-import EditForm from '../EditForm';
+import EditForm from 'Containers/WorkPlan/EditForm';
 
 export interface WorkPlan extends TableRecord {
   day_of_week: string;
