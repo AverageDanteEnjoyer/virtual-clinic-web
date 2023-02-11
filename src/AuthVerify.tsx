@@ -2,10 +2,10 @@ import { useContext, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { debounce } from 'lodash';
 
-import { Store } from './store';
-import { getDataFromToken } from './localStorageAPI';
-import routes from './routes';
-import pushNotification from './pushNotification';
+import { Store } from 'store';
+import { getDataFromToken } from 'localStorageAPI';
+import routes from 'routes';
+import pushNotification from 'pushNotification';
 
 const AuthVerify = () => {
   const { dispatch } = useContext(Store);

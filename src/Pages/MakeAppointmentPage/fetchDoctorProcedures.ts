@@ -1,4 +1,4 @@
-import { Procedure } from '.';
+import { Procedure } from './index';
 import { FetchResponse, SearchParameters } from 'Components/PaginatedSelect';
 import { getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';

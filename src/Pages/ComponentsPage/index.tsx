@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Col, Modal, Row } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
-
 import { ColumnsType } from 'antd/es/table';
+
 import Carousel from 'Components/Carousel';
 import Spin from 'Components/Spin';
 import Alert from 'Components/Alert';

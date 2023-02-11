@@ -1,8 +1,8 @@
 import { Col, Row, Space } from 'antd';
 import styled from 'styled-components';
 
-import { StyledParagraph, StyledTitle } from '../../Components/Typography/styles';
-import palette from '../../palette';
+import { StyledParagraph, StyledTitle } from 'Components/Typography/styles';
+import palette from 'palette';
 
 export const Container = styled.div`
   display: flex;

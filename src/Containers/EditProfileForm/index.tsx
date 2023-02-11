@@ -13,11 +13,7 @@ import routes from 'routes';
 import { API_URL } from 'api';
 import { getLocalStorageResource, setLocalStorageResources } from 'localStorageAPI';
 import { Store, userType } from 'store';
-import {
-  fetchAllProfessions,
-  fetchDoctorProfessions,
-  createNewProfession,
-} from 'Containers/EditProfileForm/fetchProfessions';
+import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
 import { CenteredContainer } from './styles';
 import { StyledTypography as Typography } from 'Components/Typography/styles';
 
