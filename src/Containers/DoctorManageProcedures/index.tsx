@@ -1,9 +1,9 @@
-import { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { Table, Form, Input, Button, Spin } from 'antd';
 
 import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
 import { API_URL } from '../../api';
-import './index.css';
+import { StyledDiv } from './styledDiv';
 
 type doctorProceduresType = {
   id: number;
@@ -13,11 +13,11 @@ type doctorProceduresType = {
 
 const DoctorManageProcedures = () => {
   const [doctorProcedures, setDoctorProcedures] = useState<doctorProceduresType[]>([]);
-  const [procedureName, setProcedureName] = useState<string>('');
-  const [neededTime, setNeededTime] = useState<string | number>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [procedureName, setProcedureName] = useState('');
+  const [neededTime, setNeededTime] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  const handleChangeNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeNumber = (event: ChangeEvent<HTMLInputElement>) => {
     setNeededTime(+event.target.value);
   };
 
@@ -35,17 +35,15 @@ const DoctorManageProcedures = () => {
         },
       });
       if (response) {
-        setLoading(false);
         const responseDetails = await response.json();
         setDoctorProcedures(responseDetails.data);
       }
-    } catch (error) {
+    } finally {
       setLoading(false);
-      console.log(error);
     }
   };
 
-  const handleSumbit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     const token = getLocalStorageResource('token');
     if (!token) return;
     try {
@@ -63,7 +61,7 @@ const DoctorManageProcedures = () => {
         }),
       });
       if (response) {
-        getDoctorProcedures();
+        await getDoctorProcedures();
       }
     } catch (error) {
       console.log(error);
@@ -88,7 +86,7 @@ const DoctorManageProcedures = () => {
         }),
       });
       if (response) {
-        getDoctorProcedures();
+        await getDoctorProcedures();
       }
     } catch (error) {
       console.log(error);
@@ -121,9 +119,6 @@ const DoctorManageProcedures = () => {
       render: (record: any) => {
         return (
           <>
-            {/* <button}>
-              DELETE
-            </button> */}
             <Button
               type="primary"
               shape="round"
@@ -142,8 +137,8 @@ const DoctorManageProcedures = () => {
 
   return (
     <>
-      <div className="center">
-        <Form className="wrap" onFinish={handleSumbit}>
+      <StyledDiv>
+        <Form className="wrap" onFinish={handleSubmit}>
           <Form.Item label="Procedure name:" name="procedure">
             <Input
               type="text"
@@ -161,7 +156,7 @@ const DoctorManageProcedures = () => {
             Submit
           </Button>
         </Form>
-      </div>
+      </StyledDiv>
       <Spin spinning={loading} tip="waiting for server response...">
         <Table
           loading={loading}
