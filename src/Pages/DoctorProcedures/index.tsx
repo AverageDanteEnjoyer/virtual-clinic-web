@@ -1,6 +1,6 @@
-import DoctorManageProcedures from '../../Containers/DoctorManageProcedures';
-import Navbar from '../../Components/Navbar';
-import { StyledTitle } from '../../Components/Typography/styles';
+import DoctorManageProcedures from 'Containers/DoctorManageProcedures';
+import Navbar from 'Components/Navbar';
+import { StyledTitle } from 'Components/Typography/styles';
 
 const DoctorProcedures = () => {
   return (

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { Table, Form, Input, Button, Spin } from 'antd';
 
-import { getDataFromToken, getLocalStorageResource } from '../../localStorageAPI';
-import { API_URL } from '../../api';
+import { getDataFromToken, getLocalStorageResource } from 'localStorageAPI';
+import { API_URL } from 'api';
 import { StyledDiv } from './styledDiv';
 
 type doctorProceduresType = {
