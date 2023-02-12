@@ -1,10 +1,10 @@
-import React, {useState, useEffect, ChangeEvent} from 'react';
-import {Table, Form, Input, Button, Spin} from 'antd';
-import {capitalize} from 'lodash';
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import { Table, Form, Input, Button, Spin } from 'antd';
+import { capitalize } from 'lodash';
 
-import {getDataFromToken, getLocalStorageResource} from 'localStorageAPI';
-import {API_URL} from 'api';
-import {StyledDiv} from './styledDiv';
+import { getDataFromToken, getLocalStorageResource } from 'localStorageAPI';
+import { API_URL } from 'api';
+import { StyledDiv } from './styledDiv';
 import pushNotification from 'pushNotification';
 
 type doctorProceduresType = {
@@ -27,7 +27,7 @@ const DoctorManageProcedures = () => {
     setLoading(true);
     const token = getLocalStorageResource('token');
     if (!token) return;
-    const {userID} = getDataFromToken();
+    const { userID } = getDataFromToken();
 
     try {
       const response = await fetch(`${API_URL}/api/v1/doctors/${userID}/procedures/?per_page=${100}`, {
@@ -156,7 +156,7 @@ const DoctorManageProcedures = () => {
             ></Input>
           </Form.Item>
           <Form.Item label="Needed time:" name="time">
-            <Input min="1" type="number" id="number" required value={neededTime} onChange={handleChangeNumber}/>
+            <Input min="1" type="number" id="number" required value={neededTime} onChange={handleChangeNumber} />
           </Form.Item>
           <Button type="primary" shape="round" htmlType="submit" size="large" loading={loading}>
             Submit
