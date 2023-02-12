@@ -1,9 +1,11 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { Table, Form, Input, Button, Spin } from 'antd';
+import { capitalize } from 'lodash';
 
 import { getDataFromToken, getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';
 import { StyledDiv } from './styledDiv';
+import Alert from 'Components/Alert';
 
 type doctorProceduresType = {
   id: number;
@@ -16,6 +18,13 @@ const DoctorManageProcedures = () => {
   const [procedureName, setProcedureName] = useState('');
   const [neededTime, setNeededTime] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [alerts, setAlerts] = useState<
+    {
+      type: 'success' | 'warning' | 'error' | 'info';
+      message: string;
+      description?: string;
+    }[]
+  >([]);
 
   const handleChangeNumber = (event: ChangeEvent<HTMLInputElement>) => {
     setNeededTime(+event.target.value);
@@ -46,50 +55,62 @@ const DoctorManageProcedures = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     const token = getLocalStorageResource('token');
     if (!token) return;
-    try {
-      const response = await fetch(`${API_URL}/api/v1/procedures`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
+
+    const response = await fetch(`${API_URL}/api/v1/procedures`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        procedure: {
+          name: procedureName,
+          needed_time_min: neededTime,
         },
-        method: 'POST',
-        body: JSON.stringify({
-          procedure: {
-            name: procedureName,
-            needed_time_min: neededTime,
-          },
-        }),
-      });
-      if (response) {
-        await getDoctorProcedures();
-      }
-    } catch (error) {
-      console.log(error);
+      }),
+    });
+
+    if (response.ok) {
+      await getDoctorProcedures();
+      setAlerts([
+        {
+          type: 'success',
+          message: 'Success',
+          description: 'Account details has been updated!',
+        },
+      ]);
+    } else if (response.status === 422) {
+      const responseBody = await response.json();
+      setAlerts(
+        Object.entries(responseBody.errors).map(([key, message]) => ({
+          type: 'error',
+          message: 'Error',
+          description: `${capitalize(key)} ${message}`.replaceAll('_', ' '),
+        }))
+      );
     }
   };
 
   const handleDelete = async (record: any) => {
     const token = getLocalStorageResource('token');
     if (!token) return;
-    try {
-      const response = await fetch(`${API_URL}/api/v1/procedures/${record.id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
+
+    const response = await fetch(`${API_URL}/api/v1/procedures/${record.id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      method: 'DELETE',
+      body: JSON.stringify({
+        procedure: {
+          name: procedureName,
+          needed_time_min: neededTime,
         },
-        method: 'DELETE',
-        body: JSON.stringify({
-          procedure: {
-            name: procedureName,
-            needed_time_min: neededTime,
-          },
-        }),
-      });
-      if (response) {
-        await getDoctorProcedures();
-      }
-    } catch (error) {
-      console.log(error);
+      }),
+    });
+
+    if (response.ok) {
+      await getDoctorProcedures();
     }
   };
 
@@ -135,6 +156,10 @@ const DoctorManageProcedures = () => {
     },
   ];
 
+  const alertsJSX = alerts.map(({ type, message, description }, idx) => (
+    <Alert key={idx} type={type} message={message} description={description} />
+  ));
+
   return (
     <>
       <StyledDiv>
@@ -167,6 +192,7 @@ const DoctorManageProcedures = () => {
           }}
         ></Table>
       </Spin>
+      {alertsJSX}
     </>
   );
 };
