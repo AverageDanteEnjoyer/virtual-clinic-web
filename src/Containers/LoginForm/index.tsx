@@ -1,18 +1,17 @@
-import { useContext, useState } from 'react';
-import { Col, Form, FormItemProps, Row } from 'antd';
+import { useContext, useEffect, useState } from 'react';
+import { Col, Row, FormItemProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import Input from '../../Components/Input';
-import Alert from '../../Components/Alert';
-import Button from '../../Components/Button';
-import Spin from '../../Components/Spin';
+import Input from 'Components/Input';
+import Spin from 'Components/Spin';
 
-import routes from '../../routes';
-import { setLocalStorageResources } from '../../localStorageAPI';
-import { API_URL } from '../../api';
-import { SessionInfoContext } from '../../SessionInfoContext';
+import routes from 'routes';
+import { API_URL } from 'api';
+import { Store } from 'store';
+import { StyledButton, StyledForm } from './styles';
+import pushNotification from 'pushNotification';
 
-export interface formItem extends FormItemProps {
+interface formItem extends FormItemProps {
   type: string;
 }
 
@@ -22,17 +21,17 @@ type loginInfo = {
 };
 
 const LoginForm = () => {
+  const { dispatch } = useContext(Store);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const { setAccountType } = useContext(SessionInfoContext);
-  const [alerts, setAlerts] = useState<
-    {
-      type: 'success' | 'warning' | 'error' | 'info';
-      message: string;
-      description?: string;
-    }[]
-  >([]);
+  const [timeoutId, setTimeoutId] = useState<null | NodeJS.Timeout>(null);
+
+  useEffect(() => {
+    return () => {
+      timeoutId && clearTimeout(timeoutId);
+    };
+  }, [timeoutId]);
 
   const requestLogin = async (credentials: { user: loginInfo }) => {
     return await fetch(`${API_URL}/users/sign_in/`, {
@@ -50,53 +49,50 @@ const LoginForm = () => {
     };
 
     setLoading(true);
-    const response = await requestLogin(credentials);
-    const responseDetails = await response.json();
-    setLoading(false);
+    try {
+      const response = await requestLogin(credentials);
+      const { id, email, first_name, last_name, account_type, error } = await response.json();
 
-    if (response.ok) {
-      setLocalStorageResources({
-        token: response.headers.get('Authorization'),
-        accountType: responseDetails.account_type,
-        first_name: responseDetails.first_name,
-        last_name: responseDetails.last_name,
-        email: responseDetails.email,
-      });
-      setAccountType(responseDetails.account_type);
+      if (response.ok) {
+        const description = `Welcome back, ${first_name} ${last_name}! Redirecting to home page...`;
+        pushNotification('success', 'Login Success', description);
 
-      setAlerts([
-        {
-          type: 'success',
-          message: 'Success',
-        },
-      ]);
-      setTimeout(() => {
-        navigate(routes.home);
-      }, 2000);
-    } else {
-      setAlerts([
-        {
-          type: 'info',
-          message: responseDetails.error,
-        },
-      ]);
+        dispatch({
+          type: 'login',
+          payload: {
+            accountType: account_type,
+            localStorage: {
+              id,
+              token: response.headers.get('Authorization'),
+              first_name,
+              last_name,
+              email,
+            },
+          },
+        });
+
+        setTimeoutId(
+          setTimeout(() => {
+            navigate(routes.home.path);
+          }, 3000)
+        );
+      } else {
+        pushNotification('warning', 'Login Failed', error, 10);
+      }
+    } catch (error) {
+      pushNotification('error', 'Server Error', 'Please try again later', 10);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    setAlerts([
-      {
-        type: 'error',
-        message: 'Error',
-        description: `Please input: ${errorInfo.errorFields
-          .map((field: any) => field.name.toString().replaceAll('_', ' '))
-          .join(', ')}`,
-      },
-    ]);
-  };
-
   const formItems: formItem[] = [
-    { label: 'Email', name: 'email', type: 'email', rules: [{ required: true, message: 'Please input your email' }] },
+    {
+      label: 'E-mail',
+      name: 'email',
+      type: 'email',
+      rules: [{ required: true, message: 'Please input your email' }],
+    },
     {
       label: 'Password',
       name: 'password',
@@ -104,36 +100,25 @@ const LoginForm = () => {
       rules: [{ required: true, message: 'Please input your password' }],
     },
   ];
+
   const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
-    <Form.Item key={idx} label={label} name={name} rules={rules}>
+    <StyledForm.Item key={idx} label={label} name={name} rules={rules}>
       <Input type={type} placeholder={`Enter your ${label}`} password={name === 'password'} />
-    </Form.Item>
+    </StyledForm.Item>
   ));
 
-  const alertsJSX = alerts.map(({ type, message, description }, idx) => (
-    <Alert key={idx} closable={false} type={type} message={message} description={description} />
-  ));
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 12 }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        {formItemsJSX}
-        <Row gutter={[0, 12]}>
-          <Col span={4} offset={6}>
-            <Button shape="round" htmlType="submit" size="large" loading={loading}>
-              Submit
-            </Button>
-          </Col>
-          <Col span={12} offset={6}>
-            {alertsJSX}
+      <StyledForm onFinish={onFinish} layout="vertical" requiredMark={false}>
+        <Row>
+          <Col span={24}>
+            {formItemsJSX}
+            <StyledButton htmlType="submit" size="large" loading={loading}>
+              Log in
+            </StyledButton>
           </Col>
         </Row>
-      </Form>
+      </StyledForm>
     </Spin>
   );
 };

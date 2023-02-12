@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Alert } from 'antd';
 
-import colors from '../../palette';
+import colors from 'palette';
 
 export const StyledAlert = styled(Alert)`
   ${({ type }) =>

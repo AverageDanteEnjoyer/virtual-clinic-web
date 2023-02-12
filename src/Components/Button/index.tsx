@@ -1,38 +1,9 @@
-import { ReactNode } from 'react';
+import { ButtonProps } from 'antd';
+
 import { StyledButton } from './styles';
 
-interface CustomButtonProps {
-  type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
-  disabled?: boolean;
-  children?: ReactNode;
-  htmlType?: 'button' | 'submit' | 'reset';
-  size?: 'middle' | 'large';
-  loading?: boolean;
-  shape?: 'default' | 'round';
-  className?: string;
-}
-
-const Button = ({
-  type = 'primary',
-  className,
-  disabled,
-  children,
-  shape,
-  htmlType,
-  size,
-  loading,
-}: CustomButtonProps) => (
-  <StyledButton
-    className={className}
-    type={type}
-    disabled={disabled}
-    shape={shape}
-    htmlType={htmlType}
-    size={size}
-    loading={loading}
-  >
-    {children}
-  </StyledButton>
-);
+const Button = ({ type = 'primary', shape = 'round', ...rest }: ButtonProps) => {
+  return <StyledButton type={type} shape={shape} {...rest} />;
+};
 
 export default Button;

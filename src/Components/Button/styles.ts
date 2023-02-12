@@ -1,36 +1,59 @@
 import styled from 'styled-components';
 import { Button } from 'antd';
 
-import colors from '../../palette';
+import palette from 'palette';
 
 export const StyledButton = styled(Button)`
-  background-color: ${colors.dodgerBlue};
-  background-image: ${colors.dodgerBlueGradient};
-  background-size: calc(100% + 20px) calc(100% + 20px);
-  cursor: pointer;
-  display: inline-flex;
+  background-color: ${palette.ultraViolet};
+  border-color: ${palette.ultraViolet};
+  color: ${palette.white};
+
   font-family: CircularStd, sans-serif;
-  font-size: 16px;
-  height: auto;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 28px;
+
+  display: flex;
   justify-content: center;
-  line-height: 1.5;
-  padding: 6px 20px;
-  transition: background-color 0.2s, background-position 0.2s;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: top;
-  white-space: nowrap;
+  align-items: center;
 
-  &:active,
-  &:focus {
-    outline: none;
+  transition: background-color 0.2s, border-color 0.2s;
+
+  &.ant-btn-primary {
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: ${palette.tekhelet};
+      border-color: ${palette.tekhelet};
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
   }
 
-  &:hover {
-    background-position: -20px -20px;
+  &.ant-btn {
+    &.ant-btn-lg {
+      width: 100%;
+      padding: 12px 24px;
+    }
   }
 
-  &:focus:not(:active) {
-    box-shadow: rgba(40, 170, 255, 0.25) 0 0 0 0.125em;
+  &.ant-btn-link {
+    color: ${palette.russianViolet};
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    background-color: transparent;
+    border-color: transparent;
+
+    display: inline-flex;
+    align-items: center;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: ${palette.tekhelet};
+    }
   }
 `;

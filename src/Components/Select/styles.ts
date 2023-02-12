@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { Select } from 'antd';
 
-import colors from '../../palette';
+import colors from 'palette';
 
 export const StyledSelect = styled(Select)`
   border-radius: 20px;
-  width: 50%;
+  width: 100%;
   font-family: CircularStd, sans-serif;
   font-size: 16px;
 

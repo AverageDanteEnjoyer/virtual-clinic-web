@@ -1,17 +1,18 @@
-import { useState } from 'react';
-import { Col, Form, FormItemProps, Row } from 'antd';
+import { useEffect, useState } from 'react';
+import { Row, Col, Space, FormItemProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { capitalize } from 'lodash';
 
-import Input from '../../Components/Input';
-import Alert from '../../Components/Alert';
-import Button from '../../Components/Button';
-import Select from '../../Components/Select';
-import Spin from '../../Components/Spin';
+import Input from 'Components/Input';
+import Spin from 'Components/Spin';
+import Radio from 'Components/Radio';
 
-import routes from '../../routes';
-import { API_URL } from '../../api';
+import routes from 'routes';
+import { API_URL } from 'api';
+import { StyledForm, StyledButton } from './styles';
+import pushNotification from 'pushNotification';
 
-export interface formItem extends FormItemProps {
+interface formItem extends FormItemProps {
   type: string;
 }
 
@@ -27,13 +28,14 @@ const RegistrationForm = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const [alerts, setAlerts] = useState<
-    {
-      type: 'success' | 'warning' | 'error' | 'info';
-      message: string;
-      description?: string;
-    }[]
-  >([]);
+  const [timeoutId, setTimeoutId] = useState<null | NodeJS.Timeout>(null);
+  const [form] = StyledForm.useForm();
+
+  useEffect(() => {
+    return () => {
+      timeoutId && clearTimeout(timeoutId);
+    };
+  }, [timeoutId]);
 
   const register = async (credentials: { user: userInfo }) => {
     return await fetch(`${API_URL}/users/`, {
@@ -51,57 +53,52 @@ const RegistrationForm = () => {
     };
 
     setLoading(true);
-    const response = await register(credentials);
-    const responseDetails = await response.json();
-    setLoading(false);
+    try {
+      const response = await register(credentials);
+      const responseBody = await response.json();
 
-    if (response.ok) {
-      setAlerts([
-        {
-          type: 'success',
-          message: 'Success',
-          description: 'Account has been created! Redirecting to the login page',
-        },
-      ]);
-      setTimeout(() => {
-        navigate(routes.logIn);
-      }, 2000);
-    } else {
-      setAlerts(
-        Object.entries(responseDetails.errors).map(([key, message]) => ({
-          type: 'info',
-          message: `${key} ${message}`,
-        }))
-      );
+      if (response.ok) {
+        pushNotification(
+          'success',
+          'Registration Success',
+          `Your account has been created! Redirecting to the login page...`
+        );
+
+        setTimeoutId(
+          setTimeout(() => {
+            navigate(routes.logIn.path);
+          }, 3000)
+        );
+      } else {
+        Object.entries(responseBody.errors).forEach(([key, value]) => {
+          const description = `${capitalize(key.replaceAll('_', ' '))} ${value}.`;
+
+          formItems.forEach(({ name }) => {
+            key === name && form.setFields([{ name: key, errors: [description] }]);
+          });
+        });
+      }
+    } catch (error) {
+      pushNotification('error', 'Server Error', 'Please try again later', 10);
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    setAlerts([
-      {
-        type: 'error',
-        message: 'Error',
-        description: `Please input: ${errorInfo.errorFields
-          .map((field: any) => field.name.toString().replaceAll('_', ' '))
-          .join(', ')}`,
-      },
-    ]);
   };
 
   const formItems: formItem[] = [
     {
-      label: 'Name',
+      label: 'First name',
       name: 'first_name',
       type: 'text',
-      rules: [{ required: true, message: 'Please input your firstname' }],
+      rules: [{ required: true, message: 'Please input your first name' }],
     },
     {
       label: 'Last name',
       name: 'last_name',
       type: 'text',
-      rules: [{ required: true, message: 'Please input your lastname' }],
+      rules: [{ required: true, message: 'Please input your last name' }],
     },
-    { label: 'Email', name: 'email', type: 'email', rules: [{ required: true, message: 'Please input your email' }] },
+    { label: 'E-mail', name: 'email', type: 'email', rules: [{ required: true, message: 'Please input your email' }] },
     {
       label: 'Password',
       name: 'password',
@@ -110,50 +107,40 @@ const RegistrationForm = () => {
     },
   ];
   const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
-    <Form.Item key={idx} label={label} name={name} rules={rules}>
+    <StyledForm.Item key={idx} label={label} name={name} rules={rules}>
       <Input type={type} placeholder={`Enter your ${label}`} password={name === 'password'} />
-    </Form.Item>
+    </StyledForm.Item>
   ));
 
-  const alertsJSX = alerts.map(({ type, message, description }, idx) => (
-    <Alert key={idx} closable={false} type={type} message={message} description={description} />
-  ));
+  const formAccountType = (
+    <StyledForm.Item
+      label="Account type"
+      name="account_type"
+      initialValue="patient"
+      rules={[{ required: true, message: 'Please select your account type' }]}
+    >
+      <Radio.Group name="account_type">
+        <Space direction="vertical">
+          <Radio value="patient">Patient</Radio>
+          <Radio value="doctor">Doctor</Radio>
+        </Space>
+      </Radio.Group>
+    </StyledForm.Item>
+  );
 
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 12 }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        {formItemsJSX}
-        <Form.Item
-          label="Account type"
-          name="account_type"
-          wrapperCol={{ offset: 0, span: 12 }}
-          rules={[{ required: true, message: 'Please select your account type' }]}
-        >
-          <Select
-            placeholder="Select your account type"
-            options={[
-              { value: 'patient', label: 'patient' },
-              { value: 'doctor', label: 'doctor' },
-            ]}
-          />
-        </Form.Item>
-        <Row gutter={[0, 12]}>
-          <Col span={4} offset={6}>
-            <Button shape="round" htmlType="submit" size="large" loading={loading}>
-              Submit
-            </Button>
-          </Col>
-          <Col span={12} offset={6}>
-            {alertsJSX}
+      <StyledForm form={form} onFinish={onFinish} layout="vertical" requiredMark={false}>
+        <Row>
+          <Col span={24}>
+            {formItemsJSX}
+            {formAccountType}
+            <StyledButton htmlType="submit" size="large" loading={loading}>
+              Register
+            </StyledButton>
           </Col>
         </Row>
-      </Form>
+      </StyledForm>
     </Spin>
   );
 };

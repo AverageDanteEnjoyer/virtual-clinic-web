@@ -1,41 +1,35 @@
 import { useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import routes from '../routes';
-import { clearLocalStorage, getDataFromToken, getLocalStorageResource } from '../localStorageAPI';
-import { SessionInfoContext } from '../SessionInfoContext';
+import routes from 'routes';
+import { getAccountType, getDataFromToken } from 'localStorageAPI';
+import { Store } from 'store';
 
-import ComponentsPage from '../Pages/ComponentsPage';
-import RegistrationPage from '../Pages/RegistrationPage';
-import LoginPage from '../Pages/LoginPage';
-import HomePage from '../Pages/HomePage';
-import AuthVerify from '../AuthVerify';
-import ProfileEditPage from '../Pages/ProfileEditPage';
-import DoctorProcedures from '../Pages/DoctorProcedures';
+import ComponentsPage from 'Pages/ComponentsPage';
+import HomePage from 'Pages/HomePage';
+import AuthVerify from 'AuthVerify';
+import { mappedPrivateRoutes } from 'mappedPrivateRoutes';
 
 const Application = () => {
-  const { setAccountType } = useContext(SessionInfoContext);
+  const { dispatch } = useContext(Store);
 
   useEffect(() => {
     const { tokenExp } = getDataFromToken();
     if (!tokenExp) return;
 
     if (tokenExp < new Date()) {
-      clearLocalStorage();
+      dispatch({ type: 'logout' });
     } else {
-      setAccountType(getLocalStorageResource('accountType'));
+      dispatch({ type: 'login', payload: { accountType: getAccountType() } });
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={routes.home} element={<HomePage />} />
-        <Route path={routes.components} element={<ComponentsPage />} />
-        <Route path={routes.logIn} element={<LoginPage />} />
-        <Route path={routes.register} element={<RegistrationPage />} />
-        <Route path={routes.editProfile} element={<ProfileEditPage />} />
-        <Route path={routes.doctorProcedures} element={<DoctorProcedures />} />
+        <Route path={routes.home.path} element={<HomePage />} />
+        <Route path={routes.components.path} element={<ComponentsPage />} />
+        {mappedPrivateRoutes}
       </Routes>
       <AuthVerify />
     </BrowserRouter>

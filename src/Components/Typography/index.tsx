@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { StyledParagraph, StyledTitle, StyledTypography } from './styles';
 
 const TypographyExample = () => {

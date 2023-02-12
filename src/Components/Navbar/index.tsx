@@ -1,29 +1,36 @@
-import { Key, ReactNode, useContext } from 'react';
+import { ReactNode, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Col, Menu, MenuProps, Row } from 'antd';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
-import routes from '../../routes';
-import { clearLocalStorage, getLocalStorageResource } from '../../localStorageAPI';
-import { SessionInfoContext, userType } from '../../SessionInfoContext';
-import { API_URL } from '../../api';
+import routes from 'routes';
+import { getLocalStorageResource } from 'localStorageAPI';
+import { Store, userType } from 'store';
+import { API_URL } from 'api';
+import { equals, notEquals } from 'privateRoute';
+import pushNotification from 'pushNotification';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-function getItem(label: ReactNode, key: Key, children?: MenuItem[]): MenuItem {
+let keyCounter: number = 0;
+
+function getItem(label: ReactNode, children?: MenuItem[], condition: () => boolean = () => true): MenuItem | null {
+  if (!condition()) return null;
+
   return {
+    key: keyCounter++,
     label,
-    key,
-    children,
-  } as MenuItem;
+    children: children?.length ? children : undefined,
+  };
 }
 
 const Navbar = () => {
-  const { accountType, setAccountType } = useContext(SessionInfoContext);
+  const { dispatch } = useContext(Store);
 
   const logOut = async () => {
     const token = getLocalStorageResource('token');
     if (!token) return;
+
     await fetch(`${API_URL}/users/sign_out/`, {
       method: 'DELETE',
       headers: {
@@ -31,34 +38,34 @@ const Navbar = () => {
         Authorization: token,
       },
     });
-    clearLocalStorage();
-    setAccountType(userType.GUEST);
+
+    pushNotification('success', 'Logout Success', 'You have been logged out.');
+    dispatch({ type: 'logout' });
   };
 
-  const items: MenuItem[] = [
-    getItem(<Link to={routes.components}>components</Link>, '1'),
-    getItem(<Link to={routes.home}>home</Link>, '2'),
-    getItem(
-      <UserOutlined />,
-      'user',
-      accountType !== userType.GUEST
-        ? [
-            getItem(<Link to={routes.editProfile}>edit profile</Link>, '3'),
-            getItem('Appointments', '4'),
-            getItem(<Link to={routes.doctorProcedures}>my procedures</Link>, '6'),
-            getItem(
-              <Link to={routes.home} onClick={logOut}>
-                log out
-              </Link>,
-              '5'
-            ),
-          ]
-        : [
-            getItem(<Link to={routes.logIn}>log in</Link>, '3'),
-            getItem(<Link to={routes.register}>register</Link>, '4'),
-          ]
-    ),
-  ];
+  const getMenuItems = (): MenuItem[] => {
+    const items: MenuItem[] | null = [
+      getItem(<Link to={routes.components.path}>components</Link>),
+      getItem(<Link to={routes.home.path}>home</Link>),
+      getItem(<Link to={routes.makeAppointment.path}>Make an appointment</Link>, [], () => equals(userType.PATIENT)),
+      getItem(<UserOutlined />, [
+        getItem(<Link to={routes.logIn.path}>Log in</Link>, [], () => equals(userType.GUEST)),
+        getItem(<Link to={routes.register.path}>Register</Link>, [], () => equals(userType.GUEST)),
+        getItem(<Link to={routes.editProfile.path}>Edit profile</Link>, [], () => notEquals(userType.GUEST)),
+        getItem('Appointments', [], () => notEquals(userType.GUEST)),
+        getItem(
+          <Link to={routes.home.path} onClick={logOut}>
+            Log out
+          </Link>,
+          [],
+          () => notEquals(userType.GUEST)
+        ),
+      ]),
+    ];
+
+    return items.filter((item) => item !== null);
+  };
+
   return (
     <Row align="middle" justify="end">
       <Col flex={1}>
@@ -67,7 +74,7 @@ const Navbar = () => {
       </Col>
       <Col>
         <nav>
-          <Menu defaultSelectedKeys={['2']} mode="horizontal" theme="light" items={items} />
+          <Menu defaultSelectedKeys={['2']} mode="horizontal" theme="light" items={getMenuItems()} />
         </nav>
       </Col>
     </Row>
