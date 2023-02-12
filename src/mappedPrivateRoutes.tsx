@@ -7,7 +7,7 @@ import { userType } from 'store';
 import RegistrationPage from 'Pages/RegistrationPage';
 import ProfileEditPage from 'Pages/EditProfilePage';
 import MakeAppointmentPage from 'Pages/MakeAppointmentPage';
-import DoctorProcedures from './Pages/DoctorProcedures';
+import DoctorProcedures from 'Pages/DoctorProcedures';
 
 interface privateRouteItem {
   path: string;
