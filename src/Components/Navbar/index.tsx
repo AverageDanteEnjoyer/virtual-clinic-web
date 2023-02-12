@@ -52,7 +52,8 @@ const Navbar = () => {
         getItem(<Link to={routes.logIn.path}>Log in</Link>, [], () => equals(userType.GUEST)),
         getItem(<Link to={routes.register.path}>Register</Link>, [], () => equals(userType.GUEST)),
         getItem(<Link to={routes.editProfile.path}>Edit profile</Link>, [], () => notEquals(userType.GUEST)),
-        getItem('Appointments', [], () => notEquals(userType.GUEST)),
+        getItem('Appointments', [], () => equals(userType.PATIENT)),
+        getItem(<Link to={routes.myProcedures.path}>My procedures</Link>, [], () => equals(userType.DOCTOR)),
         getItem(
           <Link to={routes.home.path} onClick={logOut}>
             Log out
