@@ -1,11 +1,11 @@
-import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
-import { Table, Form, Input, Button, Spin } from 'antd';
-import { capitalize } from 'lodash';
+import React, {useState, useEffect, ChangeEvent} from 'react';
+import {Table, Form, Input, Button, Spin} from 'antd';
+import {capitalize} from 'lodash';
 
-import { getDataFromToken, getLocalStorageResource } from 'localStorageAPI';
-import { API_URL } from 'api';
-import { StyledDiv } from './styledDiv';
-import Alert from 'Components/Alert';
+import {getDataFromToken, getLocalStorageResource} from 'localStorageAPI';
+import {API_URL} from 'api';
+import {StyledDiv} from './styledDiv';
+import pushNotification from 'pushNotification';
 
 type doctorProceduresType = {
   id: number;
@@ -18,13 +18,6 @@ const DoctorManageProcedures = () => {
   const [procedureName, setProcedureName] = useState('');
   const [neededTime, setNeededTime] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [alerts, setAlerts] = useState<
-    {
-      type: 'success' | 'warning' | 'error' | 'info';
-      message: string;
-      description?: string;
-    }[]
-  >([]);
 
   const handleChangeNumber = (event: ChangeEvent<HTMLInputElement>) => {
     setNeededTime(+event.target.value);
@@ -34,7 +27,8 @@ const DoctorManageProcedures = () => {
     setLoading(true);
     const token = getLocalStorageResource('token');
     if (!token) return;
-    const { userID } = getDataFromToken();
+    const {userID} = getDataFromToken();
+
     try {
       const response = await fetch(`${API_URL}/api/v1/doctors/${userID}/procedures/?per_page=${100}`, {
         method: 'GET',
@@ -52,7 +46,7 @@ const DoctorManageProcedures = () => {
     }
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async () => {
     const token = getLocalStorageResource('token');
     if (!token) return;
 
@@ -72,21 +66,11 @@ const DoctorManageProcedures = () => {
 
     if (response.ok) {
       await getDoctorProcedures();
-      setAlerts([
-        {
-          type: 'success',
-          message: 'Success',
-          description: 'Account details has been updated!',
-        },
-      ]);
+      pushNotification('success', 'Success', 'Procedure has been added!');
     } else if (response.status === 422) {
       const responseBody = await response.json();
-      setAlerts(
-        Object.entries(responseBody.errors).map(([key, message]) => ({
-          type: 'error',
-          message: 'Error',
-          description: `${capitalize(key)} ${message}`.replaceAll('_', ' '),
-        }))
+      Object.entries(responseBody.errors).map(([key, message]) =>
+        pushNotification('error', 'Error', `${capitalize(key)} ${message}`.replaceAll('_', ' '))
       );
     }
   };
@@ -111,6 +95,7 @@ const DoctorManageProcedures = () => {
 
     if (response.ok) {
       await getDoctorProcedures();
+      pushNotification('success', 'Success', 'Procedure has been deleted!');
     }
   };
 
@@ -156,10 +141,6 @@ const DoctorManageProcedures = () => {
     },
   ];
 
-  const alertsJSX = alerts.map(({ type, message, description }, idx) => (
-    <Alert key={idx} type={type} message={message} description={description} />
-  ));
-
   return (
     <>
       <StyledDiv>
@@ -175,7 +156,7 @@ const DoctorManageProcedures = () => {
             ></Input>
           </Form.Item>
           <Form.Item label="Needed time:" name="time">
-            <Input min="1" type="number" id="number" required value={neededTime} onChange={handleChangeNumber} />
+            <Input min="1" type="number" id="number" required value={neededTime} onChange={handleChangeNumber}/>
           </Form.Item>
           <Button type="primary" shape="round" htmlType="submit" size="large" loading={loading}>
             Submit
@@ -192,7 +173,6 @@ const DoctorManageProcedures = () => {
           }}
         ></Table>
       </Spin>
-      {alertsJSX}
     </>
   );
 };
