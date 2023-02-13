@@ -1,7 +1,4 @@
-# Created by MichaelCurrin
-# https://gist.github.com/MichaelCurrin/a698731096f78240f653faf9a9127cba
-# test
- name: Build and deploy 
+ name: CI
 
  on:
   push:
@@ -13,23 +10,18 @@
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: add-gh-pages-deploy
-          persist-credentials: false
-          submodules: true
 
-      - name: Install 🔧
-        run: yarn install
+      - name: Install
+        run: | 
+          yarn install
+          yarn add gh-pages
 
-      - name: Build 🏗️
+      - name: Build
         run: |
           CI=false
-          yarn build
-      - name: Deploy to GH Pages 🚀
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: public
+          yarn deploy
           
