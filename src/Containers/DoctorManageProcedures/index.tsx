@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Spin, Col, Row } from 'antd';
+import { Table, Form, Spin, Col, Row, Modal } from 'antd';
 import { capitalize } from 'lodash';
 
 import { getDataFromToken, getLocalStorageResource } from 'localStorageAPI';
@@ -8,14 +8,16 @@ import pushNotification from 'pushNotification';
 import { CenteredContainer } from 'Containers/EditProfileForm/styles';
 import Input from 'Components/Input';
 import Button from 'Components/Button';
+import useModal from 'Containers/WorkPlan/WorkPlanTable/useModal';
+import EditForm from './EditForm';
 
-interface DoctorProceduresType {
+export interface DoctorProceduresType {
   id: number;
   name: string;
   needed_time_min: number;
 }
 
-interface FormData {
+export interface FormData {
   procedure_name: string;
   needed_time: number;
 }
@@ -23,6 +25,8 @@ interface FormData {
 const DoctorManageProcedures = () => {
   const [doctorProcedures, setDoctorProcedures] = useState<DoctorProceduresType[]>([]);
   const [loading, setLoading] = useState(false);
+  const { isOpened, openModal, closeModal } = useModal();
+  const [record, setRecord] = useState<DoctorProceduresType>({ id: 0, name: '', needed_time_min: 0 });
 
   const getDoctorProcedures = async () => {
     setLoading(true);
@@ -120,11 +124,25 @@ const DoctorManageProcedures = () => {
       key: 'actions',
       render: (record: DoctorProceduresType) => {
         return (
-          <CenteredContainer>
-            <Button htmlType="submit" loading={loading} onClick={() => handleDelete(record)}>
-              DELETE
-            </Button>
-          </CenteredContainer>
+          <Row gutter={[0, 20]}>
+            <Col span={12}>
+              <CenteredContainer>
+                <Button onClick={() => handleDelete(record)}>DELETE</Button>
+              </CenteredContainer>
+            </Col>
+            <Col span={12}>
+              <CenteredContainer>
+                <Button
+                  onClick={() => {
+                    setRecord(record);
+                    openModal();
+                  }}
+                >
+                  EDIT
+                </Button>
+              </CenteredContainer>
+            </Col>
+          </Row>
         );
       },
     },
@@ -170,6 +188,9 @@ const DoctorManageProcedures = () => {
             />
           </Spin>
         </Col>
+        <Modal title={'Edit procedure'} open={isOpened} onCancel={closeModal} footer={null}>
+          <EditForm procedure={record} closeEditModal={closeModal} />
+        </Modal>
       </Row>
     </>
   );
