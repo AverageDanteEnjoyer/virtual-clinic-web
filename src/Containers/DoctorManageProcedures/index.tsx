@@ -1,11 +1,11 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { Table, Form, Input, Button, Spin } from 'antd';
+import { Table, Form, Input, Button, Spin, Col, Row } from 'antd';
 import { capitalize } from 'lodash';
 
 import { getDataFromToken, getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';
-import { StyledDiv } from './styledDiv';
 import pushNotification from 'pushNotification';
+import { CenteredContainer } from 'Containers/EditProfileForm/styles';
 
 type doctorProceduresType = {
   id: number;
@@ -143,36 +143,42 @@ const DoctorManageProcedures = () => {
 
   return (
     <>
-      <StyledDiv>
-        <Form className="wrap" onFinish={handleSubmit}>
-          <Form.Item label="Procedure name:" name="procedure">
-            <Input
-              type="text"
-              id="name"
-              required
-              placeholder="Input your new procedure"
-              value={procedureName}
-              onChange={(e) => setProcedureName(e.target.value)}
-            ></Input>
-          </Form.Item>
-          <Form.Item label="Needed time:" name="time">
-            <Input min="1" type="number" id="number" required value={neededTime} onChange={handleChangeNumber} />
-          </Form.Item>
-          <Button type="primary" shape="round" htmlType="submit" size="large" loading={loading}>
-            Submit
-          </Button>
-        </Form>
-      </StyledDiv>
-      <Spin spinning={loading} tip="waiting for server response...">
-        <Table
-          loading={loading}
-          columns={columns}
-          dataSource={doctorProcedures}
-          pagination={{
-            pageSize: 5,
-          }}
-        ></Table>
-      </Spin>
+      <Row gutter={[0, 16]}>
+        <Col span={6} offset={9}>
+          <Form className="wrap" onFinish={handleSubmit}>
+            <Form.Item label="Procedure name:" name="procedure">
+              <Input
+                type="text"
+                id="name"
+                required
+                placeholder="Input your new procedure"
+                value={procedureName}
+                onChange={(e) => setProcedureName(e.target.value)}
+              ></Input>
+            </Form.Item>
+            <Form.Item label="Needed time:" name="time">
+              <Input min="1" type="number" id="number" required value={neededTime} onChange={handleChangeNumber} />
+            </Form.Item>
+            <CenteredContainer>
+              <Button type="primary" shape="round" htmlType="submit" size="large" loading={loading}>
+                Submit
+              </Button>
+            </CenteredContainer>
+          </Form>
+        </Col>
+        <Col span={12} offset={6}>
+          <Spin spinning={loading} tip="waiting for server response...">
+            <Table
+              loading={loading}
+              columns={columns}
+              dataSource={doctorProcedures}
+              pagination={{
+                pageSize: 5,
+              }}
+            />
+          </Spin>
+        </Col>
+      </Row>
     </>
   );
 };
