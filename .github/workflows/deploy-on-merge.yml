@@ -19,7 +19,11 @@
         run: | 
           yarn install
           yarn add gh-pages
-
+          
+      - uses: fusion-engineering/setup-git-credentials@v2
+        with:
+         credentials: ${{secrets.GIT_CREDENTIAL}}
+         
       - name: Build
         env:
           CI: false
