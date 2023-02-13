@@ -1,25 +1,16 @@
-name: Node.js CI
+name: Deploy page
 
 on:
   push:
     branches: [ add-gh-pages-deploy ]
 
 jobs:
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12
       - run: yarn
       - run: yarn deploy
-      - run: echo "It works."
-      
