@@ -1,3 +1,5 @@
+# Created by MichaelCurrin
+# https://gist.github.com/MichaelCurrin/a698731096f78240f653faf9a9127cba
  name: Build and deploy 
 
  on:
@@ -11,7 +13,7 @@
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@master
+        uses: actions/checkout@add-gh-pages-deploy
         with:
           persist-credentials: false
           submodules: true
