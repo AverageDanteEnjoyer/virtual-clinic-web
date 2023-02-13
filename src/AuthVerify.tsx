@@ -1,6 +1,5 @@
 import { useContext, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { debounce } from 'lodash';
 
 import { Store } from 'store';
 import { getDataFromToken } from 'localStorageAPI';
@@ -12,14 +11,14 @@ const AuthVerify = () => {
   const navigate = useNavigate();
 
   const checkToken = useMemo(() => {
-    return debounce(() => {
+    return () => {
       const { tokenExp } = getDataFromToken();
       if (tokenExp && tokenExp < new Date()) {
         dispatch({ type: 'logout' });
-        pushNotification('info', 'Session Expired', 'Please log in again.');
+        pushNotification('info', 'Session Expired', 'Please log in again.', 0);
         navigate(routes.logIn.path);
       }
-    }, 1000);
+    };
   }, [dispatch, navigate]);
 
   useEffect(() => {
