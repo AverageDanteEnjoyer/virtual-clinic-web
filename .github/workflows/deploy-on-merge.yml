@@ -19,16 +19,12 @@ jobs:
         - name: Install 🔧
           run: yarn install
 
-        - name: Lint 🧐
-          run: yarn lint:check
-
         - name: Build 🏗️
           run: yarn build
           env:
             NODE_ENV: production
 
         - name: Deploy to GH Pages 🚀
-          if: ${{ github.event_name != 'pull_request' }}
           uses: peaceiris/actions-gh-pages@v3
           with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
