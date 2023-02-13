@@ -1,31 +1,32 @@
- name: GH Pages deploy
+ name: Build and deploy 
 
- on: 
-    push:
-      branches: add-gh-pages-deploy
+ on:
+  push:
+    branches:
+      - add-gh-pages-deploy
 
  jobs:
-    build-deploy:
-      runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Checkout 🛎️
-          uses: actions/checkout@master
-          with:
-            persist-credentials: false
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@master
+        with:
+          persist-credentials: false
+          submodules: true  # TODO remove this if not using submodules in Hexo
 
-        - name: Install 🔧
-          run: yarn install
+      - name: Install 🔧
+        run: yarn install
 
-        - name: Build 🏗️
-          run: CI=false yarn build
-          env:
-            NODE_ENV: production
-
-        - name: Deploy to GH Pages 🚀
-          if: ${{ github.event_name != 'pull_request' }}
-          uses: peaceiris/actions-gh-pages@v3
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: dist
-            
+      - name: Build 🏗️
+        run: |
+          yarn clean
+          CI=false
+          yarn build
+      - name: Deploy to GH Pages 🚀
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: public
+          
