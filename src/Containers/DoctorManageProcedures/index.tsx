@@ -140,10 +140,18 @@ const DoctorManageProcedures = () => {
       <Row gutter={[0, 15]}>
         <Col span={6} offset={9}>
           <Form className="wrap" onFinish={onFinish}>
-            <Form.Item label="Procedure name:" name="procedure_name" required={true}>
+            <Form.Item
+              label="Procedure name:"
+              name="procedure_name"
+              rules={[{ required: true, message: 'Please input procedure name' }]}
+            >
               <Input type={'text'} placeholder={'Input your new procedure'} prefix={null} />
             </Form.Item>
-            <Form.Item label="Needed time:" name="needed_time" required={true}>
+            <Form.Item
+              label="Needed time:"
+              name="needed_time"
+              rules={[{ required: true, message: 'Please input procedure time' }]}
+            >
               <Input min="1" type="number" prefix={null} />
             </Form.Item>
             <CenteredContainer>
@@ -163,6 +171,7 @@ const DoctorManageProcedures = () => {
                 position: ['bottomCenter'],
                 pageSize: 4,
               }}
+              rowKey={(record: DoctorProceduresType) => record.id}
             />
           </Spin>
         </Col>
