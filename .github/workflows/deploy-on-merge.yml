@@ -13,7 +13,7 @@
      runs-on: ubuntu-latest
      steps:
      - name: Create artifact
-       uses: actions/upload-pages-artifact@main
+       uses: actions/upload-pages-artifact@v1
 
    # Deploy job
    deploy:
