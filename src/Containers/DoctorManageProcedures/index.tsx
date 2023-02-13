@@ -143,7 +143,7 @@ const DoctorManageProcedures = () => {
 
   return (
     <>
-      <Row gutter={[0, 16]}>
+      <Row gutter={[0, 15]}>
         <Col span={6} offset={9}>
           <Form className="wrap" onFinish={handleSubmit}>
             <Form.Item label="Procedure name:" name="procedure">
@@ -173,7 +173,8 @@ const DoctorManageProcedures = () => {
               columns={columns}
               dataSource={doctorProcedures}
               pagination={{
-                pageSize: 5,
+                position: ['bottomCenter'],
+                pageSize: 4,
               }}
             />
           </Spin>
