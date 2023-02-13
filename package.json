@@ -1,6 +1,5 @@
 {
   "name": "projekt-innowacja-2023-web",
-  "homepage": "https://htd-health.github.io/projekt-innowacja-2023-web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,9 +29,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -54,7 +51,6 @@
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
-    "gh-pages": "^5.0.0",
     "prettier": "2.7.1"
   },
   "resolutions": {
