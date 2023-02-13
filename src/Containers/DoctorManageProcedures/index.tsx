@@ -106,11 +106,6 @@ const DoctorManageProcedures = () => {
 
   const columns = [
     {
-      title: 'Procedure ID',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
       title: 'Procedure name',
       dataIndex: 'name',
       key: 'name',
