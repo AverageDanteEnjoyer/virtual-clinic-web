@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Form, Spin, Col, Row } from 'antd';
 import { capitalize } from 'lodash';
 
@@ -9,21 +9,20 @@ import { CenteredContainer } from 'Containers/EditProfileForm/styles';
 import Input from 'Components/Input';
 import Button from 'Components/Button';
 
-type doctorProceduresType = {
+interface DoctorProceduresType {
   id: number;
   name: string;
   needed_time_min: number;
-};
+}
+
+interface FormData {
+  procedure_name: string;
+  needed_time: number;
+}
 
 const DoctorManageProcedures = () => {
-  const [doctorProcedures, setDoctorProcedures] = useState<doctorProceduresType[]>([]);
-  const [procedureName, setProcedureName] = useState('');
-  const [neededTime, setNeededTime] = useState(0);
+  const [doctorProcedures, setDoctorProcedures] = useState<DoctorProceduresType[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const handleChangeNumber = (event: ChangeEvent<HTMLInputElement>) => {
-    setNeededTime(+event.target.value);
-  };
 
   const getDoctorProcedures = async () => {
     setLoading(true);
@@ -40,15 +39,15 @@ const DoctorManageProcedures = () => {
         },
       });
       if (response) {
-        const responseDetails = await response.json();
-        setDoctorProcedures(responseDetails.data);
+        const responseBody = await response.json();
+        setDoctorProcedures(responseBody.data);
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSubmit = async () => {
+  const onFinish = async (values: FormData) => {
     const token = getLocalStorageResource('token');
     if (!token) return;
 
@@ -60,8 +59,8 @@ const DoctorManageProcedures = () => {
       method: 'POST',
       body: JSON.stringify({
         procedure: {
-          name: procedureName,
-          needed_time_min: neededTime,
+          name: values.procedure_name,
+          needed_time_min: values.needed_time,
         },
       }),
     });
@@ -77,7 +76,7 @@ const DoctorManageProcedures = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: DoctorProceduresType) => {
     const token = getLocalStorageResource('token');
     if (!token) return;
 
@@ -89,8 +88,8 @@ const DoctorManageProcedures = () => {
       method: 'DELETE',
       body: JSON.stringify({
         procedure: {
-          name: procedureName,
-          needed_time_min: neededTime,
+          name: record.name,
+          needed_time_min: record.needed_time_min,
         },
       }),
     });
@@ -124,7 +123,7 @@ const DoctorManageProcedures = () => {
     {
       title: 'Actions',
       key: 'actions',
-      render: (record: any) => {
+      render: (record: DoctorProceduresType) => {
         return (
           <CenteredContainer>
             <Button htmlType="submit" loading={loading} onClick={() => handleDelete(record)}>
@@ -140,17 +139,12 @@ const DoctorManageProcedures = () => {
     <>
       <Row gutter={[0, 15]}>
         <Col span={6} offset={9}>
-          <Form className="wrap" onFinish={handleSubmit}>
-            <Form.Item label="Procedure name:" name="procedure" required={true}>
-              <Input
-                type={'text'}
-                placeholder={'Input your new procedure'}
-                onChange={(e) => setProcedureName(e.target.value)}
-                prefix={null}
-              />
+          <Form className="wrap" onFinish={onFinish}>
+            <Form.Item label="Procedure name:" name="procedure_name" required={true}>
+              <Input type={'text'} placeholder={'Input your new procedure'} prefix={null} />
             </Form.Item>
-            <Form.Item label="Needed time:" name="time" required={true}>
-              <Input min="1" type="number" onChange={handleChangeNumber} prefix={null} />
+            <Form.Item label="Needed time:" name="needed_time" required={true}>
+              <Input min="1" type="number" prefix={null} />
             </Form.Item>
             <CenteredContainer>
               <Button htmlType="submit" loading={loading}>
