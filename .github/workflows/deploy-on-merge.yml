@@ -37,7 +37,9 @@
        run: yarn install
        
      - name: Build 
-       run: yarn build
+       run: |
+           CI=false
+           yarn build
        
      - name: Create artifact
        uses: actions/upload-pages-artifact@v1
