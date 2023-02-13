@@ -1,20 +1,31 @@
-name: Node.js CI
+ name: GH Pages deploy
 
-on:
-  push:
-    branches: [ add-gh-pages-deploy ]
+ on: 
+    push:
+      branches: add-gh-pages-deploy
 
-jobs:
-  build:
+ jobs:
+    build-deploy:
+      runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest
+      steps:
+        - name: Checkout 🛎️
+          uses: actions/checkout@master
+          with:
+            persist-credentials: false
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-      - run: yarn
-      - run: CI=false yarn deploy
-      
+        - name: Install 🔧
+          run: yarn install
+
+        - name: Build 🏗️
+          run: CI=false yarn build
+          env:
+            NODE_ENV: production
+
+        - name: Deploy to GH Pages 🚀
+          if: ${{ github.event_name != 'pull_request' }}
+          uses: peaceiris/actions-gh-pages@v3
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: dist
+            
