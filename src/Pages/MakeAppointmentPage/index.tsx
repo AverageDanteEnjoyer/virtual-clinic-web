@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { Col, DatePicker, Row } from 'antd';
 import dayjs from 'dayjs';
 
+import useTitle from 'useTitle';
+import TimeTable from 'Containers/TimeTable';
+import { SubmitBox } from 'Containers/TimeTable/styles';
 import Navbar from 'Components/Navbar';
 import { StyledParagraph, StyledTitle } from 'Components/Typography/styles';
 import PaginatedSelect from 'Components/PaginatedSelect';
-import fetchAllDoctors from './fetchDoctors';
+import Button from 'Components/Button';
 import { DoctorEmail, DoctorIcon, DoctorInfo, DoctorOption, Paragraph } from './styles';
-import { getFetchDoctorProcedures } from './fetchDoctorProcedures';
-import TimeTable from 'Containers/TimeTable';
-import { SubmitBox } from 'Containers/TimeTable/styles';
-import { StyledButton } from 'Components/Button/styles';
-import useTitle from 'useTitle';
+import fetchAllDoctors from './fetchDoctors';
+import getFetchDoctorProcedures from './fetchDoctorProcedures';
 
 export interface Doctor {
   id: number;
@@ -138,9 +138,9 @@ const MakeAppointmentPage = () => {
                   <b>Date:</b> {dayjs(date).format('D MMMM YYYY')} {selectedTime} -{' '}
                   {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('HH:mm')}
                 </StyledParagraph>
-                <StyledButton type="primary" size="large" disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs())}>
+                <Button type="primary" size="large" disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs())}>
                   Submit
-                </StyledButton>
+                </Button>
               </SubmitBox>
             </>
           )}

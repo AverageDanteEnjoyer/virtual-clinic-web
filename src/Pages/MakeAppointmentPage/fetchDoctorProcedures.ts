@@ -1,9 +1,9 @@
-import { Procedure } from './index';
-import { FetchResponse, SearchParameters } from 'Components/PaginatedSelect';
 import { getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';
+import { FetchResponse, SearchParameters } from 'Components/PaginatedSelect';
+import { Procedure } from './index';
 
-export const getFetchDoctorProcedures = (doctorId: number) => {
+const getFetchDoctorProcedures = (doctorId: number) => {
   return async ({ searchValue, pageIndex, perPage }: SearchParameters): Promise<FetchResponse<Procedure>> => {
     const token = getLocalStorageResource('token');
     if (!token) return { data: [], total: 0 };
@@ -22,3 +22,5 @@ export const getFetchDoctorProcedures = (doctorId: number) => {
     return response.json();
   };
 };
+
+export default getFetchDoctorProcedures;
