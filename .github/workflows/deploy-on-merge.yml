@@ -12,13 +12,11 @@
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout 🛎️
         uses: actions/checkout@v3
-      - name: Checkout branch
-        uses: ./
         with:
-          ref: add-gh-pages-deploy
-          path: add-gh-pages-deploy
+          persist-credentials: false
+          submodules: true
 
       - name: Install 🔧
         run: yarn install
