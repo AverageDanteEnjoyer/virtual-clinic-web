@@ -1,11 +1,13 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { Table, Form, Input, Button, Spin, Col, Row } from 'antd';
+import { Table, Form, Spin, Col, Row } from 'antd';
 import { capitalize } from 'lodash';
 
 import { getDataFromToken, getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';
 import pushNotification from 'pushNotification';
 import { CenteredContainer } from 'Containers/EditProfileForm/styles';
+import Input from 'Components/Input';
+import Button from 'Components/Button';
 
 type doctorProceduresType = {
   id: number;
@@ -124,18 +126,11 @@ const DoctorManageProcedures = () => {
       key: 'actions',
       render: (record: any) => {
         return (
-          <>
-            <Button
-              type="primary"
-              shape="round"
-              htmlType="submit"
-              size="large"
-              loading={loading}
-              onClick={() => handleDelete(record)}
-            >
+          <CenteredContainer>
+            <Button htmlType="submit" loading={loading} onClick={() => handleDelete(record)}>
               DELETE
             </Button>
-          </>
+          </CenteredContainer>
         );
       },
     },
@@ -146,21 +141,19 @@ const DoctorManageProcedures = () => {
       <Row gutter={[0, 15]}>
         <Col span={6} offset={9}>
           <Form className="wrap" onFinish={handleSubmit}>
-            <Form.Item label="Procedure name:" name="procedure">
+            <Form.Item label="Procedure name:" name="procedure" required={true}>
               <Input
-                type="text"
-                id="name"
-                required
-                placeholder="Input your new procedure"
-                value={procedureName}
+                type={'text'}
+                placeholder={'Input your new procedure'}
                 onChange={(e) => setProcedureName(e.target.value)}
-              ></Input>
+                prefix={null}
+              />
             </Form.Item>
-            <Form.Item label="Needed time:" name="time">
-              <Input min="1" type="number" id="number" required value={neededTime} onChange={handleChangeNumber} />
+            <Form.Item label="Needed time:" name="time" required={true}>
+              <Input min="1" type="number" onChange={handleChangeNumber} prefix={null} />
             </Form.Item>
             <CenteredContainer>
-              <Button type="primary" shape="round" htmlType="submit" size="large" loading={loading}>
+              <Button htmlType="submit" loading={loading}>
                 Submit
               </Button>
             </CenteredContainer>
