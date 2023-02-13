@@ -22,6 +22,9 @@
 
       - name: Build
         run: |
+          export GIT_USER=${{secrets.GIT_USER}}
+          git config --global user.name "$GIT_USER"
+          git config --global user.email "236687@edu.p.lodz.pl" 
           CI=false
           yarn deploy
           
