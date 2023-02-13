@@ -152,7 +152,7 @@ const DoctorManageProcedures = () => {
     <>
       <Row gutter={[0, 15]}>
         <Col span={6} offset={9}>
-          <Form className="wrap" onFinish={onFinish}>
+          <Form onFinish={onFinish} autoComplete="off">
             <Form.Item
               label="Procedure name:"
               name="procedure_name"
@@ -168,9 +168,7 @@ const DoctorManageProcedures = () => {
               <Input min="1" type="number" prefix={null} />
             </Form.Item>
             <CenteredContainer>
-              <Button htmlType="submit" loading={loading}>
-                Submit
-              </Button>
+              <Button htmlType="submit">Submit</Button>
             </CenteredContainer>
           </Form>
         </Col>
