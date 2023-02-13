@@ -13,8 +13,9 @@
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
+          ref: add-gh-pages-deploy
           persist-credentials: false
           submodules: true
 
