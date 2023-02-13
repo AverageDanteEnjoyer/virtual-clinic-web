@@ -1,19 +1,36 @@
 name: CI
 
 on:
-  push:
-    branches: [ add-gh-pages-deploy ]
+    push:
+      branches: add-gh-pages-deploy
+      paths-ignore:
+        - "**.md"
 
 jobs:
-  build:
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+    build-deploy:
+      runs-on: ubuntu-latest
 
-      - name: Set Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-      - run: yarn install --frozen-lockfile
-      - run: yarn deploy
+      steps:
+        - name: Checkout 🛎️
+          uses: actions/checkout@master
+          with:
+            persist-credentials: false
+
+        - name: Install 🔧
+          run: yarn install
+
+        - name: Lint 🧐
+          run: yarn lint:check
+
+        - name: Build 🏗️
+          run: yarn build
+          env:
+            NODE_ENV: production
+
+        - name: Deploy to GH Pages 🚀
+          if: ${{ github.event_name != 'pull_request' }}
+          uses: peaceiris/actions-gh-pages@v3
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: dist
+            
