@@ -12,7 +12,7 @@ import { API_URL } from 'api';
 import { StyledForm, StyledButton } from './styles';
 import pushNotification from 'pushNotification';
 
-interface formItem extends FormItemProps {
+export interface formItem extends FormItemProps {
   type: string;
 }
 

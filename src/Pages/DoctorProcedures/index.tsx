@@ -6,7 +6,7 @@ const DoctorProcedures = () => {
   return (
     <>
       <Navbar />
-      <StyledTitle center={'center'}>Doctor procedures</StyledTitle>
+      <StyledTitle center="center">Doctor procedures</StyledTitle>
       <DoctorManageProcedures />
     </>
   );

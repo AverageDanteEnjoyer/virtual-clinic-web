@@ -45,8 +45,8 @@ const Navbar = () => {
 
   const getMenuItems = (): MenuItem[] => {
     const items: MenuItem[] | null = [
-      getItem(<Link to={routes.components.path}>components</Link>),
-      getItem(<Link to={routes.home.path}>home</Link>),
+      getItem(<Link to={routes.components.path}>Components</Link>),
+      getItem(<Link to={routes.home.path}>Home</Link>),
       getItem(<Link to={routes.makeAppointment.path}>Make an appointment</Link>, [], () => equals(userType.PATIENT)),
       getItem(<UserOutlined />, [
         getItem(<Link to={routes.logIn.path}>Log in</Link>, [], () => equals(userType.GUEST)),

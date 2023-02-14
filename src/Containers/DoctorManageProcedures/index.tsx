@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Form, Spin, Col, Row, Modal } from 'antd';
-import { capitalize } from 'lodash';
+import React, { useContext, useState } from 'react';
+import { Spin, Col, Row, Modal } from 'antd';
+import { capitalize, lowerCase } from 'lodash';
+import { useNavigate } from 'react-router-dom';
 
-import { getDataFromToken, getLocalStorageResource } from 'localStorageAPI';
-import { API_URL } from 'api';
+import { getDataFromToken } from 'localStorageAPI';
 import pushNotification from 'pushNotification';
 import { CenteredContainer } from 'Containers/EditProfileForm/styles';
 import Input from 'Components/Input';
 import Button from 'Components/Button';
 import useModal from 'Containers/WorkPlan/WorkPlanTable/useModal';
 import EditForm from './EditForm';
+import { StyledForm } from 'Containers/RegistrationForm/styles';
+import { formItem } from 'Containers/EditProfileForm';
+import PaginatedTable from 'Components/PaginatedTable';
+import { Procedure } from './fetchProcedures';
+import getDoctorProcedures from './fetchProcedures';
+import handleDelete from 'Containers/DoctorManageProcedures/deleteProcedure';
+import addProcedure from 'Containers/DoctorManageProcedures/EditForm/addProcedure';
+import { Store } from 'store';
+import routes from 'routes';
 
 export interface DoctorProceduresType {
   id: number;
@@ -18,104 +27,76 @@ export interface DoctorProceduresType {
 }
 
 export interface FormData {
-  procedure_name: string;
-  needed_time: number;
+  name: string;
+  needed_time_min: number;
 }
 
 const DoctorManageProcedures = () => {
-  const [doctorProcedures, setDoctorProcedures] = useState<DoctorProceduresType[]>([]);
+  const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [loading, setLoading] = useState(false);
   const { isOpened, openModal, closeModal } = useModal();
   const [record, setRecord] = useState<DoctorProceduresType>({ id: 0, name: '', needed_time_min: 0 });
+  const [form] = StyledForm.useForm();
+  const { userID } = getDataFromToken();
+  const { dispatch } = useContext(Store);
+  const navigate = useNavigate();
 
-  const getDoctorProcedures = async () => {
+  const onFinish = async (values: FormData) => {
     setLoading(true);
-    const token = getLocalStorageResource('token');
-    if (!token) return;
-    const { userID } = getDataFromToken();
-
     try {
-      const response = await fetch(`${API_URL}/api/v1/doctors/${userID}/procedures/?per_page=${100}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
-        },
-      });
-      if (response) {
-        const responseBody = await response.json();
-        setDoctorProcedures(responseBody.data);
+      const response = await addProcedure(values);
+      const responseBody = await response.json();
+
+      if (response.ok) {
+        setProcedures([...procedures, responseBody]);
+        pushNotification('success', 'Success', 'Procedure has been added!');
+      } else {
+        Object.entries(responseBody.errors).forEach(([key, value]) => {
+          const description = `${capitalize(key.replaceAll('_', ' '))} ${value}.`;
+
+          formItems.forEach(({ name }) => {
+            key === name && form.setFields([{ name: key, errors: [description] }]);
+          });
+        });
       }
+    } catch {
+      dispatch({ type: 'logout' });
+      navigate(routes.logIn.path);
     } finally {
       setLoading(false);
     }
   };
 
-  const onFinish = async (values: FormData) => {
-    const token = getLocalStorageResource('token');
-    if (!token) return;
+  const formItems: formItem[] = [
+    {
+      name: 'name',
+      label: 'Procedure name',
+      type: 'text',
+      rules: [{ required: true, message: 'Please input procedure name' }],
+    },
+    {
+      name: 'needed_time_min',
+      label: 'Procedure time',
+      type: 'number',
+      rules: [{ required: true, message: 'Please input procedure time' }],
+    },
+  ];
 
-    const response = await fetch(`${API_URL}/api/v1/procedures`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        procedure: {
-          name: values.procedure_name,
-          needed_time_min: values.needed_time,
-        },
-      }),
-    });
-
-    if (response.ok) {
-      await getDoctorProcedures();
-      pushNotification('success', 'Success', 'Procedure has been added!');
-    } else if (response.status === 422) {
-      const responseBody = await response.json();
-      Object.entries(responseBody.errors).map(([key, message]) =>
-        pushNotification('error', 'Error', `${capitalize(key)} ${message}`.replaceAll('_', ' '))
-      );
-    }
-  };
-
-  const handleDelete = async (record: DoctorProceduresType) => {
-    const token = getLocalStorageResource('token');
-    if (!token) return;
-
-    const response = await fetch(`${API_URL}/api/v1/procedures/${record.id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      method: 'DELETE',
-      body: JSON.stringify({
-        procedure: {
-          name: record.name,
-          needed_time_min: record.needed_time_min,
-        },
-      }),
-    });
-
-    if (response.ok) {
-      await getDoctorProcedures();
-      pushNotification('success', 'Success', 'Procedure has been deleted!');
-    }
-  };
-
-  useEffect(() => {
-    getDoctorProcedures();
-  }, []);
+  const formItemsJSX = formItems.map(({ name, label, type, rules }, idx) => (
+    <StyledForm.Item key={idx} label={label} name={name} rules={rules} colon={true}>
+      <Input type={type} prefix={null} placeholder={`Enter your ${lowerCase(label as string)}`} />
+    </StyledForm.Item>
+  ));
 
   const columns = [
     {
       title: 'Procedure name',
       dataIndex: 'name',
       key: 'name',
+      filtered: true,
     },
     {
-      title: 'Procedure time(min)',
+      title: 'Procedure time',
       dataIndex: 'needed_time_min',
       key: 'needed_time_min',
     },
@@ -127,7 +108,14 @@ const DoctorManageProcedures = () => {
           <Row gutter={[0, 20]}>
             <Col span={12}>
               <CenteredContainer>
-                <Button onClick={() => handleDelete(record)}>DELETE</Button>
+                <Button
+                  onClick={async () => {
+                    await handleDelete(record);
+                    setProcedures(procedures.filter(({ id }) => id !== record.id));
+                  }}
+                >
+                  DELETE
+                </Button>
               </CenteredContainer>
             </Col>
             <Col span={12}>
@@ -149,48 +137,30 @@ const DoctorManageProcedures = () => {
   ];
 
   return (
-    <>
-      <Row gutter={[0, 15]}>
-        <Col span={6} offset={9}>
-          <Form onFinish={onFinish} autoComplete="off">
-            <Form.Item
-              label="Procedure name:"
-              name="procedure_name"
-              rules={[{ required: true, message: 'Please input procedure name' }]}
-            >
-              <Input type={'text'} placeholder={'Input your new procedure'} prefix={null} />
-            </Form.Item>
-            <Form.Item
-              label="Needed time:"
-              name="needed_time"
-              rules={[{ required: true, message: 'Please input procedure time' }]}
-            >
-              <Input min="1" type="number" prefix={null} />
-            </Form.Item>
-            <CenteredContainer>
-              <Button htmlType="submit">Submit</Button>
-            </CenteredContainer>
-          </Form>
-        </Col>
-        <Col span={12} offset={6}>
-          <Spin spinning={loading} tip="waiting for server response...">
-            <Table
-              loading={loading}
-              columns={columns}
-              dataSource={doctorProcedures}
-              pagination={{
-                position: ['bottomCenter'],
-                pageSize: 4,
-              }}
-              rowKey={(record: DoctorProceduresType) => record.id}
-            />
-          </Spin>
-        </Col>
-        <Modal title={'Edit procedure'} open={isOpened} onCancel={closeModal} footer={null}>
-          <EditForm procedure={record} closeEditModal={closeModal} />
-        </Modal>
-      </Row>
-    </>
+    <Row gutter={[0, 15]}>
+      <Col span={8} offset={8}>
+        <StyledForm form={form} onFinish={onFinish} autoComplete="off">
+          {formItemsJSX}
+          <CenteredContainer>
+            <Button htmlType="submit">Submit</Button>
+          </CenteredContainer>
+        </StyledForm>
+      </Col>
+      <Col span={12} offset={6}>
+        <Spin spinning={loading} tip="waiting for server response...">
+          <PaginatedTable<Procedure>
+            data={procedures}
+            setData={setProcedures}
+            columns={columns}
+            fetchData={getDoctorProcedures(userID || 0)}
+            pageSizeOptions={[4]}
+          />
+        </Spin>
+      </Col>
+      <Modal title="Edit procedure" open={isOpened} onCancel={closeModal} footer={null}>
+        <EditForm data={procedures} setData={setProcedures} procedure={record} closeEditModal={closeModal} />
+      </Modal>
+    </Row>
   );
 };
 
