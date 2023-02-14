@@ -45,7 +45,7 @@ const EditForm = ({ data, setData, procedure, closeEditModal }: EditFormProps) =
 
     if (response.ok) {
       const responseBody = await response.json();
-      setData(data.map((procedure) => (procedure.id === responseBody.id ? responseBody : procedure)));
+      setData(data.map((procedure) => (procedure.id === responseBody.data.id ? responseBody.data : procedure)));
       pushNotification('success', 'Success', 'Procedure has been updated');
     } else if (response.status === 422) {
       const responseBody = await response.json();
