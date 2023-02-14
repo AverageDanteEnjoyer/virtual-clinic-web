@@ -24,6 +24,7 @@ export interface Procedure {
   id: number;
   name: string;
   needed_time_min: number;
+  doctor: Doctor;
 }
 
 const MakeAppointmentPage = () => {
@@ -138,7 +139,11 @@ const MakeAppointmentPage = () => {
                   <b>Date:</b> {dayjs(date).format('D MMMM YYYY')} {selectedTime} -{' '}
                   {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('HH:mm')}
                 </StyledParagraph>
-                <Button type="primary" size="large" disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs())}>
+                <Button
+                  type="primary"
+                  size="large"
+                  disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
+                >
                   Submit
                 </Button>
               </SubmitBox>
