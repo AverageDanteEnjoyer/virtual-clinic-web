@@ -1,4 +1,5 @@
 import { Col, Row, Spin } from 'antd';
+import palette from 'palette';
 import { useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
@@ -90,10 +91,10 @@ const MakeAppointmentPage = () => {
     <Spin spinning={loading}>
       <Navbar />
       <StyledTitle center="true">Make an appointment</StyledTitle>
-      <Row>
-        <Panel xs={{ span: 22, offset: 1 }} md={{ span: 13, offset: 1 }} xl={{ span: 9, offset: 4 }}>
-          <Row>
-            <Col span={22} offset={1}>
+      <Row gutter={[0, 15]} justify="center">
+        <Col xs={{ span: 24 }} md={{ span: 13 }} xl={{ span: 9 }}>
+          <Row justify="center" align="middle">
+            <Panel span={22}>
               <StyledTitle level={2}>Select a procedure</StyledTitle>
               <PaginatedSelect<Procedure>
                 size="large"
@@ -139,13 +140,13 @@ const MakeAppointmentPage = () => {
                   />
                 </>
               )}
-            </Col>
+            </Panel>
           </Row>
-        </Panel>
-        {procedures.length > 0 && date !== '' && selectedTime !== '' && (
-          <Panel xs={{ span: 22, offset: 1 }} md={{ span: 8, offset: 1 }} xl={{ span: 6, offset: 1 }}>
-            <Row>
-              <Col span={22} offset={1}>
+        </Col>
+        <Col xs={{ span: 24 }} md={{ span: 8 }} xl={{ span: 6 }}>
+          {procedures.length > 0 && date !== '' && selectedTime !== '' && (
+            <Row justify="center" align="middle">
+              <Panel span={22}>
                 <StyledTitle level={2}>Summary</StyledTitle>
                 <SubmitBox>
                   <StyledParagraph>
@@ -166,10 +167,10 @@ const MakeAppointmentPage = () => {
                     Submit
                   </Button>
                 </SubmitBox>
-              </Col>
+              </Panel>
             </Row>
-          </Panel>
-        )}
+          )}
+        </Col>
       </Row>
     </Spin>
   );

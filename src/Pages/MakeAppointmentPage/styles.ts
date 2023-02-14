@@ -28,7 +28,7 @@ export const Info = styled(MainText)`
 export const Panel = styled(Col)`
   background-color: ${palette.whiteSmoke};
   border-radius: 15px;
-  padding-bottom: 30px;
+  padding: 0 30px 30px;
   height: 100%;
 `;
 
