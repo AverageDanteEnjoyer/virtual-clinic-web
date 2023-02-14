@@ -13,6 +13,8 @@ const palette = {
   ultraViolet: '#574696',
   tekhelet: '#3B258C',
   russianViolet: '#250054',
+  sovietRussia: '#FF0000',
+  sweetCandiedApple: '#E30000',
 };
 
 export default palette;

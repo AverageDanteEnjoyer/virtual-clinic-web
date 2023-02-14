@@ -19,6 +19,7 @@ import handleDelete from 'Containers/DoctorManageProcedures/deleteProcedure';
 import addProcedure from 'Containers/DoctorManageProcedures/EditForm/addProcedure';
 import { Store } from 'store';
 import routes from 'routes';
+import DeleteButton from 'Containers/DoctorManageProcedures/styles';
 
 export interface DoctorProceduresType {
   id: number;
@@ -108,14 +109,14 @@ const DoctorManageProcedures = () => {
           <Row gutter={[0, 20]}>
             <Col span={12}>
               <CenteredContainer>
-                <Button
+                <DeleteButton
                   onClick={async () => {
                     await handleDelete(record);
                     setProcedures(procedures.filter(({ id }) => id !== record.id));
                   }}
                 >
                   DELETE
-                </Button>
+                </DeleteButton>
               </CenteredContainer>
             </Col>
             <Col span={12}>
