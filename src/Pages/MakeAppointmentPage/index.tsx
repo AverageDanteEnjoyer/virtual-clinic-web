@@ -9,9 +9,8 @@ import Navbar from 'Components/Navbar';
 import { StyledParagraph, StyledTitle } from 'Components/Typography/styles';
 import PaginatedSelect from 'Components/PaginatedSelect';
 import Button from 'Components/Button';
-import { DoctorEmail, DoctorIcon, DoctorInfo, DoctorOption, Paragraph } from './styles';
-import fetchAllDoctors from './fetchDoctors';
-import getFetchDoctorProcedures from './fetchDoctorProcedures';
+import { OptionCol, MainText, Info } from './styles';
+import fetchProcedures from './fetchProcedures';
 
 export interface Doctor {
   id: number;
@@ -30,23 +29,19 @@ export interface Procedure {
 const MakeAppointmentPage = () => {
   useTitle();
 
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
   const [selectedTime, setSelectedTime] = useState('');
 
-  const renderOption = (doctor: Doctor) => (
-    <DoctorOption>
-      <Col>
-        <DoctorIcon />
-      </Col>
-      <DoctorInfo>
-        <Paragraph>
-          {doctor.first_name} {doctor.last_name}
-        </Paragraph>
-        <DoctorEmail>{doctor.email}</DoctorEmail>
-      </DoctorInfo>
-    </DoctorOption>
+  const renderOption = ({ name, needed_time_min, doctor: { first_name, last_name, email } }: Procedure) => (
+    <Row>
+      <OptionCol>
+        <MainText>{name}</MainText>
+        <Info>
+          {needed_time_min} minutes | Doctor: {first_name} {last_name}
+        </Info>
+      </OptionCol>
+    </Row>
   );
 
   return (
@@ -54,42 +49,23 @@ const MakeAppointmentPage = () => {
       <Navbar />
       <StyledTitle center="true">Make an appointment</StyledTitle>
       <Row>
-        <Col xs={{ span: 20, offset: 2 }} xl={{ span: 8, offset: 6 }} md={{ span: 16 }}>
+        <Col xs={{ span: 22, offset: 1 }} md={{ span: 13, offset: 1 }} xl={{ span: 9, offset: 4 }}>
           <Row>
             <Col style={{ width: '100%' }}>
-              <StyledTitle level={2}>Select a doctor</StyledTitle>
-              <PaginatedSelect<Doctor>
+              <StyledTitle level={2}>Select a procedure</StyledTitle>
+              <PaginatedSelect<Procedure>
                 size="large"
-                fetchOptions={fetchAllDoctors}
-                values={doctors}
-                setValues={(values: Doctor[]) => {
-                  setDoctors(values);
-                  setProcedures([]);
+                fetchOptions={fetchProcedures}
+                values={procedures}
+                setValues={(values: Procedure[]) => {
+                  setProcedures(values);
                   setDate(dayjs().format('YYYY-MM-DD'));
                   setSelectedTime('');
                 }}
                 renderOption={renderOption}
-                placeholder="Search for a doctor"
-                notFoundContent={(searchValue) => <p>No doctors found for {searchValue}</p>}
+                placeholder="Search for a procedure"
+                notFoundContent={(searchValue) => <p>No procedures found for {searchValue}</p>}
               />
-              {doctors.length > 0 && (
-                <>
-                  <StyledTitle level={2}>Select a procedure</StyledTitle>
-                  <PaginatedSelect<Procedure>
-                    size="large"
-                    fetchOptions={getFetchDoctorProcedures(doctors[0].id)}
-                    values={procedures}
-                    setValues={(values: Procedure[]) => {
-                      setProcedures(values);
-                      setDate(dayjs().format('YYYY-MM-DD'));
-                      setSelectedTime('');
-                    }}
-                    renderOption={(procedure) => <>{procedure.name}</>}
-                    placeholder="Search for a procedure"
-                    notFoundContent={(searchValue) => <p>No procedures found for {searchValue}</p>}
-                  />
-                </>
-              )}
               {procedures.length > 0 && (
                 <>
                   <StyledTitle level={2}>Select a date</StyledTitle>
@@ -107,6 +83,7 @@ const MakeAppointmentPage = () => {
                       setSelectedTime('');
                     }}
                     size="large"
+                    style={{ width: '100%' }}
                   />
                 </>
               )}
@@ -124,13 +101,13 @@ const MakeAppointmentPage = () => {
             </Col>
           </Row>
         </Col>
-        <Col xs={{ span: 20, offset: 2 }} md={{ span: 8, offset: 2 }} xl={{ span: 4, offset: 1 }}>
+        <Col xs={{ span: 22, offset: 1 }} md={{ span: 8, offset: 1 }} xl={{ span: 6, offset: 1 }}>
           {procedures.length > 0 && date !== '' && selectedTime !== '' && (
             <>
               <StyledTitle level={2}>Summary</StyledTitle>
               <SubmitBox>
                 <StyledParagraph>
-                  <b>Doctor:</b> {doctors[0].first_name} {doctors[0].last_name}
+                  <b>Doctor:</b> {procedures[0].doctor.first_name} {procedures[0].doctor.last_name}
                 </StyledParagraph>
                 <StyledParagraph>
                   <b>Procedure:</b> {procedures[0].name}
@@ -140,7 +117,6 @@ const MakeAppointmentPage = () => {
                   {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('HH:mm')}
                 </StyledParagraph>
                 <Button
-                  type="primary"
                   size="large"
                   disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
                 >

@@ -1,24 +1,13 @@
 import styled from 'styled-components';
-import { UserOutlined } from '@ant-design/icons';
-import { Col, Row } from 'antd';
+import { Col } from 'antd';
 
 import palette from 'palette';
 
-export const DoctorIcon = styled(UserOutlined)`
-  color: ${palette.dodgerBlue};
-  font-size: 36px;
-`;
-
-export const DoctorOption = styled(Row)`
-  cursor: pointer;
-  width: 100%;
-`;
-
-export const DoctorInfo = styled(Col)`
+export const OptionCol = styled(Col)`
   margin-left: 8px;
 `;
 
-export const Paragraph = styled.p`
+export const MainText = styled.p`
   margin: 0;
   font-size: 16px;
   font-weight: 600;
@@ -28,7 +17,7 @@ export const Paragraph = styled.p`
   color: ${palette.deepViolet};
 `;
 
-export const DoctorEmail = styled(Paragraph)`
+export const Info = styled(MainText)`
   font-size: 14px;
   font-weight: 400;
   height: 16px;
