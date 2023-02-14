@@ -1,5 +1,4 @@
-import { Col, Row, Spin } from 'antd';
-import palette from 'palette';
+import { Col, Row } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +13,7 @@ import Navbar from 'Components/Navbar';
 import { StyledParagraph, StyledTitle } from 'Components/Typography/styles';
 import PaginatedSelect from 'Components/PaginatedSelect';
 import Button from 'Components/Button';
+import Spin from 'Components/Spin';
 import { OptionCol, MainText, Info, Panel, WideDatePicker } from './styles';
 import fetchProcedures from './fetchProcedures';
 import makeAppointment from './makeAppointment';
@@ -88,7 +88,7 @@ const MakeAppointmentPage = () => {
   );
 
   return (
-    <Spin spinning={loading}>
+    <Spin spinning={loading} tip="waiting for server response...">
       <Navbar />
       <StyledTitle center="true">Make an appointment</StyledTitle>
       <Row gutter={[0, 15]} justify="center">

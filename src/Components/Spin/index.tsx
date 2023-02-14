@@ -3,15 +3,8 @@ import { SyncOutlined } from '@ant-design/icons';
 
 import { StyledSpin } from './styles';
 
-const Spin = ({ className, delay, size, spinning, tip, children }: SpinProps) => (
-  <StyledSpin
-    className={className}
-    delay={delay}
-    size={size}
-    spinning={spinning}
-    tip={tip}
-    indicator={<SyncOutlined spin />}
-  >
+const Spin = ({ children, ...rest }: SpinProps) => (
+  <StyledSpin {...rest} indicator={<SyncOutlined spin />}>
     {children}
   </StyledSpin>
 );
