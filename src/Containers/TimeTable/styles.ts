@@ -11,12 +11,12 @@ export const TimeOption = styled.div<{ highlighted: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${palette.black};
+  color: ${palette.russianViolet};
 
   border-radius: 5px;
 
   background-color: ${palette.white};
-  outline: ${({ highlighted }) => (highlighted ? `1px solid ${palette.sonicSilver}` : 'none')};
+  outline: ${({ highlighted }) => (highlighted ? `1px solid ${palette.tekhelet}` : 'none')};
 
   transition: background-color 0.2s ease-in-out;
 
@@ -27,8 +27,8 @@ export const TimeOption = styled.div<{ highlighted: boolean }>`
 
 export const Table = styled(TableAntd)`
   .ant-table-thead > tr > th {
-    background-color: ${palette.eggShell};
-    color: ${palette.black};
+    background-color: ${palette.ultraViolet};
+    color: ${palette.white};
     text-align: center;
     font-size: 16px;
   }
@@ -36,15 +36,12 @@ export const Table = styled(TableAntd)`
   .ant-table-tbody > tr > td:first-child {
     text-align: center;
     font-weight: 600;
-  }
-
-  .ant-table-tbody > tr > td {
-    border-bottom: 1px solid ${palette.lightGray};
+    color: ${palette.russianViolet};
   }
 `;
 
 export const SubmitBox = styled.div`
   border-radius: 20px;
-  background-color: ${palette.eggShell};
+  background-color: ${palette.veryLightGray};
   padding: 24px 40px;
 `;

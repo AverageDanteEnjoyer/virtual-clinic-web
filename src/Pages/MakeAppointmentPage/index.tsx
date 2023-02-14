@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Col, DatePicker, Row } from 'antd';
+import { Col, Row } from 'antd';
 import dayjs from 'dayjs';
 
 import useTitle from 'useTitle';
@@ -9,7 +9,7 @@ import Navbar from 'Components/Navbar';
 import { StyledParagraph, StyledTitle } from 'Components/Typography/styles';
 import PaginatedSelect from 'Components/PaginatedSelect';
 import Button from 'Components/Button';
-import { OptionCol, MainText, Info } from './styles';
+import { OptionCol, MainText, Info, Panel, WideDatePicker } from './styles';
 import fetchProcedures from './fetchProcedures';
 
 export interface Doctor {
@@ -49,9 +49,9 @@ const MakeAppointmentPage = () => {
       <Navbar />
       <StyledTitle center="true">Make an appointment</StyledTitle>
       <Row>
-        <Col xs={{ span: 22, offset: 1 }} md={{ span: 13, offset: 1 }} xl={{ span: 9, offset: 4 }}>
+        <Panel xs={{ span: 22, offset: 1 }} md={{ span: 13, offset: 1 }} xl={{ span: 9, offset: 4 }}>
           <Row>
-            <Col style={{ width: '100%' }}>
+            <Col span={22} offset={1}>
               <StyledTitle level={2}>Select a procedure</StyledTitle>
               <PaginatedSelect<Procedure>
                 size="large"
@@ -69,7 +69,7 @@ const MakeAppointmentPage = () => {
               {procedures.length > 0 && (
                 <>
                   <StyledTitle level={2}>Select a date</StyledTitle>
-                  <DatePicker
+                  <WideDatePicker
                     presets={[
                       { label: 'Today', value: dayjs() },
                       { label: 'Tomorrow', value: dayjs().add(1, 'day') },
@@ -83,7 +83,6 @@ const MakeAppointmentPage = () => {
                       setSelectedTime('');
                     }}
                     size="large"
-                    style={{ width: '100%' }}
                   />
                 </>
               )}
@@ -100,32 +99,34 @@ const MakeAppointmentPage = () => {
               )}
             </Col>
           </Row>
-        </Col>
-        <Col xs={{ span: 22, offset: 1 }} md={{ span: 8, offset: 1 }} xl={{ span: 6, offset: 1 }}>
-          {procedures.length > 0 && date !== '' && selectedTime !== '' && (
-            <>
-              <StyledTitle level={2}>Summary</StyledTitle>
-              <SubmitBox>
-                <StyledParagraph>
-                  <b>Doctor:</b> {procedures[0].doctor.first_name} {procedures[0].doctor.last_name}
-                </StyledParagraph>
-                <StyledParagraph>
-                  <b>Procedure:</b> {procedures[0].name}
-                </StyledParagraph>
-                <StyledParagraph>
-                  <b>Date:</b> {dayjs(date).format('D MMMM YYYY')} {selectedTime} -{' '}
-                  {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('HH:mm')}
-                </StyledParagraph>
-                <Button
-                  size="large"
-                  disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
-                >
-                  Submit
-                </Button>
-              </SubmitBox>
-            </>
-          )}
-        </Col>
+        </Panel>
+        {procedures.length > 0 && date !== '' && selectedTime !== '' && (
+          <Panel xs={{ span: 22, offset: 1 }} md={{ span: 8, offset: 1 }} xl={{ span: 6, offset: 1 }}>
+            <Row>
+              <Col span={22} offset={1}>
+                <StyledTitle level={2}>Summary</StyledTitle>
+                <SubmitBox>
+                  <StyledParagraph>
+                    <b>Doctor:</b> {procedures[0].doctor.first_name} {procedures[0].doctor.last_name}
+                  </StyledParagraph>
+                  <StyledParagraph>
+                    <b>Procedure:</b> {procedures[0].name}
+                  </StyledParagraph>
+                  <StyledParagraph>
+                    <b>Date:</b> {dayjs(date).format('D MMMM YYYY')} {selectedTime} -{' '}
+                    {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('HH:mm')}
+                  </StyledParagraph>
+                  <Button
+                    size="large"
+                    disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
+                  >
+                    Submit
+                  </Button>
+                </SubmitBox>
+              </Col>
+            </Row>
+          </Panel>
+        )}
       </Row>
     </>
   );

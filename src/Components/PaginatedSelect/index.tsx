@@ -1,9 +1,8 @@
-import { Pagination, Select } from 'antd';
+import { Select } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 
-import CustomSelect from 'Components/Select';
-import { PaginationFrame, StyledDivider as Divider } from './styles';
+import { PaginationFrame, StyledDivider as Divider, StyledPagination, StyledSelect } from './styles';
 
 interface ErrorType {
   [field: string]: string[];
@@ -92,7 +91,7 @@ const PaginatedSelect = <T,>({
       {menu}
       <Divider />
       <PaginationFrame>
-        <Pagination
+        <StyledPagination
           hideOnSinglePage
           current={page}
           total={totalPages}
@@ -107,7 +106,7 @@ const PaginatedSelect = <T,>({
   );
 
   return (
-    <CustomSelect
+    <StyledSelect
       mode={mode}
       size={size}
       placeholder={placeholder}
@@ -129,7 +128,7 @@ const PaginatedSelect = <T,>({
           </Select.Option>
         );
       })}
-    </CustomSelect>
+    </StyledSelect>
   );
 };
 

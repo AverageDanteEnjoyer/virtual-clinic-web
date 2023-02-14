@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { message, Row, Col } from 'antd';
+import { Row, Col } from 'antd';
+import pushNotification from 'pushNotification';
+import { debounce } from 'lodash';
 
 import { fetchAvailableAppointmentHours, Status } from './fetchAvailableAppointmentHours';
 import { Table, TimeOption } from './styles';
@@ -56,7 +58,7 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
     },
   ];
 
-  const fetchData = async () => {
+  const fetchData = debounce(async () => {
     setSelectedTime('');
 
     setLoading(true);
@@ -66,12 +68,12 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
     switch (status) {
       case Status.ERROR:
         setData([]);
-        message.error('Something went wrong. Please try again later.');
+        pushNotification('error', 'Error', 'Something went wrong. Please try again later.', 10);
         break;
 
       case Status.NON_WORKING_DAY:
         setData([]);
-        message.info('The doctor is not working on this day.');
+        pushNotification('info', 'Info', 'The doctor is not working on this day.');
         break;
 
       case Status.AVAILABLE: {
@@ -91,7 +93,7 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
         setData(categorizedData.filter((data) => data.times.length > 0));
       }
     }
-  };
+  }, 275);
 
   useEffect(() => {
     fetchData();

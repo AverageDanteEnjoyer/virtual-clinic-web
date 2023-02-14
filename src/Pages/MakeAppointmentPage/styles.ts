@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Col } from 'antd';
+import { Col, DatePicker } from 'antd';
 
 import palette from 'palette';
 
@@ -23,4 +23,23 @@ export const Info = styled(MainText)`
   height: 16px;
   width: 100%;
   color: ${palette.sonicSilver};
+`;
+
+export const Panel = styled(Col)`
+  background-color: ${palette.whiteSmoke};
+  border-radius: 15px;
+  padding-bottom: 30px;
+  height: 100%;
+`;
+
+export const WideDatePicker = styled(DatePicker)`
+  width: 100%;
+
+  &:hover {
+    border-color: ${palette.ultraViolet};
+  }
+
+  &.ant-picker-focused {
+    border-color: ${palette.ultraViolet};
+  }
 `;
