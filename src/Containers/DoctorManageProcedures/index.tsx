@@ -68,6 +68,22 @@ const DoctorManageProcedures = () => {
     }
   };
 
+  const deleteOnClick = async (record: DoctorProceduresType) => {
+    setLoading(true);
+    try {
+      const response = await handleDelete(record);
+      if (response.ok) {
+        pushNotification('success', 'Success', 'Procedure has been deleted!');
+      }
+      setProcedures(procedures.filter(({ id }) => id !== record.id));
+    } catch {
+      dispatch({ type: 'logout' });
+      navigate(routes.logIn.path);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const formItems: formItem[] = [
     {
       name: 'name',
@@ -109,14 +125,7 @@ const DoctorManageProcedures = () => {
           <Row gutter={[0, 20]}>
             <Col span={12}>
               <CenteredContainer>
-                <DeleteButton
-                  onClick={async () => {
-                    await handleDelete(record);
-                    setProcedures(procedures.filter(({ id }) => id !== record.id));
-                  }}
-                >
-                  DELETE
-                </DeleteButton>
+                <DeleteButton onClick={async () => await deleteOnClick(record)}>DELETE</DeleteButton>
               </CenteredContainer>
             </Col>
             <Col span={12}>

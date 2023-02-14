@@ -1,13 +1,14 @@
 import { getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';
-import pushNotification from 'pushNotification';
 import { DoctorProceduresType } from './index';
 
 const handleDelete = async (record: DoctorProceduresType) => {
   const token = getLocalStorageResource('token');
-  if (!token) return;
+  if (!token) return Promise.reject(new Error());
 
-  const response = await fetch(`${API_URL}/api/v1/procedures/${record.id}`, {
+  const { name, needed_time_min }: DoctorProceduresType = record;
+
+  return await fetch(`${API_URL}/api/v1/procedures/${record.id}`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: token,
@@ -15,15 +16,11 @@ const handleDelete = async (record: DoctorProceduresType) => {
     method: 'DELETE',
     body: JSON.stringify({
       procedure: {
-        name: record.name,
-        needed_time_min: record.needed_time_min,
+        name: name,
+        needed_time_min: needed_time_min,
       },
     }),
   });
-
-  if (response.ok) {
-    pushNotification('success', 'Success', 'Procedure has been deleted!');
-  }
 };
 
 export default handleDelete;

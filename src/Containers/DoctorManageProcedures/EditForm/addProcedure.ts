@@ -6,6 +6,8 @@ const addProcedure = async (values: FormData) => {
   const token = getLocalStorageResource('token');
   if (!token) return Promise.reject(new Error());
 
+  const { name, needed_time_min }: FormData = values;
+
   return await fetch(`${API_URL}/api/v1/procedures`, {
     headers: {
       'Content-Type': 'application/json',
@@ -14,8 +16,8 @@ const addProcedure = async (values: FormData) => {
     method: 'POST',
     body: JSON.stringify({
       procedure: {
-        name: values.name,
-        needed_time_min: values.needed_time_min,
+        name: name,
+        needed_time_min: needed_time_min,
       },
     }),
   });
