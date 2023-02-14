@@ -1,8 +1,12 @@
-import { useState } from 'react';
-import { Col, Row } from 'antd';
+import { Col, Row, Spin } from 'antd';
+import { useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
+import { Store } from 'store';
+import routes from 'routes';
 import useTitle from 'useTitle';
+import pushNotification from 'pushNotification';
 import TimeTable from 'Containers/TimeTable';
 import { SubmitBox } from 'Containers/TimeTable/styles';
 import Navbar from 'Components/Navbar';
@@ -11,6 +15,7 @@ import PaginatedSelect from 'Components/PaginatedSelect';
 import Button from 'Components/Button';
 import { OptionCol, MainText, Info, Panel, WideDatePicker } from './styles';
 import fetchProcedures from './fetchProcedures';
+import makeAppointment from './makeAppointment';
 
 export interface Doctor {
   id: number;
@@ -28,12 +33,49 @@ export interface Procedure {
 
 const MakeAppointmentPage = () => {
   useTitle();
+  const navigate = useNavigate();
+  const { dispatch } = useContext(Store);
 
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
   const [selectedTime, setSelectedTime] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [timeoutId, setTimeoutId] = useState<null | NodeJS.Timeout>(null);
 
-  const renderOption = ({ name, needed_time_min, doctor: { first_name, last_name, email } }: Procedure) => (
+  useEffect(() => {
+    return () => {
+      timeoutId && clearTimeout(timeoutId);
+    };
+  }, [timeoutId]);
+
+  const onSubmit = async (procedure: Procedure) => {
+    setLoading(true);
+    try {
+      const response = await makeAppointment(procedure, date, selectedTime);
+      if (response.ok) {
+        pushNotification(
+          'success',
+          'Appointment created',
+          'You have been scheduled for an appointment. Redirecting to your appointments...'
+        );
+
+        setTimeoutId(
+          setTimeout(() => {
+            navigate(routes.home.path); // TODO: change to appointments page.
+          }, 3000)
+        );
+      } else {
+        pushNotification('error', 'Something went wrong', 'Please try again later');
+      }
+    } catch {
+      dispatch({ type: 'logout' });
+      navigate(routes.logIn.path);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderOption = ({ name, needed_time_min, doctor: { first_name, last_name } }: Procedure) => (
     <Row>
       <OptionCol>
         <MainText>{name}</MainText>
@@ -45,7 +87,7 @@ const MakeAppointmentPage = () => {
   );
 
   return (
-    <>
+    <Spin spinning={loading}>
       <Navbar />
       <StyledTitle center="true">Make an appointment</StyledTitle>
       <Row>
@@ -119,6 +161,7 @@ const MakeAppointmentPage = () => {
                   <Button
                     size="large"
                     disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
+                    onClick={() => onSubmit(procedures[0])}
                   >
                     Submit
                   </Button>
@@ -128,7 +171,7 @@ const MakeAppointmentPage = () => {
           </Panel>
         )}
       </Row>
-    </>
+    </Spin>
   );
 };
 
