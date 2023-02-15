@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Spin, Col, Row, Modal } from 'antd';
+import { Spin, Col, Row, Modal, Form } from 'antd';
 import { capitalize, lowerCase } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -9,18 +9,18 @@ import pushNotification from 'pushNotification';
 import { CenteredContainer } from 'Containers/EditProfileForm/styles';
 import Input from 'Components/Input';
 import Button from 'Components/Button';
-import useModal from 'Containers/WorkPlan/WorkPlanTable/useModal';
-import EditForm from './EditForm';
-import { StyledForm } from 'Containers/RegistrationForm/styles';
-import { formItem } from 'Containers/EditProfileForm';
-import PaginatedTable from 'Components/PaginatedTable';
-import { Procedure } from './fetchProcedures';
-import getDoctorProcedures from './fetchProcedures';
-import handleDelete from 'Containers/DoctorManageProcedures/deleteProcedure';
-import addProcedure from 'Containers/DoctorManageProcedures/EditForm/addProcedure';
+import useModal from 'Hooks/useModal';
 import { Store } from 'store';
 import routes from 'routes';
 import DeleteButton from 'Containers/DoctorManageProcedures/styles';
+import { formItem } from 'Containers/EditProfileForm';
+import PaginatedTable from 'Components/PaginatedTable';
+import handleDelete from 'Containers/DoctorManageProcedures/deleteProcedure';
+import addProcedure from 'Containers/DoctorManageProcedures/EditForm/addProcedure';
+
+import EditForm from './EditForm';
+import { Procedure } from './fetchProcedures';
+import getDoctorProcedures from './fetchProcedures';
 
 export interface DoctorProceduresType {
   id: number;
@@ -38,7 +38,7 @@ const DoctorManageProcedures = () => {
   const [loading, setLoading] = useState(false);
   const { isOpened, openModal, closeModal } = useModal();
   const [record, setRecord] = useState<DoctorProceduresType>({ id: 0, name: '', needed_time_min: 0 });
-  const [form] = StyledForm.useForm();
+  const [form] = Form.useForm();
   const { userID } = getDataFromToken();
   const { dispatch } = useContext(Store);
   const navigate = useNavigate();
@@ -103,9 +103,9 @@ const DoctorManageProcedures = () => {
   ];
 
   const formItemsJSX = formItems.map(({ name, label, type, rules }, idx) => (
-    <StyledForm.Item key={idx} label={label} name={name} rules={rules} colon={true}>
-      <Input type={type} prefix={null} placeholder={`Enter your ${lowerCase(label as string)}`} />
-    </StyledForm.Item>
+    <Form.Item key={idx} label={label} name={name} rules={rules} colon={true}>
+      <Input type={type} prefix={null} placeholder={`Enter your ${lowerCase(label as string)}`} min="1" />
+    </Form.Item>
   ));
 
   const columns = [
@@ -154,12 +154,12 @@ const DoctorManageProcedures = () => {
   return (
     <Row gutter={[0, 15]}>
       <Col span={24}>
-        <StyledForm form={form} onFinish={onFinish} autoComplete="off">
+        <Form form={form} onFinish={onFinish} autoComplete="off">
           {formItemsJSX}
           <CenteredContainer>
             <Button htmlType="submit">Submit</Button>
           </CenteredContainer>
-        </StyledForm>
+        </Form>
       </Col>
       <Col span={24}>
         <Spin spinning={loading} tip="waiting for server response...">
@@ -173,7 +173,7 @@ const DoctorManageProcedures = () => {
           />
         </Spin>
       </Col>
-      <Modal title="Edit procedure" open={isOpened} onCancel={closeModal} footer={null}>
+      <Modal title="Edit procedure" onCancel={closeModal} footer={null} open={isOpened} centered>
         <EditForm setTableState={setTableState} procedure={record} closeEditModal={closeModal} />
       </Modal>
     </Row>

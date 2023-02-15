@@ -8,7 +8,7 @@ const DoctorProcedures = () => {
   return (
     <>
       <Navbar />
-      <StyledTitle center="center">Doctor procedures</StyledTitle>
+      <StyledTitle center>Doctor procedures</StyledTitle>
       <Row>
         <Col xs={{ span: 20, offset: 2 }} xl={{ span: 10, offset: 7 }}>
           <DoctorManageProcedures />
