@@ -41,13 +41,7 @@ const MakeAppointmentPage = () => {
   const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
   const [selectedTime, setSelectedTime] = useState('');
   const [loading, setLoading] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<null | NodeJS.Timeout>(null);
-
-  useEffect(() => {
-    return () => {
-      timeoutId && clearTimeout(timeoutId);
-    };
-  }, [timeoutId]);
+  const [timeTableState, setTimeTableState] = useState(Date.now());
 
   const onSubmit = async (procedure: Procedure) => {
     setLoading(true);
@@ -60,11 +54,7 @@ const MakeAppointmentPage = () => {
           'You have been scheduled for an appointment. Redirecting to your appointments...'
         );
 
-        setTimeoutId(
-          setTimeout(() => {
-            navigate(routes.home.path); // TODO: change to appointments page.
-          }, 3000)
-        );
+        setTimeTableState(Date.now());
       } else {
         pushNotification('error', 'Something went wrong', 'Please try again later');
       }
@@ -133,6 +123,7 @@ const MakeAppointmentPage = () => {
                 <>
                   <StyledTitle level={2}>Select a time</StyledTitle>
                   <TimeTable
+                    key={timeTableState}
                     selectedTime={selectedTime}
                     setSelectedTime={setSelectedTime}
                     procedureId={procedures[0].id}

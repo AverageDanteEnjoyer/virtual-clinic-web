@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Row, Col } from 'antd';
-import pushNotification from 'pushNotification';
 import { debounce } from 'lodash';
 
+import pushNotification from 'pushNotification';
 import { fetchAvailableAppointmentHours, Status } from './fetchAvailableAppointmentHours';
 import { Table, TimeOption } from './styles';
 
