@@ -123,12 +123,12 @@ const DoctorManageProcedures = () => {
       render: (record: DoctorProceduresType) => {
         return (
           <Row gutter={[0, 20]}>
-            <Col span={12}>
+            <Col xs={{ span: 24 }} xl={{ span: 12 }}>
               <CenteredContainer>
                 <DeleteButton onClick={async () => await deleteOnClick(record)}>DELETE</DeleteButton>
               </CenteredContainer>
             </Col>
-            <Col span={12}>
+            <Col xs={{ span: 24 }} xl={{ span: 12 }}>
               <CenteredContainer>
                 <Button
                   onClick={() => {
@@ -148,7 +148,7 @@ const DoctorManageProcedures = () => {
 
   return (
     <Row gutter={[0, 15]}>
-      <Col span={8} offset={8}>
+      <Col xs={{ span: 24 }} xl={{ span: 8, offset: 8 }}>
         <StyledForm form={form} onFinish={onFinish} autoComplete="off">
           {formItemsJSX}
           <CenteredContainer>
@@ -156,7 +156,7 @@ const DoctorManageProcedures = () => {
           </CenteredContainer>
         </StyledForm>
       </Col>
-      <Col span={12} offset={6}>
+      <Col xs={{ span: 24 }} xl={{ span: 12, offset: 6 }}>
         <Spin spinning={loading} tip="waiting for server response...">
           <PaginatedTable<Procedure>
             data={procedures}
