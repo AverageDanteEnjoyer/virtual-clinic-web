@@ -163,6 +163,7 @@ const MakeAppointmentPage = () => {
                     size="large"
                     disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
                     onClick={() => onSubmit(procedures[0])}
+                    loading={loading}
                   >
                     Submit
                   </Button>

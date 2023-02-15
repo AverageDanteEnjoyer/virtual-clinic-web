@@ -121,7 +121,7 @@ const PaginatedSelect = <T,>({
       notFoundContent={notFoundContent ? notFoundContent(searchInput) : undefined}
       showSearch
     >
-      {options.map((item, idx) => {
+      {options?.map((item, idx) => {
         return (
           <Select.Option key={idx} value={JSON.stringify(item)}>
             {renderOption(item)}

@@ -31,6 +31,10 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
   const [data, setData] = useState<RecordType[]>([]);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    fetchData();
+  }, [date, procedureId]);
+
   const columns = [
     {
       key: 'time_of_day',
@@ -94,10 +98,6 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
       }
     }
   }, 275);
-
-  useEffect(() => {
-    fetchData();
-  }, [date, procedureId]);
 
   return (
     <Table
