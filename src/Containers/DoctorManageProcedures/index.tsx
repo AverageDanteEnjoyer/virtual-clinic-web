@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Spin, Col, Row, Modal } from 'antd';
 import { capitalize, lowerCase } from 'lodash';
 import { useNavigate } from 'react-router-dom';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { getDataFromToken } from 'localStorageAPI';
 import pushNotification from 'pushNotification';
@@ -20,7 +21,6 @@ import addProcedure from 'Containers/DoctorManageProcedures/EditForm/addProcedur
 import { Store } from 'store';
 import routes from 'routes';
 import DeleteButton from 'Containers/DoctorManageProcedures/styles';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 export interface DoctorProceduresType {
   id: number;

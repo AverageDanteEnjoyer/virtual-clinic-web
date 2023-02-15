@@ -1,7 +1,8 @@
+import { Col, Row } from 'antd';
+
 import DoctorManageProcedures from 'Containers/DoctorManageProcedures';
 import Navbar from 'Components/Navbar';
 import { StyledTitle } from 'Components/Typography/styles';
-import { Col, Row } from 'antd';
 
 const DoctorProcedures = () => {
   return (
