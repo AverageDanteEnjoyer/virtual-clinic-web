@@ -20,6 +20,7 @@ import addProcedure from 'Containers/DoctorManageProcedures/EditForm/addProcedur
 import { Store } from 'store';
 import routes from 'routes';
 import DeleteButton from 'Containers/DoctorManageProcedures/styles';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 export interface DoctorProceduresType {
   id: number;
@@ -41,6 +42,7 @@ const DoctorManageProcedures = () => {
   const { userID } = getDataFromToken();
   const { dispatch } = useContext(Store);
   const navigate = useNavigate();
+  const [tableState, setTableState] = useState(Date.now());
 
   const onFinish = async (values: FormData) => {
     setLoading(true);
@@ -49,8 +51,9 @@ const DoctorManageProcedures = () => {
       const responseBody = await response.json();
 
       if (response.ok) {
-        setProcedures([...procedures, responseBody]);
         pushNotification('success', 'Success', 'Procedure has been added!');
+        form.resetFields();
+        setTableState(Date.now());
       } else {
         Object.entries(responseBody.errors).forEach(([key, value]) => {
           const description = `${capitalize(key.replaceAll('_', ' '))} ${value}.`;
@@ -73,9 +76,9 @@ const DoctorManageProcedures = () => {
     try {
       const response = await handleDelete(record);
       if (response.ok) {
+        setTableState(Date.now());
         pushNotification('success', 'Success', 'Procedure has been deleted!');
       }
-      setProcedures(procedures.filter(({ id }) => id !== record.id));
     } catch {
       dispatch({ type: 'logout' });
       navigate(routes.logIn.path);
@@ -125,19 +128,21 @@ const DoctorManageProcedures = () => {
           <Row gutter={[0, 20]}>
             <Col xs={{ span: 24 }} xl={{ span: 12 }}>
               <CenteredContainer>
-                <DeleteButton onClick={async () => await deleteOnClick(record)}>DELETE</DeleteButton>
-              </CenteredContainer>
-            </Col>
-            <Col xs={{ span: 24 }} xl={{ span: 12 }}>
-              <CenteredContainer>
                 <Button
                   onClick={() => {
                     setRecord(record);
                     openModal();
                   }}
                 >
-                  EDIT
+                  <EditOutlined />
                 </Button>
+              </CenteredContainer>
+            </Col>
+            <Col xs={{ span: 24 }} xl={{ span: 12 }}>
+              <CenteredContainer>
+                <DeleteButton onClick={async () => await deleteOnClick(record)}>
+                  <DeleteOutlined />
+                </DeleteButton>
               </CenteredContainer>
             </Col>
           </Row>
@@ -148,7 +153,7 @@ const DoctorManageProcedures = () => {
 
   return (
     <Row gutter={[0, 15]}>
-      <Col xs={{ span: 24 }} xl={{ span: 8, offset: 8 }}>
+      <Col span={24}>
         <StyledForm form={form} onFinish={onFinish} autoComplete="off">
           {formItemsJSX}
           <CenteredContainer>
@@ -156,7 +161,7 @@ const DoctorManageProcedures = () => {
           </CenteredContainer>
         </StyledForm>
       </Col>
-      <Col xs={{ span: 24 }} xl={{ span: 12, offset: 6 }}>
+      <Col span={24}>
         <Spin spinning={loading} tip="waiting for server response...">
           <PaginatedTable<Procedure>
             data={procedures}
@@ -164,11 +169,12 @@ const DoctorManageProcedures = () => {
             columns={columns}
             fetchData={getDoctorProcedures(userID || 0)}
             pageSizeOptions={[4]}
+            key={tableState}
           />
         </Spin>
       </Col>
       <Modal title="Edit procedure" open={isOpened} onCancel={closeModal} footer={null}>
-        <EditForm data={procedures} setData={setProcedures} procedure={record} closeEditModal={closeModal} />
+        <EditForm setTableState={setTableState} procedure={record} closeEditModal={closeModal} />
       </Modal>
     </Row>
   );

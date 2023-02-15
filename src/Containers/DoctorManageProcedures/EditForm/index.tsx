@@ -1,68 +1,61 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Col, Row } from 'antd';
 import { capitalize, lowerCase } from 'lodash';
+import { useNavigate } from 'react-router-dom';
 
 import { CenteredContainer } from 'Containers/EditProfileForm/styles';
 import Button from 'Components/Button';
-import { getLocalStorageResource } from 'localStorageAPI';
-import { API_URL } from 'api';
 import pushNotification from 'pushNotification';
 import { DoctorProceduresType, FormData } from '../index';
 import Input from 'Components/Input';
 import { StyledForm } from 'Containers/RegistrationForm/styles';
 import { formItem } from 'Containers/EditProfileForm';
-import { Procedure } from 'Containers/DoctorManageProcedures/fetchProcedures';
+import handleEdit from 'Containers/DoctorManageProcedures/editProcedure';
+import routes from 'routes';
+import { Store } from 'store';
 
 interface EditFormProps {
-  data: Procedure[];
-  setData: (data: Procedure[]) => void;
+  setTableState: (date: number) => void;
   procedure: DoctorProceduresType;
   closeEditModal: () => void;
 }
 
-const EditForm = ({ data, setData, procedure, closeEditModal }: EditFormProps) => {
+const EditForm = ({ setTableState, procedure, closeEditModal }: EditFormProps) => {
   const [loading, setLoading] = useState(false);
   const [form] = StyledForm.useForm();
+  const navigate = useNavigate();
+  const { dispatch } = useContext(Store);
 
   const onFinish = async (values: FormData) => {
     setLoading(true);
-    const token = getLocalStorageResource('token');
-    if (!token) return;
+    try {
+      const response = await handleEdit({ id: procedure.id, ...values });
 
-    const response = await fetch(`${API_URL}/api/v1/procedures/${procedure.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      body: JSON.stringify({
-        procedure: {
-          name: values.name,
-          needed_time_min: values.needed_time_min,
-        },
-      }),
-    });
+      if (response.ok) {
+        setTableState(Date.now());
+        pushNotification('success', 'Success', 'Procedure has been updated');
+        form.resetFields();
 
-    if (response.ok) {
-      const responseBody = await response.json();
-      setData(data.map((procedure) => (procedure.id === responseBody.data.id ? responseBody.data : procedure)));
-      pushNotification('success', 'Success', 'Procedure has been updated');
-    } else if (response.status === 422) {
-      const responseBody = await response.json();
-      Object.entries(responseBody.errors).forEach(([key, value]) => {
-        const description = `${capitalize(key.replaceAll('_', ' '))} ${value}.`;
+        setTimeout(() => {
+          closeEditModal();
+        }, 5000);
+      } else {
+        const responseBody = await response.json();
 
-        formItems.forEach(({ name }) => {
-          key === name && form.setFields([{ name: key, errors: [description] }]);
+        Object.entries(responseBody.errors).forEach(([key, value]) => {
+          const description = `${capitalize(key.replaceAll('_', ' '))} ${value}.`;
+
+          formItems.forEach(({ name }) => {
+            key === name && form.setFields([{ name: key, errors: [description] }]);
+          });
         });
-      });
+      }
+    } catch {
+      dispatch({ type: 'logout' });
+      navigate(routes.logIn.path);
+    } finally {
+      setLoading(false);
     }
-
-    setTimeout(() => {
-      closeEditModal();
-    }, 5000);
-
-    setLoading(false);
   };
 
   const formItems: formItem[] = [
@@ -88,7 +81,7 @@ const EditForm = ({ data, setData, procedure, closeEditModal }: EditFormProps) =
 
   return (
     <Row>
-      <Col span={16} offset={4}>
+      <Col xs={{ span: 24 }} xl={{ span: 16, offset: 4 }}>
         <StyledForm form={form} onFinish={onFinish} autoComplete="off" layout="vertical">
           {formItemsJSX}
           <CenteredContainer>
