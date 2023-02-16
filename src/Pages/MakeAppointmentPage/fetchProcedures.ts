@@ -1,7 +1,9 @@
 import { API_URL } from 'api';
 import { getLocalStorageResource } from 'localStorageAPI';
+
 import { SearchParameters, FetchResponse } from 'Components/PaginatedSelect';
-import { Procedure } from './index';
+
+import { Procedure } from '.';
 
 const fetchProcedures = async ({
   searchValue,

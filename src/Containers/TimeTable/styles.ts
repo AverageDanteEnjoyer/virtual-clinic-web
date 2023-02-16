@@ -39,9 +39,3 @@ export const Table = styled(TableAntd)`
     color: ${palette.russianViolet};
   }
 `;
-
-export const SubmitBox = styled.div`
-  border-radius: 20px;
-  background-color: ${palette.veryLightGray};
-  padding: 24px 40px;
-`;

@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
 import { Row, Col } from 'antd';
 import { debounce } from 'lodash';
+import { useState, useEffect } from 'react';
 
 import pushNotification from 'pushNotification';
-import { fetchAvailableAppointmentHours, Status } from './fetchAvailableAppointmentHours';
+
 import { Table, TimeOption } from './styles';
+import { fetchAvailableAppointmentHours, Status } from './fetchAvailableAppointmentHours';
 
 interface RecordType {
   key: string;

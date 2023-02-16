@@ -1,6 +1,6 @@
 import { Select } from 'antd';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { debounce } from 'lodash';
+import { useEffect, useMemo, useRef, useState, ReactNode } from 'react';
 
 import { PaginationFrame, StyledDivider as Divider, StyledPagination, StyledSelect } from './styles';
 
@@ -25,10 +25,10 @@ interface PaginatedSelectProps<T> {
   fetchInitialValues?: () => Promise<T[]>;
   values: T[];
   setValues: (values: T[]) => void;
-  notFoundContent?: (searchValue: string) => React.ReactNode;
+  notFoundContent?: (searchValue: string) => ReactNode;
   mode?: 'multiple' | 'tags';
   size?: 'large' | 'middle' | 'small';
-  renderOption: (item: T) => React.ReactNode;
+  renderOption: (item: T) => ReactNode;
   placeholder?: string;
 }
 
@@ -86,7 +86,7 @@ const PaginatedSelect = <T,>({
     debounceFetch({ searchValue, pageIndex: 1, perPage: pageSize });
   };
 
-  const dropdownRender = (menu: React.ReactNode) => (
+  const dropdownRender = (menu: ReactNode) => (
     <>
       {menu}
       <Divider />

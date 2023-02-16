@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { Divider, Pagination } from 'antd';
+import styled from 'styled-components';
 
 import palette from 'palette';
 import Select from 'Components/Select';

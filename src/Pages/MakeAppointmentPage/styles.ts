@@ -43,3 +43,9 @@ export const WideDatePicker = styled(DatePicker)`
     border-color: ${palette.ultraViolet};
   }
 `;
+
+export const SubmitBox = styled.div`
+  border-radius: 20px;
+  background-color: ${palette.veryLightGray};
+  padding: 24px 40px;
+`;

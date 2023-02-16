@@ -1,22 +1,24 @@
-import { Col, Row } from 'antd';
-import { useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import { Col, Row } from 'antd';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Store } from 'store';
 import routes from 'routes';
+import { Store } from 'store';
 import useTitle from 'useTitle';
 import pushNotification from 'pushNotification';
+
 import TimeTable from 'Containers/TimeTable';
-import { SubmitBox } from 'Containers/TimeTable/styles';
-import Navbar from 'Components/Navbar';
-import { StyledParagraph, StyledTitle } from 'Components/Typography/styles';
-import PaginatedSelect from 'Components/PaginatedSelect';
-import Button from 'Components/Button';
+
 import Spin from 'Components/Spin';
-import { OptionCol, MainText, Info, Panel, WideDatePicker } from './styles';
+import Button from 'Components/Button';
+import Navbar from 'Components/Navbar';
+import PaginatedSelect from 'Components/PaginatedSelect';
+import { StyledParagraph, StyledTitle } from 'Components/Typography/styles';
+
 import fetchProcedures from './fetchProcedures';
 import makeAppointment from './makeAppointment';
+import { OptionCol, MainText, Info, Panel, WideDatePicker, SubmitBox } from './styles';
 
 export interface Doctor {
   id: number;
@@ -43,10 +45,10 @@ const MakeAppointmentPage = () => {
   const [loading, setLoading] = useState(false);
   const [timeTableState, setTimeTableState] = useState(Date.now());
 
-  const onSubmit = async (procedure: Procedure) => {
+  const onSubmit = async (procedureId: number) => {
     setLoading(true);
     try {
-      const response = await makeAppointment(procedure, date, selectedTime);
+      const response = await makeAppointment(procedureId, date, selectedTime);
       if (response.ok) {
         pushNotification(
           'success',
@@ -153,7 +155,7 @@ const MakeAppointmentPage = () => {
                   <Button
                     size="large"
                     disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
-                    onClick={() => onSubmit(procedures[0])}
+                    onClick={() => onSubmit(procedures[0].id)}
                     loading={loading}
                   >
                     Submit
