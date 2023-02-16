@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Table as TableAntd } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
-import { useFetch } from './useFetch';
+import { useFetch } from 'Hooks/useFetch';
 
 export type TableRecord = {
   id: number;

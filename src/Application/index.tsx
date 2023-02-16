@@ -25,7 +25,7 @@ const Application = () => {
   }, [dispatch]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route path={routes.home.path} element={<HomePage />} />
         <Route path={routes.components.path} element={<ComponentsPage />} />

@@ -7,7 +7,7 @@ import { API_URL } from 'api';
 import { getAccountId, getLocalStorageResource } from 'localStorageAPI';
 import Table, { TableRecord } from 'Components/Table';
 import Button from 'Components/Button';
-import useModal from './useModal';
+import useModal from 'Hooks/useModal';
 import EditForm from 'Containers/WorkPlan/EditForm';
 
 export interface WorkPlan extends TableRecord {
