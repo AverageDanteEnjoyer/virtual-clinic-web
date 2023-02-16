@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
-import { Col, Row } from 'antd';
+import { Col, Modal, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, ExclamationCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 import PaginatedTable from 'Components/PaginatedTable';
@@ -40,6 +40,7 @@ const AppointmentsTable = () => {
   const [tableState, setTableState] = useState(Date.now());
   const { dispatch, state } = useContext(Store);
   const { userID } = getDataFromToken();
+  const { confirm } = Modal;
   const navigate = useNavigate();
   const fetchUrl =
     state.accountType === userType.PATIENT
@@ -61,34 +62,62 @@ const AppointmentsTable = () => {
     }
   };
 
+  const showConfirm = async (record: Appointment) => {
+    confirm({
+      title: 'Do you want to cancel this appointment?',
+      icon: <ExclamationCircleFilled />,
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk() {
+        handleCancellation(record);
+      },
+    });
+  };
+
   const columns = [
     {
       title: 'Procedure name',
       dataIndex: ['procedure', 'name'],
       key: 'name',
     },
+    state.accountType === userType.PATIENT
+      ? {
+          title: 'Doctor',
+          dataIndex: 'user',
+          key: 'user',
+          render: (value: any, record: Appointment) => `${record.doctor.first_name} ${record.doctor.last_name}`,
+        }
+      : {
+          title: 'Patient',
+          dataIndex: 'user',
+          key: 'user',
+          render: (value: any, record: Appointment) => `${record.patient.first_name} ${record.patient.last_name}`,
+        },
     {
-      title: state.accountType === userType.PATIENT ? "Doctor's first name" : "Patient's first name",
-      dataIndex: state.accountType === userType.PATIENT ? ['doctor', 'first_name'] : ['patient', 'first_name'],
-      key: 'first_name',
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'date',
+      render: (value: any, record: Appointment) => dayjs(record.start_time).format('MM/DD/YYYY'),
     },
     {
-      title: state.accountType === userType.PATIENT ? "Doctor's last name" : "Patient's last name",
-      dataIndex: state.accountType === userType.PATIENT ? ['doctor', 'last_name'] : ['patient', 'last_name'],
-      key: 'last_name',
-    },
-    {
-      title: 'Procedure start time',
+      title: 'Start time',
       dataIndex: 'start_time',
       key: 'start_time',
-      render: (value: string) => dayjs(value).format('HH:mm'),
+      render: (value: string) => dayjs(value).format('h:mm A'),
     },
     {
-      title: 'Action',
+      title: 'End time',
+      dataIndex: 'end_time',
+      key: 'end_time',
+      render: (value: string, record: Appointment) =>
+        dayjs(record.start_time).add(record.procedure.needed_time_min, 'minutes').format('h:mm A'),
+    },
+    {
+      title: 'Cancel',
       dataIndex: 'action',
       key: 'action',
       render: (value: any, record: Appointment) => (
-        <DeleteButton onClick={() => handleCancellation(record)}>
+        <DeleteButton onClick={() => showConfirm(record)}>
           <CloseOutlined />
         </DeleteButton>
       ),
