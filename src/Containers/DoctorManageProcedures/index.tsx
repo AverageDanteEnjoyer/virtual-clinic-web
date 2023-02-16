@@ -12,7 +12,7 @@ import Button from 'Components/Button';
 import useModal from 'Hooks/useModal';
 import { Store } from 'store';
 import routes from 'routes';
-import DeleteButton from 'Containers/DoctorManageProcedures/styles';
+import DeleteButton from 'Components/DeleteButton';
 import { formItem } from 'Containers/EditProfileForm';
 import PaginatedTable from 'Components/PaginatedTable';
 import handleDelete from 'Containers/DoctorManageProcedures/deleteProcedure';

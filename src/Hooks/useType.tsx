@@ -3,10 +3,12 @@ import dayjs from 'dayjs';
 import { CloseOutlined } from '@ant-design/icons';
 
 import { Store, userType } from 'store';
-import Button from 'Components/Button';
+import DeleteButton from 'Components/DeleteButton';
+import { getDataFromToken } from 'localStorageAPI';
 
 const useType = () => {
   const { state } = useContext(Store);
+  const { userID } = getDataFromToken();
 
   const columns = [
     {
@@ -35,13 +37,14 @@ const useType = () => {
       dataIndex: 'action',
       key: 'action',
       render: () => (
-        <Button>
+        <DeleteButton>
           <CloseOutlined />
-        </Button>
+        </DeleteButton>
       ),
     },
   ];
 
+  //It is here because we need to avoid compilation error, and we don't have api yet
   const patient_url = '';
   const doctor_url = '';
 
