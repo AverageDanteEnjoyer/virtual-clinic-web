@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom';
 
 import routes from 'routes';
 import { Store } from 'store';
-import useTitle from 'useTitle';
 import pushNotification from 'pushNotification';
+
+import useTitle from 'Hooks/useTitle';
 
 import TimeTable from 'Containers/TimeTable';
 
