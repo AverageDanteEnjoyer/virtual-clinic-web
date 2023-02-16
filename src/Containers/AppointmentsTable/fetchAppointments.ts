@@ -1,7 +1,7 @@
-import {FetchParams, FetchResponse} from 'Components/PaginatedTable';
-import {getLocalStorageResource} from 'localStorageAPI';
+import { FetchParams, FetchResponse } from 'Components/PaginatedTable';
+import { getLocalStorageResource } from 'localStorageAPI';
 
-import {Appointment} from './index';
+import { Appointment } from './index';
 
 const data: Appointment[] = [
   {
@@ -77,9 +77,9 @@ const response = {
 };
 
 const getAppointments = (fetch_url: string) => {
-  return async ({page, perPage}: FetchParams): Promise<FetchResponse<Appointment>> => {
+  return async ({ page, perPage }: FetchParams): Promise<FetchResponse<Appointment>> => {
     const token = getLocalStorageResource('token');
-    if (!token) return {data: [], page, per_page: perPage, total: 0};
+    if (!token) return { data: [], page, per_page: perPage, total: 0 };
 
     // It's a mock, so I'm not using fetch
 
