@@ -21,14 +21,14 @@ const ProfileEditPage = () => {
       <Navbar />
       <Row gutter={[0, 50]}>
         <Col span={12} offset={6}>
-          <StyledTitle center="true">Profile edit</StyledTitle>
+          <StyledTitle center>Profile edit</StyledTitle>
           <ProfileEditForm />
         </Col>
         {state.accountType === userType.DOCTOR && (
           <Col span={12} offset={6}>
-            <StyledTitle center="true">Edit work plan</StyledTitle>
+            <StyledTitle center>Edit work plan</StyledTitle>
             <WorkPlanTable data={workPlan} setData={setWorkPlan} />
-            <StyledTitle level={3} center="true">
+            <StyledTitle level={3} center>
               Add new one
             </StyledTitle>
             <CreateForm data={workPlan} setData={setWorkPlan} />

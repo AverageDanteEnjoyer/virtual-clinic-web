@@ -14,7 +14,7 @@ export const StyledTypography = styled(Typography)`
 `;
 
 // StyledTitle with center parameter
-export const StyledTitle = styled(Title)<{ center?: string }>`
+export const StyledTitle = styled(Title)<{ center?: boolean }>`
   text-align: ${({ center }) => (center ? 'center' : 'left')};
   font-size: 24px;
   font-weight: 600;

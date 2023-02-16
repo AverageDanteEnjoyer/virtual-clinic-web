@@ -51,7 +51,7 @@ const MakeAppointmentPage = () => {
   return (
     <>
       <Navbar />
-      <StyledTitle center="true">Make an appointment</StyledTitle>
+      <StyledTitle center>Make an appointment</StyledTitle>
       <Row>
         <Col xs={{ span: 20, offset: 2 }} xl={{ span: 8, offset: 6 }} md={{ span: 16 }}>
           <Row>

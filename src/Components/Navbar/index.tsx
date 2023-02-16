@@ -45,14 +45,15 @@ const Navbar = () => {
 
   const getMenuItems = (): MenuItem[] => {
     const items: MenuItem[] | null = [
-      getItem(<Link to={routes.components.path}>components</Link>),
-      getItem(<Link to={routes.home.path}>home</Link>),
+      getItem(<Link to={routes.components.path}>Components</Link>),
+      getItem(<Link to={routes.home.path}>Home</Link>),
       getItem(<Link to={routes.makeAppointment.path}>Make an appointment</Link>, [], () => equals(userType.PATIENT)),
       getItem(<UserOutlined />, [
         getItem(<Link to={routes.logIn.path}>Log in</Link>, [], () => equals(userType.GUEST)),
         getItem(<Link to={routes.register.path}>Register</Link>, [], () => equals(userType.GUEST)),
         getItem(<Link to={routes.editProfile.path}>Edit profile</Link>, [], () => notEquals(userType.GUEST)),
-        getItem('Appointments', [], () => notEquals(userType.GUEST)),
+        getItem('Appointments', [], () => equals(userType.PATIENT)),
+        getItem(<Link to={routes.myProcedures.path}>My procedures</Link>, [], () => equals(userType.DOCTOR)),
         getItem(
           <Link to={routes.home.path} onClick={logOut}>
             Log out

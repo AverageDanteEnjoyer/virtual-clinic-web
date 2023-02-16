@@ -33,17 +33,20 @@ export type TableRecord = {
 };
 
 interface PaginatedTableProps<T extends TableRecord> {
+  data: T[];
+  setData: (data: T[]) => void;
   columns: ColumnsType<T>;
   fetchData: ({ page, perPage, filter }: FetchParams) => Promise<FetchResponse<T>>;
   pageSizeOptions?: number[];
 }
 
 const PaginatedTable = <T extends TableRecord>({
+  data,
+  setData,
   columns,
   fetchData,
   pageSizeOptions = [5, 10, 50],
 }: PaginatedTableProps<T>) => {
-  const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
@@ -64,7 +67,7 @@ const PaginatedTable = <T extends TableRecord>({
       setData(data.data);
       setLoading(false);
     };
-    return debounce(loadData, 600);
+    return debounce(loadData, 275);
   }, [fetchData]);
 
   const handleReset = (dataIndex: string) => {

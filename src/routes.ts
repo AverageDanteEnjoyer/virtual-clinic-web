@@ -5,6 +5,7 @@ const routes = {
   register: { path: '/register', title: 'Virtual Clinic - Register' },
   editProfile: { path: '/edit-profile', title: 'Virtual Clinic - Edit Profile' },
   makeAppointment: { path: '/make-appointment', title: 'Virtual Clinic - Make Appointment' },
+  myProcedures: { path: '/my-procedures', title: 'Virtual Clinic - My Procedures' },
 };
 
 export default routes;
