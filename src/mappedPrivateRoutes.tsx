@@ -8,6 +8,7 @@ import RegistrationPage from 'Pages/RegistrationPage';
 import ProfileEditPage from 'Pages/EditProfilePage';
 import MakeAppointmentPage from 'Pages/MakeAppointmentPage';
 import DoctorProcedures from 'Pages/DoctorProcedures';
+import AppointmentsPage from 'Pages/AppointmentsPage';
 
 interface privateRouteItem {
   path: string;
@@ -46,6 +47,12 @@ const privateRouteItems: privateRouteItem[] = [
     children: <DoctorProcedures />,
     redirectPath: routes.logIn.path,
     condition: () => equals(userType.DOCTOR),
+  },
+  {
+    path: routes.myAppointments.path,
+    children: <AppointmentsPage />,
+    redirectPath: routes.logIn.path,
+    condition: () => notEquals(userType.GUEST),
   },
 ];
 
