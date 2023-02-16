@@ -79,6 +79,87 @@ const MakeAppointmentPage = () => {
     </Row>
   );
 
+  const selectProcedure = (
+    <>
+      <StyledTitle level={2}>Select a procedure</StyledTitle>
+      <PaginatedSelect<Procedure>
+        size="large"
+        fetchOptions={fetchProcedures}
+        values={procedures}
+        setValues={(values: Procedure[]) => {
+          setProcedures(values);
+          setDate(dayjs().format('YYYY-MM-DD'));
+          setSelectedTime('');
+        }}
+        renderOption={renderOption}
+        placeholder="Search for a procedure"
+        notFoundContent={(searchValue) => <p>No procedures found for {searchValue}</p>}
+      />
+    </>
+  );
+
+  const selectDate = procedures.length > 0 && (
+    <>
+      <StyledTitle level={2}>Select a date</StyledTitle>
+      <WideDatePicker
+        presets={[
+          { label: 'Today', value: dayjs() },
+          { label: 'Tomorrow', value: dayjs().add(1, 'day') },
+          { label: 'Next week', value: dayjs().add(1, 'week') },
+        ]}
+        format="YYYY-MM-DD"
+        disabledDate={(current) => current && current < dayjs().startOf('day')}
+        value={date ? dayjs(date) : undefined}
+        onChange={(date) => {
+          setDate(date?.format('YYYY-MM-DD') || '');
+          setSelectedTime('');
+        }}
+        size="large"
+      />
+    </>
+  );
+
+  const selectTime = procedures.length > 0 && date && (
+    <>
+      <StyledTitle level={2}>Select a time</StyledTitle>
+      <TimeTable
+        key={timeTableState}
+        selectedTime={selectedTime}
+        setSelectedTime={setSelectedTime}
+        procedureId={procedures[0].id}
+        date={date}
+      />
+    </>
+  )
+
+  const submitBox = procedures.length > 0 && date !== '' && selectedTime !== '' && (
+    <Row justify="center" align="middle">
+      <Panel span={22}>
+        <StyledTitle level={2}>Summary</StyledTitle>
+        <SubmitBox>
+          <StyledParagraph>
+            <b>Doctor:</b> {procedures[0].doctor.first_name} {procedures[0].doctor.last_name}
+          </StyledParagraph>
+          <StyledParagraph>
+            <b>Procedure:</b> {procedures[0].name}
+          </StyledParagraph>
+          <StyledParagraph>
+            <b>Date:</b> {dayjs(date).format('D MMMM YYYY')} {selectedTime} -{' '}
+            {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('HH:mm')}
+          </StyledParagraph>
+          <Button
+            size="large"
+            disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
+            onClick={() => onSubmit(procedures[0].id)}
+            loading={loading}
+          >
+            Submit
+          </Button>
+        </SubmitBox>
+      </Panel>
+    </Row>
+  )
+
   return (
     <Spin spinning={loading} tip="waiting for server response...">
       <Navbar />
@@ -87,83 +168,14 @@ const MakeAppointmentPage = () => {
         <Col xs={{ span: 24 }} md={{ span: 13 }} xl={{ span: 9 }}>
           <Row justify="center" align="middle">
             <Panel span={22}>
-              <StyledTitle level={2}>Select a procedure</StyledTitle>
-              <PaginatedSelect<Procedure>
-                size="large"
-                fetchOptions={fetchProcedures}
-                values={procedures}
-                setValues={(values: Procedure[]) => {
-                  setProcedures(values);
-                  setDate(dayjs().format('YYYY-MM-DD'));
-                  setSelectedTime('');
-                }}
-                renderOption={renderOption}
-                placeholder="Search for a procedure"
-                notFoundContent={(searchValue) => <p>No procedures found for {searchValue}</p>}
-              />
-              {procedures.length > 0 && (
-                <>
-                  <StyledTitle level={2}>Select a date</StyledTitle>
-                  <WideDatePicker
-                    presets={[
-                      { label: 'Today', value: dayjs() },
-                      { label: 'Tomorrow', value: dayjs().add(1, 'day') },
-                      { label: 'Next week', value: dayjs().add(1, 'week') },
-                    ]}
-                    format="YYYY-MM-DD"
-                    disabledDate={(current) => current && current < dayjs().startOf('day')}
-                    value={date ? dayjs(date) : undefined}
-                    onChange={(date) => {
-                      setDate(date?.format('YYYY-MM-DD') || '');
-                      setSelectedTime('');
-                    }}
-                    size="large"
-                  />
-                </>
-              )}
-              {procedures.length > 0 && date && (
-                <>
-                  <StyledTitle level={2}>Select a time</StyledTitle>
-                  <TimeTable
-                    key={timeTableState}
-                    selectedTime={selectedTime}
-                    setSelectedTime={setSelectedTime}
-                    procedureId={procedures[0].id}
-                    date={date}
-                  />
-                </>
-              )}
+              {selectProcedure}
+              {selectDate}
+              {selectTime}
             </Panel>
           </Row>
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 8 }} xl={{ span: 6 }}>
-          {procedures.length > 0 && date !== '' && selectedTime !== '' && (
-            <Row justify="center" align="middle">
-              <Panel span={22}>
-                <StyledTitle level={2}>Summary</StyledTitle>
-                <SubmitBox>
-                  <StyledParagraph>
-                    <b>Doctor:</b> {procedures[0].doctor.first_name} {procedures[0].doctor.last_name}
-                  </StyledParagraph>
-                  <StyledParagraph>
-                    <b>Procedure:</b> {procedures[0].name}
-                  </StyledParagraph>
-                  <StyledParagraph>
-                    <b>Date:</b> {dayjs(date).format('D MMMM YYYY')} {selectedTime} -{' '}
-                    {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('HH:mm')}
-                  </StyledParagraph>
-                  <Button
-                    size="large"
-                    disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
-                    onClick={() => onSubmit(procedures[0].id)}
-                    loading={loading}
-                  >
-                    Submit
-                  </Button>
-                </SubmitBox>
-              </Panel>
-            </Row>
-          )}
+          {submitBox}
         </Col>
       </Row>
     </Spin>
