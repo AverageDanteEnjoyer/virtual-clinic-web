@@ -130,7 +130,7 @@ const MakeAppointmentPage = () => {
         date={date}
       />
     </>
-  )
+  );
 
   const submitBox = procedures.length > 0 && date !== '' && selectedTime !== '' && (
     <Row justify="center" align="middle">
@@ -158,12 +158,12 @@ const MakeAppointmentPage = () => {
         </SubmitBox>
       </Panel>
     </Row>
-  )
+  );
 
   return (
     <Spin spinning={loading} tip="waiting for server response...">
       <Navbar />
-      <StyledTitle center="true">Make an appointment</StyledTitle>
+      <StyledTitle center>Make an appointment</StyledTitle>
       <Row gutter={[0, 15]} justify="center">
         <Col xs={{ span: 24 }} md={{ span: 13 }} xl={{ span: 9 }}>
           <Row justify="center" align="middle">
