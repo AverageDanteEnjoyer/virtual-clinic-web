@@ -1,10 +1,14 @@
 import { Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import LoginForm from 'Containers/LoginForm';
-import Navbar from 'Components/Navbar';
 import routes from 'routes';
-import useTitle from 'useTitle';
+
+import useTitle from 'Hooks/useTitle';
+
+import LoginForm from 'Containers/LoginForm';
+
+import Navbar from 'Components/Navbar';
+
 import { Container, FullHeightRow, Panel, CardRow, CardTitle, EndCol, StyledButton, Note } from './styles';
 
 const LoginPage = () => {

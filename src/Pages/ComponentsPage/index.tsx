@@ -8,9 +8,11 @@ import Typography from 'Components/Typography';
 import Input from 'Components/Input';
 import Select from 'Components/Select';
 import Button from 'Components/Button';
-import ComponentsStyles from './Components.module.css';
 import Navbar from 'Components/Navbar';
-import useTitle from 'useTitle';
+
+import useTitle from 'Hooks/useTitle';
+
+import ComponentsStyles from './Components.module.css';
 
 const ComponentsPage = () => {
   useTitle();

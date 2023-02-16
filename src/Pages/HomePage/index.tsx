@@ -1,5 +1,6 @@
+import useTitle from 'Hooks/useTitle';
+
 import Navbar from 'Components/Navbar';
-import useTitle from 'useTitle';
 
 const HomePage = () => {
   useTitle();

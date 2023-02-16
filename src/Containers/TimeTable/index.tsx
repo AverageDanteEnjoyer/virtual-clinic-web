@@ -1,8 +1,11 @@
+import { Row, Col } from 'antd';
+import { debounce } from 'lodash';
 import { useState, useEffect } from 'react';
-import { message, Row, Col } from 'antd';
 
-import { fetchAvailableAppointmentHours, Status } from './fetchAvailableAppointmentHours';
+import pushNotification from 'pushNotification';
+
 import { Table, TimeOption } from './styles';
+import { fetchAvailableAppointmentHours, Status } from './fetchAvailableAppointmentHours';
 
 interface RecordType {
   key: string;
@@ -28,6 +31,10 @@ interface TimeTableProps {
 const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTableProps) => {
   const [data, setData] = useState<RecordType[]>([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchData();
+  }, [date, procedureId]);
 
   const columns = [
     {
@@ -56,7 +63,7 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
     },
   ];
 
-  const fetchData = async () => {
+  const fetchData = debounce(async () => {
     setSelectedTime('');
 
     setLoading(true);
@@ -66,12 +73,12 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
     switch (status) {
       case Status.ERROR:
         setData([]);
-        message.error('Something went wrong. Please try again later.');
+        pushNotification('error', 'Error', 'Something went wrong. Please try again later.', 10);
         break;
 
       case Status.NON_WORKING_DAY:
         setData([]);
-        message.info('The doctor is not working on this day.');
+        pushNotification('info', 'Info', 'The doctor is not working on this day.');
         break;
 
       case Status.AVAILABLE: {
@@ -91,11 +98,7 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
         setData(categorizedData.filter((data) => data.times.length > 0));
       }
     }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [date, procedureId]);
+  }, 275);
 
   return (
     <Table

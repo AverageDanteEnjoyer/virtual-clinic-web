@@ -1,14 +1,17 @@
 import { useContext, useState } from 'react';
 import { Col, Row } from 'antd';
 
-import ProfileEditForm from 'Containers/EditProfileForm';
-import Navbar from 'Components/Navbar';
-import WorkPlanTable from 'Containers/WorkPlan/WorkPlanTable';
-import { StyledTitle } from 'Components/Typography/styles';
-import CreateForm from 'Containers/WorkPlan/CreateForm';
-import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
 import { Store, userType } from 'store';
-import useTitle from 'useTitle';
+
+import useTitle from 'Hooks/useTitle';
+
+import ProfileEditForm from 'Containers/EditProfileForm';
+import WorkPlanTable from 'Containers/WorkPlan/WorkPlanTable';
+import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
+import CreateForm from 'Containers/WorkPlan/CreateForm';
+
+import Navbar from 'Components/Navbar';
+import { StyledTitle } from 'Components/Typography/styles';
 
 const ProfileEditPage = () => {
   useTitle();

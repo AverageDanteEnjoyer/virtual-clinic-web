@@ -30,6 +30,13 @@ export const StyledButton = styled(Button)`
     &:focus-visible {
       outline: none;
     }
+
+    &:disabled {
+      &:hover {
+        background-color: ${palette.lightGray};
+        border-color: ${palette.lightGray};
+      }
+    }
   }
 
   &.ant-btn {

@@ -1,9 +1,8 @@
-import { Pagination, Select } from 'antd';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Select } from 'antd';
 import { debounce } from 'lodash';
+import { useEffect, useMemo, useRef, useState, ReactNode } from 'react';
 
-import CustomSelect from 'Components/Select';
-import { PaginationFrame, StyledDivider as Divider } from './styles';
+import { PaginationFrame, StyledDivider as Divider, StyledPagination, StyledSelect } from './styles';
 
 interface ErrorType {
   [field: string]: string[];
@@ -26,10 +25,10 @@ interface PaginatedSelectProps<T> {
   fetchInitialValues?: () => Promise<T[]>;
   values: T[];
   setValues: (values: T[]) => void;
-  notFoundContent?: (searchValue: string) => React.ReactNode;
+  notFoundContent?: (searchValue: string) => ReactNode;
   mode?: 'multiple' | 'tags';
   size?: 'large' | 'middle' | 'small';
-  renderOption: (item: T) => React.ReactNode;
+  renderOption: (item: T) => ReactNode;
   placeholder?: string;
 }
 
@@ -87,12 +86,12 @@ const PaginatedSelect = <T,>({
     debounceFetch({ searchValue, pageIndex: 1, perPage: pageSize });
   };
 
-  const dropdownRender = (menu: React.ReactNode) => (
+  const dropdownRender = (menu: ReactNode) => (
     <>
       {menu}
       <Divider />
       <PaginationFrame>
-        <Pagination
+        <StyledPagination
           hideOnSinglePage
           current={page}
           total={totalPages}
@@ -107,7 +106,7 @@ const PaginatedSelect = <T,>({
   );
 
   return (
-    <CustomSelect
+    <StyledSelect
       mode={mode}
       size={size}
       placeholder={placeholder}
@@ -122,14 +121,14 @@ const PaginatedSelect = <T,>({
       notFoundContent={notFoundContent ? notFoundContent(searchInput) : undefined}
       showSearch
     >
-      {options.map((item, idx) => {
+      {options?.map((item, idx) => {
         return (
           <Select.Option key={idx} value={JSON.stringify(item)}>
             {renderOption(item)}
           </Select.Option>
         );
       })}
-    </CustomSelect>
+    </StyledSelect>
   );
 };
 
