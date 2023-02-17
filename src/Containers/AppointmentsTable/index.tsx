@@ -45,7 +45,7 @@ const AppointmentsTable = () => {
 
   const handleCancellation = async (record: Appointment) => {
     try {
-      const response = await cancelAppointment(record);
+      const response = await cancelAppointment(record.id);
 
       if (response.ok) {
         setRender(Date.now());
@@ -84,7 +84,7 @@ const AppointmentsTable = () => {
     {
       title: 'Procedure',
       dataIndex: ['procedure', 'name'],
-      key: 'name',
+      key: 'procedure_name',
     },
     isPatient
       ? {
@@ -124,13 +124,13 @@ const AppointmentsTable = () => {
   ];
 
   return (
-    <Row gutter={[0, 15]}>
+    <Row>
       <Col span={24}>
         <PaginatedTable<Appointment>
           data={appointments}
           setData={setAppointments}
           columns={columns}
-          fetchData={getAppointments()}
+          fetchData={getAppointments}
           key={render}
         />
       </Col>

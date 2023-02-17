@@ -1,12 +1,11 @@
 import { getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';
-import { Appointment } from 'Containers/AppointmentsTable/index';
 
-const cancelAppointment = async (record: Appointment) => {
+const cancelAppointment = async (id: number) => {
   const token = getLocalStorageResource('token');
   if (!token) return Promise.reject(new Error());
 
-  return await fetch(`${API_URL}/api/v1/appointments/${record.id}/cancellation`, {
+  return await fetch(`${API_URL}/api/v1/appointments/${id}/cancellation`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: token,
