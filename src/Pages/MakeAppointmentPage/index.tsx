@@ -15,7 +15,7 @@ import Spin from 'Components/Spin';
 import Button from 'Components/Button';
 import Navbar from 'Components/Navbar';
 import PaginatedSelect from 'Components/PaginatedSelect';
-import { StyledParagraph, StyledTitle } from 'Components/Typography/styles';
+import { Paragraph, Title } from 'Components/Typography';
 
 import fetchProcedures from './fetchProcedures';
 import makeAppointment from './makeAppointment';
@@ -82,7 +82,7 @@ const MakeAppointmentPage = () => {
 
   const selectProcedure = (
     <>
-      <StyledTitle level={2}>Select a procedure</StyledTitle>
+      <Title level={2}>Select a procedure</Title>
       <PaginatedSelect<Procedure>
         size="large"
         fetchOptions={fetchProcedures}
@@ -101,7 +101,7 @@ const MakeAppointmentPage = () => {
 
   const selectDate = procedures.length > 0 && (
     <>
-      <StyledTitle level={2}>Select a date</StyledTitle>
+      <Title level={2}>Select a date</Title>
       <WideDatePicker
         presets={[
           { label: 'Today', value: dayjs() },
@@ -122,7 +122,7 @@ const MakeAppointmentPage = () => {
 
   const selectTime = procedures.length > 0 && date && (
     <>
-      <StyledTitle level={2}>Select a time</StyledTitle>
+      <Title level={2}>Select a time</Title>
       <TimeTable
         key={timeTableState}
         selectedTime={selectedTime}
@@ -136,18 +136,18 @@ const MakeAppointmentPage = () => {
   const submitBox = procedures.length > 0 && date !== '' && selectedTime !== '' && (
     <Row justify="center" align="middle">
       <Panel span={22}>
-        <StyledTitle level={2}>Summary</StyledTitle>
+        <Title level={2}>Summary</Title>
         <SubmitBox>
-          <StyledParagraph>
+          <Paragraph>
             <b>Doctor:</b> {procedures[0].doctor.first_name} {procedures[0].doctor.last_name}
-          </StyledParagraph>
-          <StyledParagraph>
+          </Paragraph>
+          <Paragraph>
             <b>Procedure:</b> {procedures[0].name}
-          </StyledParagraph>
-          <StyledParagraph>
+          </Paragraph>
+          <Paragraph>
             <b>Date:</b> {dayjs(date).format('D MMMM YYYY')} {selectedTime} -{' '}
             {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('HH:mm')}
-          </StyledParagraph>
+          </Paragraph>
           <Button
             size="large"
             disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
@@ -164,7 +164,7 @@ const MakeAppointmentPage = () => {
   return (
     <Spin spinning={loading} tip="waiting for server response...">
       <Navbar />
-      <StyledTitle center>Make an appointment</StyledTitle>
+      <Title centered>Make an appointment</Title>
       <Row gutter={[0, 15]} justify="center">
         <Col xs={{ span: 24 }} md={{ span: 13 }} xl={{ span: 9 }}>
           <Row justify="center" align="middle">

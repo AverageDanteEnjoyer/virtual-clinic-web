@@ -1,17 +1,16 @@
-import { useContext, useState } from 'react';
 import { Col, Row } from 'antd';
+import { useContext, useState } from 'react';
 
 import { Store, userType } from 'store';
 
 import useTitle from 'Hooks/useTitle';
 
-import ProfileEditForm from 'Containers/EditProfileForm';
-import WorkPlanTable from 'Containers/WorkPlan/WorkPlanTable';
-import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
 import CreateForm from 'Containers/WorkPlan/CreateForm';
+import ProfileEditForm from 'Containers/EditProfileForm';
+import WorkPlanTable, { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
 
 import Navbar from 'Components/Navbar';
-import { StyledTitle } from 'Components/Typography/styles';
+import { Title } from 'Components/Typography';
 
 const ProfileEditPage = () => {
   useTitle();
@@ -24,16 +23,16 @@ const ProfileEditPage = () => {
       <Navbar />
       <Row gutter={[0, 50]}>
         <Col span={12} offset={6}>
-          <StyledTitle center>Profile edit</StyledTitle>
+          <Title centered>Profile edit</Title>
           <ProfileEditForm />
         </Col>
         {state.accountType === userType.DOCTOR && (
           <Col span={12} offset={6}>
-            <StyledTitle center>Edit work plan</StyledTitle>
+            <Title centered>Edit work plan</Title>
             <WorkPlanTable data={workPlan} setData={setWorkPlan} />
-            <StyledTitle level={3} center>
+            <Title level={3} centered>
               Add new one
-            </StyledTitle>
+            </Title>
             <CreateForm data={workPlan} setData={setWorkPlan} />
           </Col>
         )}

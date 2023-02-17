@@ -4,7 +4,7 @@ import { InfoCircleFilled } from '@ant-design/icons';
 import Carousel from 'Components/Carousel';
 import Spin from 'Components/Spin';
 import Alert from 'Components/Alert';
-import Typography from 'Components/Typography';
+import { Paragraph, Title, Typography } from 'Components/Typography';
 import Input from 'Components/Input';
 import Select from 'Components/Select';
 import Button from 'Components/Button';
@@ -43,7 +43,23 @@ const ComponentsPage = () => {
       <div className={ComponentsStyles.wrapper}>
         <Row gutter={[14, 12]}>
           <Col className="gutter-row" span={12}>
-            <Typography />
+            <Typography>
+              <Title level={1} centered>
+                Components
+              </Title>
+              <Paragraph>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias atque autem corporis delectus dolorem
+                doloribus ea ex ipsa itaque maxime mollitia sequi sint, soluta ullam vitae? Amet commodi dolorum fuga
+                illo impedit pariatur sed vitae. Architecto, aspernatur beatae distinctio dolores eaque iure, laborum
+                maxime porro provident qui quibusdam quisquam soluta?
+              </Paragraph>
+              <Paragraph>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab ducimus illum in nam quaerat quia rerum
+                tempora unde! Ab atque consequatur dolores doloribus, exercitationem incidunt ipsum itaque laboriosam
+                rerum! Ab accusamus culpa incidunt, labore natus, officia, pariatur perspiciatis quaerat sapiente veniam
+                vitae voluptatum! Accusantium aut commodi consequuntur delectus molestiae. Cupiditate?
+              </Paragraph>
+            </Typography>
           </Col>
           <Col className="gutter-row" span={12}>
             <Carousel />
@@ -85,7 +101,7 @@ const ComponentsPage = () => {
               },
             ]}
             defaultValue={['item1', 'item2']}
-          ></Select>
+          />
         </Row>
       </div>
     </>

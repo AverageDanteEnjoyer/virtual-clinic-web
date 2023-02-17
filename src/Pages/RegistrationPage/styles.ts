@@ -1,7 +1,7 @@
 import { Col, Row, Space } from 'antd';
 import styled from 'styled-components';
 
-import { StyledParagraph, StyledTitle } from 'Components/Typography/styles';
+import { Paragraph, Title } from 'Components/Typography';
 import palette from 'palette';
 
 export const Container = styled.div`
@@ -27,7 +27,7 @@ export const CardRow = styled(Row)`
   margin: 30px 0;
 `;
 
-export const CardTitle = styled(StyledTitle)`
+export const CardTitle = styled(Title)`
   &.ant-typography {
     text-align: center;
     font-size: 32px;
@@ -35,7 +35,7 @@ export const CardTitle = styled(StyledTitle)`
   }
 `;
 
-export const Note = styled(StyledParagraph)`
+export const Note = styled(Paragraph)`
   display: flex;
   justify-content: center;
   align-items: center;
