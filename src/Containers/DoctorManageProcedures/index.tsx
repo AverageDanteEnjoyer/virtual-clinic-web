@@ -1,6 +1,9 @@
+import dayjs from 'dayjs';
+import Duration from 'dayjs/plugin/duration';
 import { useContext, useState } from 'react';
 import { capitalize, lowerCase } from 'lodash';
 import { useNavigate } from 'react-router-dom';
+import RelativeTime from 'dayjs/plugin/relativeTime';
 import { Spin, Col, Row, Modal, FormItemProps } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
@@ -23,6 +26,9 @@ import { EditButton } from 'Containers/WorkPlan/WorkPlanTable/styles';
 import EditForm from './EditForm';
 import { Procedure } from './fetchProcedures';
 import getDoctorProcedures from './fetchProcedures';
+
+dayjs.extend(Duration);
+dayjs.extend(RelativeTime);
 
 interface formItem extends FormItemProps {
   type: string;
@@ -102,7 +108,7 @@ const DoctorManageProcedures = () => {
     },
     {
       name: 'needed_time_min',
-      label: 'Procedure time',
+      label: 'Procedure time (minutes)',
       type: 'number',
       rules: [{ required: true, message: 'Please input procedure time' }],
     },
@@ -125,6 +131,16 @@ const DoctorManageProcedures = () => {
       title: 'Procedure time',
       dataIndex: 'needed_time_min',
       key: 'needed_time_min',
+      render: (text: number) => {
+        const hours = dayjs.duration(text, 'minutes').hours();
+        const minutes = dayjs.duration(text, 'minutes').minutes();
+
+        return hours > 0 && minutes > 0
+          ? `${hours} hours and ${minutes} minutes`
+          : hours > 0
+          ? `${hours} hours`
+          : `${minutes} minutes`;
+      },
     },
     {
       title: 'Actions',
