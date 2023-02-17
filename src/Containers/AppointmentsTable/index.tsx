@@ -11,7 +11,6 @@ import DeleteButton from 'Components/DeleteButton';
 import cancelAppointment from 'Containers/AppointmentsTable/cancelAppointment';
 import pushNotification from 'pushNotification';
 import routes from 'routes';
-import { getDataFromToken } from 'localStorageAPI';
 import { CenteredContainer } from 'Containers/EditProfileForm/styles';
 
 interface UserInfo {
@@ -30,6 +29,7 @@ interface Procedure {
 export interface Appointment {
   id: number;
   start_time: string;
+  status: string;
   doctor: UserInfo;
   patient: UserInfo;
   procedure: Procedure;
@@ -39,7 +39,6 @@ const AppointmentsTable = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [render, setRender] = useState(Date.now());
   const { dispatch, state } = useContext(Store);
-  const { userID } = getDataFromToken();
   const { confirm } = Modal;
   const navigate = useNavigate();
   const isPatient = state.accountType === userType.PATIENT;
@@ -131,7 +130,7 @@ const AppointmentsTable = () => {
           data={appointments}
           setData={setAppointments}
           columns={columns}
-          fetchData={getAppointments(userID || 0)}
+          fetchData={getAppointments()}
           key={render}
         />
       </Col>
