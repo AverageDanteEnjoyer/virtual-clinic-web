@@ -1,26 +1,31 @@
-import React, { useContext, useState } from 'react';
-import { Spin, Col, Row, Modal, Form } from 'antd';
 import { capitalize, lowerCase } from 'lodash';
 import { useNavigate } from 'react-router-dom';
+import { Spin, Col, Row, Modal, Form, FormItemProps } from 'antd';
+import { useContext, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
-import { getDataFromToken } from 'localStorageAPI';
-import pushNotification from 'pushNotification';
-import { CenteredContainer } from 'Containers/EditProfileForm/styles';
-import Input from 'Components/Input';
-import Button from 'Components/Button';
-import useModal from 'Hooks/useModal';
-import { Store } from 'store';
 import routes from 'routes';
-import DeleteButton from 'Containers/DoctorManageProcedures/styles';
-import { formItem } from 'Containers/EditProfileForm';
-import PaginatedTable from 'Components/PaginatedTable';
+import { Store } from 'store';
+import pushNotification from 'pushNotification';
+import { getDataFromToken } from 'localStorageAPI';
+
+import useModal from 'Hooks/useModal';
+
 import handleDelete from 'Containers/DoctorManageProcedures/deleteProcedure';
 import addProcedure from 'Containers/DoctorManageProcedures/EditForm/addProcedure';
+import { DeleteButton, CenteredContainer } from 'Containers/DoctorManageProcedures/styles';
+
+import Input from 'Components/Input';
+import Button from 'Components/Button';
+import PaginatedTable from 'Components/PaginatedTable';
 
 import EditForm from './EditForm';
 import { Procedure } from './fetchProcedures';
 import getDoctorProcedures from './fetchProcedures';
+
+interface formItem extends FormItemProps {
+  type: string;
+}
 
 export interface DoctorProceduresType {
   id: number;

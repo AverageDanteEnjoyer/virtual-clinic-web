@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import { Form, Space, TimePicker } from 'antd';
+import { capitalize } from 'lodash';
+import { Col, Row, TimePicker } from 'antd';
+import pushNotification from 'pushNotification';
+
+import { API_URL } from 'api';
+import { getLocalStorageResource } from 'localStorageAPI';
+
+import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
 
 import Spin from 'Components/Spin';
-import { CenteredContainer } from 'Containers/EditProfileForm/styles';
-import Button from 'Components/Button';
-import { getLocalStorageResource } from 'localStorageAPI';
-import { API_URL } from 'api';
-import Alert from 'Components/Alert';
-import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
+
+import { StyledForm, SubmitButton } from './styles';
 
 interface FormData {
   time_range: any;
@@ -22,13 +25,7 @@ interface EditWorkPlanProps {
 
 const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps) => {
   const [loading, setLoading] = useState(false);
-  const [alerts, setAlerts] = useState<
-    {
-      type: 'success' | 'warning' | 'error' | 'info';
-      message: string;
-      description?: string;
-    }[]
-  >([]);
+  const [form] = StyledForm.useForm();
 
   const editWorkPlan = async (values: FormData) => {
     const body: WorkPlan = {
@@ -53,52 +50,48 @@ const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps
 
   const onFinish = async (values: FormData) => {
     setLoading(true);
-    const response = await editWorkPlan(values);
-    const responseBody = await response.json();
-    setLoading(false);
 
-    if (response.ok) {
-      setAlerts([
-        {
-          type: 'success',
-          message: 'Work plan has been edited successfully',
-        },
-      ]);
-      setData(data.map((item) => (item.id === workPlan.id ? responseBody.data : item)));
-      setTimeout(closeEditModal, 5000);
-    } else {
-      setAlerts(
-        Object.entries(responseBody.errors).map(([key, message]) => ({
-          type: 'error',
-          message: `Day ${message}`,
-        }))
-      );
+    try {
+      const response = await editWorkPlan(values);
+      const responseBody = await response.json();
+      setLoading(false);
+
+      if (response.ok) {
+        pushNotification('success', 'Success', 'Work plan updated successfully');
+        setData(data.map((item) => (item.id === workPlan.id ? responseBody.data : item)));
+        setTimeout(closeEditModal, 5000);
+      } else {
+        const formItem = form.getFieldInstance('time_range');
+        const description = `${capitalize(formItem.name.replaceAll('_', ' '))} ${responseBody.errors[formItem.name]}.`;
+        form.setFields([{ name: formItem.name, errors: [description] }]);
+      }
+    } catch {
+      pushNotification('error', 'Error', 'Something went wrong');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const alertsJSX = alerts.map(({ type, message, description }, idx) => (
-    <Alert key={idx} type={type} message={message} description={description} />
-  ));
-
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      <Form autoComplete="off" onFinish={onFinish}>
-        <Form.Item
-          name="time_range"
-          label="Work hours"
-          rules={[{ required: true, message: 'Please select your work hours' }]}
-        >
-          <TimePicker.RangePicker format={'H'} allowClear={false} />
-        </Form.Item>
-        <CenteredContainer>
-          <Button htmlType="submit" size="large" loading={loading}>
-            Submit
-          </Button>
-        </CenteredContainer>
-        <Space direction={'horizontal'} size={'large'} style={{ marginTop: 20 }}>
-          {alertsJSX}
-        </Space>
-      </Form>
+      <StyledForm autoComplete="off" onFinish={onFinish}>
+        <Row>
+          <Col span={24}>
+            <StyledForm.Item
+              name="time_range"
+              label="Work hours"
+              rules={[{ required: true, message: 'Please select your work hours' }]}
+            >
+              <TimePicker.RangePicker format={'H'} allowClear={false} />
+            </StyledForm.Item>
+          </Col>
+          <Col span={24}>
+            <SubmitButton htmlType="submit" size="large" loading={loading}>
+              Submit
+            </SubmitButton>
+          </Col>
+        </Row>
+      </StyledForm>
     </Spin>
   );
 };

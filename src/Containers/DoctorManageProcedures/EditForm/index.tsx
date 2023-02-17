@@ -1,18 +1,23 @@
-import React, { useContext, useState } from 'react';
-import { Col, Row, Form } from 'antd';
+import { Col, Row, Form, FormItemProps } from 'antd';
+import { useContext, useState } from 'react';
 import { capitalize, lowerCase } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 
-import { CenteredContainer } from 'Containers/EditProfileForm/styles';
-import Button from 'Components/Button';
-import pushNotification from 'pushNotification';
-import Input from 'Components/Input';
-import { formItem } from 'Containers/EditProfileForm';
-import handleEdit from 'Containers/DoctorManageProcedures/editProcedure';
 import routes from 'routes';
 import { Store } from 'store';
+import pushNotification from 'pushNotification';
+
+import handleEdit from 'Containers/DoctorManageProcedures/editProcedure';
+import { CenteredContainer } from 'Containers/DoctorManageProcedures/styles';
+
+import Input from 'Components/Input';
+import Button from 'Components/Button';
 
 import { DoctorProceduresType, FormData } from '../index';
+
+interface formItem extends FormItemProps {
+  type: string;
+}
 
 interface EditFormProps {
   setTableState: (date: number) => void;

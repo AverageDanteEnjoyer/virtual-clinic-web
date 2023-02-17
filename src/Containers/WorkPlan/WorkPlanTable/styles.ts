@@ -1,7 +1,8 @@
-import styled from 'styled-components';
-
 import Button from 'Components/Button';
 import palette from 'palette';
+import styled from 'styled-components';
+
+export const EditButton = styled(Button)``;
 
 export const DeleteButton = styled(Button)`
   background-color: ${palette.sovietRussia};
@@ -19,12 +20,4 @@ export const DeleteButton = styled(Button)`
       outline: none;
     }
   }
-`;
-
-export const CenteredContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px 100%;
 `;

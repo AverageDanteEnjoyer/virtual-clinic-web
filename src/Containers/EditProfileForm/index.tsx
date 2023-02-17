@@ -1,28 +1,28 @@
-import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { PlusOutlined } from '@ant-design/icons';
-import { Form, FormItemProps, message } from 'antd';
+import { capitalize } from 'lodash';
+import { Row, Col, FormItemProps } from 'antd';
+import { useContext, useState, ReactNode } from 'react';
+import { PlusOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 
-import routes from 'routes';
-import { API_URL } from 'api';
 import { Store, userType } from 'store';
+import pushNotification from 'pushNotification';
 import { getLocalStorageResource, setLocalStorageResources } from 'localStorageAPI';
 
 import Spin from 'Components/Spin';
 import Input from 'Components/Input';
-import Alert from 'Components/Alert';
 import Button from 'Components/Button';
+import { Paragraph } from 'Components/Typography';
 import PaginatedSelect from 'Components/PaginatedSelect';
-import { StyledTypography as Typography } from 'Components/Typography/styles';
 
+import updateUser from './updateUser';
+import { StyledButton, StyledForm } from './styles';
 import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
-import { CenteredContainer } from './styles';
 
-export interface formItem extends FormItemProps {
+interface FormItem extends FormItemProps {
   type: string;
+  icon?: ReactNode;
 }
 
-type userInfo = {
+export type UserInfo = {
   first_name: string;
   last_name: string;
   email: string;
@@ -36,131 +36,79 @@ export interface Profession {
 }
 
 const ProfileEditForm = () => {
-  const { state, dispatch } = useContext(Store);
-
-  const navigate = useNavigate();
+  const { state } = useContext(Store);
+  const [form] = StyledForm.useForm();
 
   const [professions, setProfessions] = useState<Profession[]>([]);
   const [loading, setLoading] = useState(false);
-  const [alerts, setAlerts] = useState<
-    {
-      type: 'success' | 'warning' | 'error' | 'info';
-      message: string;
-      description?: string;
-    }[]
-  >([]);
 
-  const update = async (credentials: { user: userInfo }) => {
-    const token = getLocalStorageResource('token');
-    return await fetch(`${API_URL}/users/`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      body: JSON.stringify(credentials),
-    });
-  };
-
-  const onFinish = async (values: userInfo) => {
+  const onFinish = async (values: UserInfo) => {
     const credentials = {
       user: { ...values, professions: professions.map((profession) => profession.name) },
     };
 
     setLoading(true);
-    const response = await update(credentials);
-    setLoading(false);
+    try {
+      const response = await updateUser(credentials);
 
-    if (response.ok) {
-      const updatedInfo = {
-        first_name: values.first_name,
-        last_name: values.last_name,
-        email: values.email,
-      };
-      setLocalStorageResources(updatedInfo);
+      if (response.ok) {
+        setLocalStorageResources({
+          first_name: values.first_name,
+          last_name: values.last_name,
+          email: values.email,
+        });
 
-      setAlerts([
-        {
-          type: 'success',
-          message: 'Success',
-          description: 'Account details has been updated!',
-        },
-      ]);
-    } else {
-      const responseBody = await response.json();
-      if (response.status === 422) {
-        setAlerts(
-          Object.entries(responseBody.errors).map(([key, message]) => ({
-            type: 'error',
-            message: 'Error',
-            description: `${key} ${message}`.replaceAll('_', ' '),
-          }))
-        );
+        pushNotification('success', 'Success', 'Your profile has been updated.');
       } else {
-        setAlerts([
-          {
-            type: 'error',
-            message: 'Error',
-            description: `${responseBody.error}`,
-          },
-        ]);
-        //Token is either expired or doesn't exist somehow
-        if (response.status === 401) {
-          setTimeout(() => {
-            dispatch({ type: 'logout' });
-            navigate(routes.logIn.path, {
-              state: {
-                errors: [{ type: 'info', message: 'You have been logged out, please log in again!' }],
-              },
-            });
-          }, 2000);
-        }
+        const { errors } = await response.json();
+        Object.entries(errors).forEach(([key, value]) => {
+          const description = `${capitalize(key.replaceAll('_', ' '))} ${value}.`;
+
+          formItems.forEach(({ name }) => {
+            key === name && form.setFields([{ name: key, errors: [description] }]);
+          });
+        });
       }
+    } catch (error) {
+      pushNotification('error', 'Error', 'Something went wrong. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    setAlerts([
-      {
-        type: 'error',
-        message: 'Error',
-        description: `Please input: ${errorInfo.errorFields
-          .map((field: any) => field.name.toString().replaceAll('_', ' '))
-          .join(', ')}`,
-      },
-    ]);
-  };
-
-  const formItems: formItem[] = [
+  const formItems: FormItem[] = [
     {
       label: 'First name',
       name: 'first_name',
       type: 'text',
-      rules: [{ message: 'Please input your first name' }],
+      icon: <UserOutlined />,
+      rules: [{ required: true, message: 'Please input your first name' }],
     },
     {
       label: 'Last name',
       name: 'last_name',
       type: 'text',
-      rules: [{ message: 'Please input your last name' }],
+      icon: <UserOutlined />,
+      rules: [{ required: true, message: 'Please input your last name' }],
     },
-    { label: 'Email', name: 'email', type: 'email', rules: [{ message: 'Please input your email' }] },
+    {
+      label: 'Email',
+      name: 'email',
+      type: 'email',
+      icon: <MailOutlined />,
+      rules: [{ required: true, message: 'Please input your email' }],
+    },
     {
       label: 'Current password',
       name: 'current_password',
       type: 'password',
       rules: [{ required: true, message: 'Please input your current password' }],
     },
-    {
-      label: 'New password',
-      name: 'password',
-      type: 'password',
-      rules: [{ message: 'Please input your new password' }],
-    },
+    { label: 'New password', name: 'password', type: 'password' },
   ];
 
-  const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
-    <Form.Item
+  const formItemsJSX = formItems.map(({ label, name, rules, type, icon }, idx) => (
+    <StyledForm.Item
       key={idx}
       label={label}
       name={name}
@@ -171,58 +119,66 @@ const ProfileEditForm = () => {
         type={type}
         placeholder={`Enter your ${label}`}
         password={type === 'password'}
-        defaultValue={name && getLocalStorageResource(name as string)}
+        prefix={icon}
+        value={name && getLocalStorageResource(name as string)}
       />
-    </Form.Item>
-  ));
-
-  const alertsJSX = alerts.map(({ type, message, description }, idx) => (
-    <Alert key={idx} type={type} message={message} description={description} />
+    </StyledForm.Item>
   ));
 
   const notFoundContentOnClick = async (searchValue: string) => {
-    const response = await createNewProfession(searchValue);
-    if (response.success) {
-      message.success(`${searchValue} was successfully added to profession pool. Please press submit before leaving!`);
-      setProfessions([...professions, response.data]);
+    const { success, data, message } = await createNewProfession(searchValue);
+    if (success) {
+      pushNotification(
+        'success',
+        'Success',
+        `${searchValue} was successfully added to profession pool. Please press submit before leaving!`
+      );
+      setProfessions([...professions, data]);
     } else {
-      message.error(response.message);
+      pushNotification('error', 'Error', message);
     }
   };
 
   const notFoundContent = (searchValue: string) => (
-    <>
-      <Typography>Profession "{searchValue}" not found. Would you like to add it to the list?</Typography>
-      <Button size="large" icon={<PlusOutlined />} onClick={() => notFoundContentOnClick(searchValue)}>
+    <Paragraph>
+      Profession "{searchValue}" not found. Would you like to add it to the list?
+      <Button icon={<PlusOutlined />} onClick={() => notFoundContentOnClick(searchValue)}>
         Add Profession
       </Button>
-    </>
+    </Paragraph>
+  );
+
+  const selectProfessions = state.accountType === userType.DOCTOR && (
+    <StyledForm.Item label="Professions">
+      <PaginatedSelect<Profession>
+        fetchOptions={fetchAllProfessions}
+        fetchInitialValues={fetchDoctorProfessions}
+        values={professions}
+        setValues={setProfessions}
+        notFoundContent={notFoundContent}
+        mode="multiple"
+        renderOption={(profession: Profession) => profession.name}
+      />
+    </StyledForm.Item>
   );
 
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      <Form labelCol={{ span: 4 }} autoComplete="off" onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        {formItemsJSX}
-        {state.accountType === userType.DOCTOR && (
-          <Form.Item label="Professions">
-            <PaginatedSelect<Profession>
-              fetchOptions={fetchAllProfessions}
-              fetchInitialValues={fetchDoctorProfessions}
-              values={professions}
-              setValues={setProfessions}
-              notFoundContent={notFoundContent}
-              mode="multiple"
-              renderOption={(profession: Profession) => profession.name}
-            />
-          </Form.Item>
-        )}
-        <CenteredContainer>
-          <Button shape="round" htmlType="submit" size="large" loading={loading}>
-            Submit
-          </Button>
-          {alertsJSX}
-        </CenteredContainer>
-      </Form>
+      <StyledForm form={form} onFinish={onFinish} layout="vertical">
+        <Row>
+          <Col span={24}>
+            {formItemsJSX}
+            {selectProfessions}
+            <Row>
+              <Col xs={{ span: 24 }} md={{ span: 12, offset: 6 }}>
+                <StyledButton htmlType="submit" size="large" loading={loading}>
+                  Update Account
+                </StyledButton>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </StyledForm>
     </Spin>
   );
 };

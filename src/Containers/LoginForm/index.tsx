@@ -1,15 +1,16 @@
-import { useContext, useEffect, useState } from 'react';
 import { Col, Row, FormItemProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
-
-import Input from 'Components/Input';
-import Spin from 'Components/Spin';
+import { useContext, useEffect, useState } from 'react';
 
 import routes from 'routes';
 import { API_URL } from 'api';
 import { Store } from 'store';
-import { StyledButton, StyledForm } from './styles';
 import pushNotification from 'pushNotification';
+
+import Spin from 'Components/Spin';
+import Input from 'Components/Input';
+
+import { StyledButton, StyledForm } from './styles';
 
 interface formItem extends FormItemProps {
   type: string;

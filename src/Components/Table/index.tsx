@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { Table as TableAntd } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 import { useFetch } from 'Hooks/useFetch';
+
+import { StyledTable } from './styles';
 
 export type TableRecord = {
   id: number;
@@ -26,7 +27,9 @@ const Table = <T extends TableRecord, R>({ data, setData, columns, url, extractD
     }
   }, [responseData]);
 
-  return <TableAntd columns={columns} dataSource={data} loading={loading} rowKey={rowKey || 'id'} pagination={false} />;
+  return (
+    <StyledTable columns={columns} dataSource={data} loading={loading} rowKey={rowKey || 'id'} pagination={false} />
+  );
 };
 
 export default Table;

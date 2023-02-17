@@ -1,14 +1,19 @@
 import { useState } from 'react';
-import { ColumnsType } from 'antd/es/table';
-import { Modal } from 'antd';
 import { capitalize } from 'lodash';
+import { Col, Modal, Row } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { API_URL } from 'api';
 import { getAccountId, getLocalStorageResource } from 'localStorageAPI';
-import Table, { TableRecord } from 'Components/Table';
-import Button from 'Components/Button';
+
 import useModal from 'Hooks/useModal';
+
 import EditForm from 'Containers/WorkPlan/EditForm';
+
+import Table, { TableRecord } from 'Components/Table';
+
+import { DeleteButton, EditButton } from './styles';
 
 export interface WorkPlan extends TableRecord {
   day_of_week: string;
@@ -19,8 +24,6 @@ export interface WorkPlan extends TableRecord {
 interface ResponseBodyType {
   data: WorkPlan[];
   total: number;
-  page: number;
-  per_page: number;
 }
 
 interface WorkPlanTableProps {
@@ -62,35 +65,42 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
       title: 'Work hour start',
       dataIndex: 'work_hour_start',
       key: 'work_hour_start',
+      render: (text: number) => `${text}:00`,
     },
     {
       title: 'Work hour end',
       dataIndex: 'work_hour_end',
       key: 'work_hour_end',
+      render: (text: number) => `${text}:00`,
     },
     {
       title: 'Actions',
       dataIndex: 'actions',
       key: 'actions',
+      width: 1,
       render: (text: any, record: WorkPlan) => (
-        <>
-          <Button
-            onClick={() => {
-              openEditModal();
-              setRecord(record);
-            }}
-          >
-            Edit
-          </Button>
-          <Button
-            onClick={() => {
-              openDeleteModal();
-              setRecord(record);
-            }}
-          >
-            Delete
-          </Button>
-        </>
+        <Row gutter={[0, 5]} justify="center" align="middle">
+          <Col>
+            <EditButton
+              onClick={() => {
+                openEditModal();
+                setRecord(record);
+              }}
+            >
+              <EditOutlined />
+            </EditButton>
+          </Col>
+          <Col>
+            <DeleteButton
+              onClick={() => {
+                openDeleteModal();
+                setRecord(record);
+              }}
+            >
+              <DeleteOutlined />
+            </DeleteButton>
+          </Col>
+        </Row>
       ),
     },
   ];

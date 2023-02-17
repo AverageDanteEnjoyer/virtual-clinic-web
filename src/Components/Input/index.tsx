@@ -1,5 +1,5 @@
 import { InputProps } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined } from '@ant-design/icons';
 
 import { StyledInput, StyledInputPassword } from './styles';
 
@@ -7,36 +7,11 @@ interface StyledInputProps extends InputProps {
   password?: boolean;
 }
 
-const Input = ({
-  prefix = <UserOutlined />,
-  password = false,
-  size,
-  placeholder,
-  type,
-  onChange,
-  className,
-  defaultValue,
-  value,
-}: StyledInputProps) => {
+const Input = ({ password = false, ...rest }: StyledInputProps) => {
   return password ? (
-    <StyledInputPassword
-      className={className}
-      onChange={onChange}
-      size={size}
-      placeholder={placeholder}
-      prefix={<LockOutlined />}
-    />
+    <StyledInputPassword {...rest} type="password" prefix={<LockOutlined />} />
   ) : (
-    <StyledInput
-      className={className}
-      size={size}
-      placeholder={placeholder}
-      prefix={prefix}
-      type={type}
-      onChange={onChange}
-      defaultValue={defaultValue}
-      value={value}
-    />
+    <StyledInput {...rest} />
   );
 };
 
