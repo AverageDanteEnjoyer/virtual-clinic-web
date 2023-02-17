@@ -11,7 +11,6 @@ import DeleteButton from 'Components/DeleteButton';
 import cancelAppointment from 'Containers/AppointmentsTable/cancelAppointment';
 import pushNotification from 'pushNotification';
 import routes from 'routes';
-import { API_URL } from 'api';
 import { getDataFromToken } from 'localStorageAPI';
 
 interface UserInfo {
@@ -37,22 +36,19 @@ export interface Appointment {
 
 const AppointmentsTable = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [tableState, setTableState] = useState(Date.now());
+  const [render, setRender] = useState(Date.now());
   const { dispatch, state } = useContext(Store);
   const { userID } = getDataFromToken();
   const { confirm } = Modal;
   const navigate = useNavigate();
-  const fetchUrl =
-    state.accountType === userType.PATIENT
-      ? `${API_URL}/api/patient/${userID}/appointments`
-      : `${API_URL}/api/doctor/${userID}/appointments`;
+  const isPatient = state.accountType === userType.PATIENT;
 
   const handleCancellation = async (record: Appointment) => {
     try {
       const response = await cancelAppointment(record);
 
       if (response.ok) {
-        setTableState(Date.now());
+        setRender(Date.now());
         pushNotification('success', 'Success', 'Appointment has been cancelled');
       }
     } catch {
@@ -74,48 +70,45 @@ const AppointmentsTable = () => {
     });
   };
 
+  const timeStampRender = (value: any, record: Appointment) => {
+    const startTimeObject = dayjs(record.start_time);
+
+    const date = startTimeObject.format('DD/MM/YYYY');
+    const startTime = startTimeObject.format('HH:mm');
+    const endTime = startTimeObject.add(record.procedure.needed_time_min, 'minutes').format('HH:mm');
+
+    return `${date} ${startTime} ${endTime}`;
+  };
+
   const columns = [
     {
-      title: 'Procedure name',
+      title: 'Procedure',
       dataIndex: ['procedure', 'name'],
       key: 'name',
     },
-    state.accountType === userType.PATIENT
+    isPatient
       ? {
           title: 'Doctor',
-          dataIndex: 'user',
-          key: 'user',
+          dataIndex: 'doctor',
+          key: 'doctor',
           render: (value: any, record: Appointment) => `${record.doctor.first_name} ${record.doctor.last_name}`,
         }
       : {
           title: 'Patient',
-          dataIndex: 'user',
-          key: 'user',
+          dataIndex: 'patient',
+          key: 'patient',
           render: (value: any, record: Appointment) => `${record.patient.first_name} ${record.patient.last_name}`,
         },
     {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
-      render: (value: any, record: Appointment) => dayjs(record.start_time).format('MM/DD/YYYY'),
-    },
-    {
-      title: 'Start time',
-      dataIndex: 'start_time',
-      key: 'start_time',
-      render: (value: string) => dayjs(value).format('h:mm A'),
-    },
-    {
-      title: 'End time',
-      dataIndex: 'end_time',
-      key: 'end_time',
-      render: (value: string, record: Appointment) =>
-        dayjs(record.start_time).add(record.procedure.needed_time_min, 'minutes').format('h:mm A'),
+      title: 'Timestamp',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
+      render: timeStampRender,
     },
     {
       title: 'Cancel',
-      dataIndex: 'action',
-      key: 'action',
+      dataIndex: 'cancel',
+      key: 'cancel',
       render: (value: any, record: Appointment) => (
         <DeleteButton onClick={() => showConfirm(record)}>
           <CloseOutlined />
@@ -131,8 +124,8 @@ const AppointmentsTable = () => {
           data={appointments}
           setData={setAppointments}
           columns={columns}
-          fetchData={getAppointments(fetchUrl)}
-          key={tableState}
+          fetchData={getAppointments(userID || 0)}
+          key={render}
         />
       </Col>
     </Row>
