@@ -12,6 +12,7 @@ import cancelAppointment from 'Containers/AppointmentsTable/cancelAppointment';
 import pushNotification from 'pushNotification';
 import routes from 'routes';
 import { getDataFromToken } from 'localStorageAPI';
+import { CenteredContainer } from 'Containers/EditProfileForm/styles';
 
 interface UserInfo {
   id: number;
@@ -110,9 +111,15 @@ const AppointmentsTable = () => {
       dataIndex: 'cancel',
       key: 'cancel',
       render: (value: any, record: Appointment) => (
-        <DeleteButton onClick={() => showConfirm(record)}>
-          <CloseOutlined />
-        </DeleteButton>
+        <Row>
+          <Col span={24}>
+            <CenteredContainer>
+              <DeleteButton onClick={() => showConfirm(record)}>
+                <CloseOutlined />
+              </DeleteButton>
+            </CenteredContainer>
+          </Col>
+        </Row>
       ),
     },
   ];
