@@ -1,9 +1,7 @@
-import { Title } from 'Components/Typography';
-import { EditButton } from 'Containers/WorkPlan/WorkPlanTable/styles';
+import { useContext, useState } from 'react';
 import { capitalize, lowerCase } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import { Spin, Col, Row, Modal, FormItemProps } from 'antd';
-import { useContext, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import routes from 'routes';
@@ -18,7 +16,9 @@ import addProcedure from 'Containers/DoctorManageProcedures/EditForm/addProcedur
 import { DeleteButton, StyledForm, SubmitButton } from 'Containers/DoctorManageProcedures/styles';
 
 import Input from 'Components/Input';
+import { Title } from 'Components/Typography';
 import PaginatedTable from 'Components/PaginatedTable';
+import { EditButton } from 'Containers/WorkPlan/WorkPlanTable/styles';
 
 import EditForm from './EditForm';
 import { Procedure } from './fetchProcedures';
