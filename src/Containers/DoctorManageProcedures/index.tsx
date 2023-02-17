@@ -1,6 +1,8 @@
+import { Title } from 'Components/Typography';
+import { EditButton } from 'Containers/WorkPlan/WorkPlanTable/styles';
 import { capitalize, lowerCase } from 'lodash';
 import { useNavigate } from 'react-router-dom';
-import { Spin, Col, Row, Modal, Form, FormItemProps } from 'antd';
+import { Spin, Col, Row, Modal, FormItemProps } from 'antd';
 import { useContext, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
@@ -13,10 +15,9 @@ import useModal from 'Hooks/useModal';
 
 import handleDelete from 'Containers/DoctorManageProcedures/deleteProcedure';
 import addProcedure from 'Containers/DoctorManageProcedures/EditForm/addProcedure';
-import { DeleteButton, CenteredContainer } from 'Containers/DoctorManageProcedures/styles';
+import { DeleteButton, StyledForm, SubmitButton } from 'Containers/DoctorManageProcedures/styles';
 
 import Input from 'Components/Input';
-import Button from 'Components/Button';
 import PaginatedTable from 'Components/PaginatedTable';
 
 import EditForm from './EditForm';
@@ -43,7 +44,7 @@ const DoctorManageProcedures = () => {
   const [loading, setLoading] = useState(false);
   const { isOpened, openModal, closeModal } = useModal();
   const [record, setRecord] = useState<DoctorProceduresType>({ id: 0, name: '', needed_time_min: 0 });
-  const [form] = Form.useForm();
+  const [form] = StyledForm.useForm();
   const { userID } = getDataFromToken();
   const { dispatch } = useContext(Store);
   const navigate = useNavigate();
@@ -108,9 +109,9 @@ const DoctorManageProcedures = () => {
   ];
 
   const formItemsJSX = formItems.map(({ name, label, type, rules }, idx) => (
-    <Form.Item key={idx} label={label} name={name} rules={rules} colon={true}>
+    <StyledForm.Item key={idx} label={label} name={name} rules={rules} colon={true}>
       <Input type={type} prefix={null} placeholder={`Enter your ${lowerCase(label as string)}`} min="1" />
-    </Form.Item>
+    </StyledForm.Item>
   ));
 
   const columns = [
@@ -130,25 +131,21 @@ const DoctorManageProcedures = () => {
       key: 'actions',
       render: (record: DoctorProceduresType) => {
         return (
-          <Row gutter={[0, 20]}>
-            <Col xs={{ span: 24 }} xl={{ span: 12 }}>
-              <CenteredContainer>
-                <Button
-                  onClick={() => {
-                    setRecord(record);
-                    openModal();
-                  }}
-                >
-                  <EditOutlined />
-                </Button>
-              </CenteredContainer>
+          <Row gutter={[5, 5]} justify="center" align="middle">
+            <Col>
+              <EditButton
+                onClick={() => {
+                  setRecord(record);
+                  openModal();
+                }}
+              >
+                <EditOutlined />
+              </EditButton>
             </Col>
-            <Col xs={{ span: 24 }} xl={{ span: 12 }}>
-              <CenteredContainer>
-                <DeleteButton onClick={async () => await deleteOnClick(record)}>
-                  <DeleteOutlined />
-                </DeleteButton>
-              </CenteredContainer>
+            <Col>
+              <DeleteButton onClick={async () => await deleteOnClick(record)}>
+                <DeleteOutlined />
+              </DeleteButton>
             </Col>
           </Row>
         );
@@ -157,15 +154,7 @@ const DoctorManageProcedures = () => {
   ];
 
   return (
-    <Row gutter={[0, 15]}>
-      <Col span={24}>
-        <Form form={form} onFinish={onFinish} autoComplete="off">
-          {formItemsJSX}
-          <CenteredContainer>
-            <Button htmlType="submit">Submit</Button>
-          </CenteredContainer>
-        </Form>
-      </Col>
+    <Row gutter={[0, 50]}>
       <Col span={24}>
         <Spin spinning={loading} tip="waiting for server response...">
           <PaginatedTable<Procedure>
@@ -177,6 +166,23 @@ const DoctorManageProcedures = () => {
             key={tableState}
           />
         </Spin>
+      </Col>
+      <Col span={24}>
+        <Title centered level={2}>
+          Add new procedure
+        </Title>
+        <StyledForm form={form} onFinish={onFinish} autoComplete="off" requiredMark={false} layout="vertical">
+          <Row>
+            <Col xs={{ span: 22, offset: 1 }} md={{ span: 16, offset: 4 }}>
+              {formItemsJSX}
+            </Col>
+            <Col xs={{ span: 22, offset: 1 }} md={{ span: 16, offset: 4 }}>
+              <SubmitButton size="large" htmlType="submit">
+                Submit
+              </SubmitButton>
+            </Col>
+          </Row>
+        </StyledForm>
       </Col>
       <Modal title="Edit procedure" onCancel={closeModal} footer={null} open={isOpened} centered>
         <EditForm setTableState={setTableState} procedure={record} closeEditModal={closeModal} />

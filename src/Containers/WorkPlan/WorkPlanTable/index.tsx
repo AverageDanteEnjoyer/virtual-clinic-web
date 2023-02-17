@@ -1,3 +1,4 @@
+import pushNotification from 'pushNotification';
 import { useState } from 'react';
 import { capitalize } from 'lodash';
 import { Col, Modal, Row } from 'antd';
@@ -50,6 +51,7 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
 
   const handleRemoveOk = async () => {
     await removeWorkDay(record.id);
+    pushNotification('success', 'Success', 'Work day has been removed!');
     setData(data.filter((item) => item.id !== record.id));
     closeDeleteModal();
   };

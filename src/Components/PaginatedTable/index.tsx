@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Space, Table } from 'antd';
-import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
+import { Space } from 'antd';
 import { debounce } from 'lodash';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
 
-import { FilterDropdown, Input, SearchIcon } from './styles';
 import Button from 'Components/Button';
+
+import { FilterDropdown, Input, SearchIcon, StyledTable } from './styles';
 
 export interface FilterType {
   [field: string]: string;
@@ -109,7 +110,7 @@ const PaginatedTable = <T extends TableRecord>({
   );
 
   return (
-    <Table
+    <StyledTable
       columns={columns}
       dataSource={data}
       loading={loading}
@@ -119,6 +120,7 @@ const PaginatedTable = <T extends TableRecord>({
         total,
         pageSizeOptions,
         position: ['bottomCenter'],
+        hideOnSinglePage: true,
       }}
       onChange={onTableChange}
       rowKey={(record) => record.id}
