@@ -76,14 +76,14 @@ const response = {
   total: 1,
 };
 
-const getAppointments = (fetch_url: string) => {
+const getAppointments = (id: number) => {
   return async ({ page, perPage }: FetchParams): Promise<FetchResponse<Appointment>> => {
     const token = getLocalStorageResource('token');
     if (!token) return { data: [], page, per_page: perPage, total: 0 };
 
     // It's a mock, so I'm not using fetch
 
-    // const response = await fetch(`${fetch_url}`, {
+    // const response = await fetch(``, {
     //   method: 'GET',
     //   headers: {
     //     'Content-Type': 'application/json',
