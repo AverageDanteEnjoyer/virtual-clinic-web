@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 
 import Button from 'Components/Button';
 import palette from 'palette';
-import { StyledParagraph, StyledTitle } from 'Components/Typography/styles';
+import { Paragraph, Title } from 'Components/Typography';
 
 export const Container = styled.div`
   display: flex;
@@ -46,14 +46,14 @@ export const StyledButton = styled(Button)`
   }
 `;
 
-export const Note = styled(StyledParagraph)`
+export const Note = styled(Paragraph)`
   text-align: center;
   font-size: 18px;
   font-weight: 400;
   color: ${palette.russianViolet};
 `;
 
-export const CardTitle = styled(StyledTitle)`
+export const CardTitle = styled(Title)`
   &.ant-typography {
     text-align: center;
     font-size: 32px;

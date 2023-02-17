@@ -8,7 +8,7 @@ interface ExtendedTitleProps extends TitleProps {
 }
 
 export const Title = ({ children, centered, ...rest }: ExtendedTitleProps) => (
-  <StyledTitle {...rest} centered={centered?.toString()}>
+  <StyledTitle {...rest} centered={!!centered}>
     {children}
   </StyledTitle>
 );
