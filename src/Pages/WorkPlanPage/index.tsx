@@ -10,8 +10,8 @@ import useTitle from 'Hooks/useTitle';
 import { PanelCol } from './styles';
 
 const WorkPlanPage = () => {
-  const [workPlan, setWorkPlan] = useState<WorkPlan[]>([]);
   useTitle();
+  const [workPlan, setWorkPlan] = useState<WorkPlan[]>([]);
 
   return (
     <>

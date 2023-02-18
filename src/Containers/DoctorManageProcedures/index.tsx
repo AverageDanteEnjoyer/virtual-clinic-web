@@ -168,6 +168,7 @@ const DoctorManageProcedures = () => {
     {
       title: 'Actions',
       key: 'actions',
+      width: 1,
       render: (record: DoctorProceduresType) => {
         return (
           <Row gutter={[5, 5]} justify="center" align="middle">

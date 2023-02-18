@@ -1,13 +1,15 @@
 import { Col, Row } from 'antd';
 
 import DoctorManageProcedures from 'Containers/DoctorManageProcedures';
-
 import Navbar from 'Components/Navbar';
 import { Title } from 'Components/Typography';
+import useTitle from 'Hooks/useTitle';
 
 import { PanelCol } from './styles';
 
 const DoctorProcedures = () => {
+  useTitle();
+
   return (
     <>
       <Navbar />
