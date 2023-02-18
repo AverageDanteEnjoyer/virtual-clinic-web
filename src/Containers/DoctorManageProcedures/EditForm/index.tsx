@@ -1,4 +1,4 @@
-import { Col, Row, Form, FormItemProps } from 'antd';
+import { FormItemProps } from 'antd';
 import { useContext, useState } from 'react';
 import { capitalize, lowerCase } from 'lodash';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,7 @@ import handleEdit from 'Containers/DoctorManageProcedures/editProcedure';
 import { CenteredContainer } from 'Containers/DoctorManageProcedures/styles';
 
 import Input from 'Components/Input';
-import Button from 'Components/Button';
+import { StyledForm, SubmitButton } from '../styles';
 
 import { DoctorProceduresType, FormData } from '../index';
 
@@ -27,7 +27,7 @@ interface EditFormProps {
 
 const EditForm = ({ setTableState, procedure, closeEditModal }: EditFormProps) => {
   const [loading, setLoading] = useState(false);
-  const [form] = Form.useForm();
+  const [form] = StyledForm.useForm();
   const navigate = useNavigate();
   const { dispatch } = useContext(Store);
 
@@ -66,37 +66,33 @@ const EditForm = ({ setTableState, procedure, closeEditModal }: EditFormProps) =
   const formItems: formItem[] = [
     {
       name: 'name',
-      label: 'Procedure name:',
+      label: 'Procedure name',
       type: 'text',
       rules: [{ required: true, message: 'Please input procedure name' }],
     },
     {
       name: 'needed_time_min',
-      label: 'Procedure time:',
+      label: 'Procedure time (minutes)',
       type: 'number',
       rules: [{ required: true, message: 'Please input procedure time' }],
     },
   ];
 
   const formItemsJSX = formItems.map(({ name, label, type, rules }, idx) => (
-    <Form.Item key={idx} label={label} name={name} rules={rules}>
-      <Input type={type} prefix={null} placeholder={`Enter your ${lowerCase(label as string)}`} />
-    </Form.Item>
+    <StyledForm.Item key={idx} label={label} name={name} rules={rules}>
+      <Input type={type} prefix={null} placeholder={`Enter your ${lowerCase(label as string)}`} min="1" />
+    </StyledForm.Item>
   ));
 
   return (
-    <Row>
-      <Col xs={{ span: 24 }} xl={{ span: 16, offset: 4 }}>
-        <Form form={form} onFinish={onFinish} autoComplete="off" layout="vertical">
-          {formItemsJSX}
-          <CenteredContainer>
-            <Button htmlType="submit" loading={loading}>
-              Submit
-            </Button>
-          </CenteredContainer>
-        </Form>
-      </Col>
-    </Row>
+    <StyledForm form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
+      {formItemsJSX}
+      <CenteredContainer>
+        <SubmitButton size="large" htmlType="submit" loading={loading}>
+          Submit
+        </SubmitButton>
+      </CenteredContainer>
+    </StyledForm>
   );
 };
 

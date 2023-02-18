@@ -22,6 +22,7 @@ import Input from 'Components/Input';
 import { Title } from 'Components/Typography';
 import PaginatedTable from 'Components/PaginatedTable';
 import { EditButton } from 'Containers/WorkPlan/WorkPlanTable/styles';
+import { StyledTitle } from 'Components/Typography/styles';
 
 import EditForm from './EditForm';
 import { Procedure } from './fetchProcedures';
@@ -115,7 +116,7 @@ const DoctorManageProcedures = () => {
   ];
 
   const formItemsJSX = formItems.map(({ name, label, type, rules }, idx) => (
-    <StyledForm.Item key={idx} label={label} name={name} rules={rules} colon={true}>
+    <StyledForm.Item key={idx} label={label} name={name} rules={rules}>
       <Input type={type} prefix={null} placeholder={`Enter your ${lowerCase(label as string)}`} min="1" />
     </StyledForm.Item>
   ));
@@ -187,7 +188,7 @@ const DoctorManageProcedures = () => {
         <Title centered level={2}>
           Add new procedure
         </Title>
-        <StyledForm form={form} onFinish={onFinish} autoComplete="off" requiredMark={false} layout="vertical">
+        <StyledForm form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
           <Row>
             <Col xs={{ span: 22, offset: 1 }} md={{ span: 16, offset: 4 }}>
               {formItemsJSX}
@@ -200,8 +201,18 @@ const DoctorManageProcedures = () => {
           </Row>
         </StyledForm>
       </Col>
-      <Modal title="Edit procedure" onCancel={closeModal} footer={null} open={isOpened} centered>
-        <EditForm setTableState={setTableState} procedure={record} closeEditModal={closeModal} />
+      <Modal
+        title={<StyledTitle centered>Edit procedure</StyledTitle>}
+        onCancel={closeModal}
+        footer={null}
+        open={isOpened}
+        centered
+      >
+        <Row>
+          <Col xs={{ span: 20, offset: 2 }}>
+            <EditForm setTableState={setTableState} procedure={record} closeEditModal={closeModal} />
+          </Col>
+        </Row>
       </Modal>
     </Row>
   );
