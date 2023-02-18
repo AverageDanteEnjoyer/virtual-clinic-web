@@ -2,6 +2,7 @@ import { Space } from 'antd';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
+import { TableLocale } from 'antd/es/table/interface';
 
 import Button from 'Components/Button';
 
@@ -39,6 +40,7 @@ interface PaginatedTableProps<T extends TableRecord> {
   columns: ColumnsType<T>;
   fetchData: ({ page, perPage, filter }: FetchParams) => Promise<FetchResponse<T>>;
   pageSizeOptions?: number[];
+  locale?: TableLocale;
 }
 
 const PaginatedTable = <T extends TableRecord>({
@@ -47,6 +49,7 @@ const PaginatedTable = <T extends TableRecord>({
   columns,
   fetchData,
   pageSizeOptions = [5, 10, 50],
+  locale,
 }: PaginatedTableProps<T>) => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -124,6 +127,7 @@ const PaginatedTable = <T extends TableRecord>({
       }}
       onChange={onTableChange}
       rowKey={(record) => record.id}
+      locale={locale}
     />
   );
 };

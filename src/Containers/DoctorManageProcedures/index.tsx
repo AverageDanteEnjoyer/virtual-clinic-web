@@ -193,7 +193,7 @@ const DoctorManageProcedures = () => {
   ];
 
   return (
-    <Row gutter={[0, 50]}>
+    <Row>
       <Col span={24}>
         <Spin spinning={loading} tip="waiting for server response...">
           <PaginatedTable<Procedure>
@@ -203,6 +203,9 @@ const DoctorManageProcedures = () => {
             fetchData={getDoctorProcedures(userID || 0)}
             pageSizeOptions={[4]}
             key={tableState}
+            locale={{
+              emptyText: `You haven't added any procedure yet`,
+            }}
           />
         </Spin>
       </Col>

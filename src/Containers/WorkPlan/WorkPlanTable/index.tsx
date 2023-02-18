@@ -118,6 +118,9 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
         columns={columns}
         url={`${API_URL}/api/v1/doctors/${doctorId}/work_plans/?page=1&per_page=${perPage}`}
         extractData={(response: ResponseBodyType) => response.data}
+        locale={{
+          emptyText: `You haven't added any workday yet`,
+        }}
       />
       <Modal
         title="Do you want to remove this workday?"
