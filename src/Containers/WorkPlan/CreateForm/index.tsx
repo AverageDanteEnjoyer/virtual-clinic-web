@@ -1,15 +1,14 @@
 import { capitalize } from 'lodash';
 import { useState } from 'react';
-import { Row, Col, TimePicker } from 'antd';
+import { Row, Col } from 'antd';
 
 import { API_URL } from 'api';
 import pushNotification from 'pushNotification';
 import { getLocalStorageResource } from 'localStorageAPI';
-
 import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
-
 import Spin from 'Components/Spin';
 import Select from 'Components/Select';
+import { TimePickerRange } from 'Containers/WorkPlan/WorkPlanTable/styles';
 
 import { StyledForm, SubmitButton } from './styles';
 
@@ -96,9 +95,16 @@ const CreateForm = ({ data, setData }: CreateFormProps) => {
 
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      <StyledForm form={form} onFinish={onFinish} autoComplete="off" requiredMark={false}>
+      <StyledForm
+        form={form}
+        onFinish={onFinish}
+        autoComplete="off"
+        layout="vertical"
+        requiredMark={false}
+        colon={false}
+      >
         <Row>
-          <Col span={24}>
+          <Col xs={{ span: 22, offset: 1 }} md={{ span: 16, offset: 4 }}>
             <StyledForm.Item
               name="day_of_week"
               label="Day of week"
@@ -111,12 +117,12 @@ const CreateForm = ({ data, setData }: CreateFormProps) => {
               label="Work hours"
               rules={[{ required: true, message: 'Please select your work hours' }]}
             >
-              <TimePicker.RangePicker format="H" allowClear={false} />
+              <TimePickerRange format="H" allowClear={false} />
             </StyledForm.Item>
           </Col>
         </Row>
         <Row>
-          <Col xs={{ span: 24 }} md={{ span: 12, offset: 6 }}>
+          <Col xs={{ span: 24 }} md={{ span: 16, offset: 4 }}>
             <SubmitButton htmlType="submit" size="large" loading={loading}>
               Submit
             </SubmitButton>

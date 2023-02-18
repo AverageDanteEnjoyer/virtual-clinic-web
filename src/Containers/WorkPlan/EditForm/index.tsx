@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { capitalize } from 'lodash';
-import { Col, Row, TimePicker } from 'antd';
-import pushNotification from 'pushNotification';
+import { Col, Row } from 'antd';
 
+import pushNotification from 'pushNotification';
 import { API_URL } from 'api';
 import { getLocalStorageResource } from 'localStorageAPI';
-
 import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
-
 import Spin from 'Components/Spin';
 
 import { StyledForm, SubmitButton } from './styles';
+import { TimePickerRange } from 'Containers/WorkPlan/WorkPlanTable/styles';
 
 interface FormData {
   time_range: any;
@@ -59,6 +58,7 @@ const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps
       if (response.ok) {
         pushNotification('success', 'Success', 'Work plan updated successfully');
         setData(data.map((item) => (item.id === workPlan.id ? responseBody.data : item)));
+        form.resetFields();
         setTimeout(closeEditModal, 5000);
       } else {
         const formItem = form.getFieldInstance('time_range');
@@ -74,7 +74,14 @@ const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps
 
   return (
     <Spin spinning={loading} tip="waiting for server response...">
-      <StyledForm autoComplete="off" onFinish={onFinish}>
+      <StyledForm
+        form={form}
+        autoComplete="off"
+        onFinish={onFinish}
+        layout="vertical"
+        requiredMark={false}
+        colon={false}
+      >
         <Row>
           <Col span={24}>
             <StyledForm.Item
@@ -82,7 +89,7 @@ const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps
               label="Work hours"
               rules={[{ required: true, message: 'Please select your work hours' }]}
             >
-              <TimePicker.RangePicker format={'H'} allowClear={false} />
+              <TimePickerRange format={'H'} allowClear={false} />
             </StyledForm.Item>
           </Col>
           <Col span={24}>

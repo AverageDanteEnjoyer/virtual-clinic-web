@@ -1,6 +1,8 @@
+import styled from 'styled-components';
+
 import Button from 'Components/Button';
 import palette from 'palette';
-import styled from 'styled-components';
+import { TimePicker } from 'antd';
 
 export const EditButton = styled(Button)``;
 
@@ -19,5 +21,21 @@ export const DeleteButton = styled(Button)`
     &:focus-visible {
       outline: none;
     }
+  }
+`;
+
+export const TimePickerRange = styled(TimePicker.RangePicker)`
+  border-radius: 20px;
+  font-family: CircularStd, sans-serif;
+  font-size: 16px;
+  width: 100%;
+
+  &:hover,
+  &:focus {
+    border-color: ${palette.ultraViolet};
+  }
+
+  .ant-picker-active-bar {
+    background-color: ${palette.ultraViolet};
   }
 `;

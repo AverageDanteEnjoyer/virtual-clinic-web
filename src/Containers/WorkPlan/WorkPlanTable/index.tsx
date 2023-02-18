@@ -1,20 +1,23 @@
-import pushNotification from 'pushNotification';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
 import { capitalize } from 'lodash';
 import { Col, Modal, Row } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
 
 import { API_URL } from 'api';
-import { getAccountId, getLocalStorageResource } from 'localStorageAPI';
-
+import { getAccountId } from 'localStorageAPI';
 import useModal from 'Hooks/useModal';
-
 import EditForm from 'Containers/WorkPlan/EditForm';
-
 import Table, { TableRecord } from 'Components/Table';
+import removeWorkDay from 'Containers/WorkPlan/WorkPlanTable/deleteWorkday';
+import pushNotification from 'pushNotification';
+import routes from 'routes';
+import { Store } from 'store';
 
 import { DeleteButton, EditButton } from './styles';
+import palette from 'palette';
+import { StyledTitle } from 'Components/Typography/styles';
 
 export interface WorkPlan extends TableRecord {
   day_of_week: string;
@@ -33,27 +36,44 @@ interface WorkPlanTableProps {
 }
 
 const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
-  const removeWorkDay = async (id: number) => {
-    const token = getLocalStorageResource('token');
+  const [record, setRecord] = useState<WorkPlan>({ id: 0, day_of_week: '', work_hour_start: 0, work_hour_end: 0 });
+  const { isOpened: isEditOpened, openModal: openEditModal, closeModal: closeEditModal } = useModal();
+  const { dispatch } = useContext(Store);
+  const { confirm } = Modal;
+  const navigate = useNavigate();
 
-    await fetch(`${API_URL}/api/v1/work_plans/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-    });
+  const handleRemoveOk = async (record: WorkPlan) => {
+    try {
+      const response = await removeWorkDay(record.id);
+      if (response.ok) {
+        pushNotification('success', 'Success', 'Workday has been removed!');
+        setData(data.filter((item) => item.id !== record.id));
+      }
+    } catch {
+      pushNotification('error', 'Error', 'Something went wrong!');
+      dispatch({ type: 'logout' });
+      navigate(routes.logIn.path);
+    }
   };
 
-  const { isOpened: isEditOpened, openModal: openEditModal, closeModal: closeEditModal } = useModal();
-  const { isOpened: isDeleteOpened, openModal: openDeleteModal, closeModal: closeDeleteModal } = useModal();
-  const [record, setRecord] = useState<WorkPlan>({ id: 0, day_of_week: '', work_hour_start: 0, work_hour_end: 0 });
-
-  const handleRemoveOk = async () => {
-    await removeWorkDay(record.id);
-    pushNotification('success', 'Success', 'Work day has been removed!');
-    setData(data.filter((item) => item.id !== record.id));
-    closeDeleteModal();
+  const showConfirm = async (record: WorkPlan) => {
+    confirm({
+      title: 'Do you want to delete this procedure?',
+      icon: (
+        <ExclamationCircleTwoTone twoToneColor={[palette.white, palette.ultraViolet]} style={{ fontSize: '40px' }} />
+      ),
+      okText: 'Yes',
+      cancelText: 'No',
+      autoFocusButton: 'cancel',
+      okButtonProps: {
+        style: {
+          backgroundColor: palette.ultraViolet,
+        },
+      },
+      onOk() {
+        handleRemoveOk(record);
+      },
+    });
   };
 
   const columns: ColumnsType<WorkPlan> = [
@@ -94,8 +114,8 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
           </Col>
           <Col>
             <DeleteButton
-              onClick={() => {
-                openDeleteModal();
+              onClick={async () => {
+                await showConfirm(record);
                 setRecord(record);
               }}
             >
@@ -123,13 +143,17 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
         }}
       />
       <Modal
-        title="Do you want to remove this workday?"
-        open={isDeleteOpened}
-        onOk={handleRemoveOk}
-        onCancel={closeDeleteModal}
-      />
-      <Modal title="Edit workday" open={isEditOpened} onCancel={closeEditModal} footer={null}>
-        <EditForm data={data} setData={setData} workPlan={record} closeEditModal={closeEditModal} />
+        title={<StyledTitle centered>Edit workday hours</StyledTitle>}
+        onCancel={closeEditModal}
+        footer={null}
+        open={isEditOpened}
+        centered
+      >
+        <Row>
+          <Col xs={{ span: 20, offset: 2 }}>
+            <EditForm data={data} setData={setData} workPlan={record} closeEditModal={closeEditModal} />
+          </Col>
+        </Row>
       </Modal>
     </>
   );

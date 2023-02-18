@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Select } from 'antd';
 
-import colors from 'palette';
+import palette from 'palette';
 
 export const StyledSelect = styled(Select)`
   border-radius: 20px;
@@ -11,7 +11,7 @@ export const StyledSelect = styled(Select)`
 
   .ant-select-selector {
     border-radius: 20px;
-    color: ${colors.dodgerBlue};
+    color: ${palette.ultraViolet};
   }
 
   .ant-select-selection-item {
