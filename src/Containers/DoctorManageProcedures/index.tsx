@@ -5,7 +5,7 @@ import { capitalize, lowerCase } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import RelativeTime from 'dayjs/plugin/relativeTime';
 import { Spin, Col, Row, Modal, FormItemProps } from 'antd';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
 
 import routes from 'routes';
 import { Store } from 'store';
@@ -27,6 +27,7 @@ import { StyledTitle } from 'Components/Typography/styles';
 import EditForm from './EditForm';
 import { Procedure } from './fetchProcedures';
 import getDoctorProcedures from './fetchProcedures';
+import palette from 'palette';
 
 dayjs.extend(Duration);
 dayjs.extend(RelativeTime);
@@ -56,6 +57,7 @@ const DoctorManageProcedures = () => {
   const { dispatch } = useContext(Store);
   const navigate = useNavigate();
   const [tableState, setTableState] = useState(Date.now());
+  const { confirm } = Modal;
 
   const onFinish = async (values: FormData) => {
     setLoading(true);
@@ -98,6 +100,26 @@ const DoctorManageProcedures = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const showConfirm = async (record: DoctorProceduresType) => {
+    confirm({
+      title: 'Do you want to delete this procedure?',
+      icon: (
+        <ExclamationCircleTwoTone twoToneColor={[palette.white, palette.ultraViolet]} style={{ fontSize: '40px' }} />
+      ),
+      okText: 'Yes',
+      cancelText: 'No',
+      autoFocusButton: 'cancel',
+      okButtonProps: {
+        style: {
+          backgroundColor: palette.ultraViolet,
+        },
+      },
+      onOk() {
+        deleteOnClick(record);
+      },
+    });
   };
 
   const formItems: formItem[] = [
@@ -160,7 +182,7 @@ const DoctorManageProcedures = () => {
               </EditButton>
             </Col>
             <Col>
-              <DeleteButton onClick={async () => await deleteOnClick(record)}>
+              <DeleteButton onClick={async () => await showConfirm(record)}>
                 <DeleteOutlined />
               </DeleteButton>
             </Col>
