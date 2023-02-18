@@ -58,7 +58,7 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
 
   const showConfirm = async (record: WorkPlan) => {
     confirm({
-      title: 'Do you want to delete this procedure?',
+      title: 'Do you want to delete this workday?',
       icon: (
         <ExclamationCircleTwoTone twoToneColor={[palette.white, palette.ultraViolet]} style={{ fontSize: '40px' }} />
       ),
