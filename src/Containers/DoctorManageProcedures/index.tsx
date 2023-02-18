@@ -11,6 +11,7 @@ import routes from 'routes';
 import { Store } from 'store';
 import pushNotification from 'pushNotification';
 import { getDataFromToken } from 'localStorageAPI';
+import palette from 'palette';
 
 import useModal from 'Hooks/useModal';
 
@@ -27,7 +28,6 @@ import { StyledTitle } from 'Components/Typography/styles';
 import EditForm from './EditForm';
 import { Procedure } from './fetchProcedures';
 import getDoctorProcedures from './fetchProcedures';
-import palette from 'palette';
 
 dayjs.extend(Duration);
 dayjs.extend(RelativeTime);
