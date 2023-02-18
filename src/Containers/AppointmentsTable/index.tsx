@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { Col, Modal, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { CloseOutlined, ExclamationCircleFilled } from '@ant-design/icons';
+import { CloseOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 import PaginatedTable from 'Components/PaginatedTable';
@@ -12,6 +12,7 @@ import cancelAppointment from 'Containers/AppointmentsTable/cancelAppointment';
 import pushNotification from 'pushNotification';
 import routes from 'routes';
 import { CenteredContainer } from 'Containers/EditProfileForm/styles';
+import palette from 'palette';
 
 interface UserInfo {
   id: number;
@@ -61,9 +62,12 @@ const AppointmentsTable = () => {
   const showConfirm = async (record: Appointment) => {
     confirm({
       title: 'Do you want to cancel this appointment?',
-      icon: <ExclamationCircleFilled />,
+      icon: <ExclamationCircleTwoTone twoToneColor={[palette.white, palette.ultraViolet]} />,
       okText: 'Yes',
       cancelText: 'No',
+      okButtonProps: {
+        color: palette.ultraViolet,
+      },
       onOk() {
         handleCancellation(record);
       },
@@ -109,6 +113,7 @@ const AppointmentsTable = () => {
       title: 'Cancel',
       dataIndex: 'cancel',
       key: 'cancel',
+      width: 1,
       render: (value: any, record: Appointment) => (
         <Row>
           <Col span={24}>
