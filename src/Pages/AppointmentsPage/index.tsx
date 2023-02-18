@@ -3,8 +3,11 @@ import { Col, Row } from 'antd';
 import { StyledTitle } from 'Components/Typography/styles';
 import Navbar from 'Components/Navbar';
 import AppointmentsTable from 'Containers/AppointmentsTable';
+import useTitle from 'Hooks/useTitle';
 
 const AppointmentsPage = () => {
+  useTitle();
+
   return (
     <>
       <Navbar />
