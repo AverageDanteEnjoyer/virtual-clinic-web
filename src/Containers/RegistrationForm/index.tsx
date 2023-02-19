@@ -1,5 +1,5 @@
 import { capitalize } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Row, Col, Space, FormItemProps } from 'antd';
 
@@ -12,6 +12,7 @@ import Radio from 'Components/Radio';
 import Input from 'Components/Input';
 
 import { StyledForm, StyledButton } from './styles';
+import { Store } from 'store';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -26,6 +27,7 @@ type userInfo = {
 };
 
 const RegistrationForm = () => {
+  const { dispatch } = useContext(Store);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -57,17 +59,32 @@ const RegistrationForm = () => {
     try {
       const response = await register(credentials);
       const responseBody = await response.json();
+      const { id, email, first_name, last_name, account_type } = responseBody;
 
       if (response.ok) {
         pushNotification(
           'success',
           'Registration Success',
-          `Your account has been created! Redirecting to the login page...`
+          `Your account has been created! Redirecting to the home page...`
         );
+
+        dispatch({
+          type: 'login',
+          payload: {
+            accountType: account_type,
+            localStorage: {
+              id,
+              token: response.headers.get('Authorization'),
+              first_name,
+              last_name,
+              email,
+            },
+          },
+        });
 
         setTimeoutId(
           setTimeout(() => {
-            navigate(routes.logIn.path);
+            navigate(routes.home.path);
           }, 3000)
         );
       } else {
