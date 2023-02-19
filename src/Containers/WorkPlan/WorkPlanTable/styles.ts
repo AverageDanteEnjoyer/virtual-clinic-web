@@ -27,15 +27,25 @@ export const DeleteButton = styled(Button)`
 export const TimePickerRange = styled(TimePicker.RangePicker)`
   border-radius: 20px;
   font-family: CircularStd, sans-serif;
-  font-size: 16px;
   width: 100%;
+
+  color: ${palette.russianViolet};
 
   &:hover,
   &:focus {
-    border-color: ${palette.ultraViolet};
+    border-color: ${palette.tekhelet};
   }
 
   .ant-picker-active-bar {
     background-color: ${palette.ultraViolet};
+  }
+
+  &.ant-picker-focused {
+    border-color: ${palette.tekhelet};
+  }
+
+  .ant-picker-input input {
+    color: ${palette.russianViolet};
+    font-size: 16px;
   }
 `;

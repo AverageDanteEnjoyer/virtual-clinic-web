@@ -1,14 +1,16 @@
-import { capitalize } from 'lodash';
-import { useState } from 'react';
 import { Row, Col } from 'antd';
+import { useState } from 'react';
+import { capitalize } from 'lodash';
 
 import { API_URL } from 'api';
 import pushNotification from 'pushNotification';
 import { getLocalStorageResource } from 'localStorageAPI';
+
 import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
+import { TimePickerRange } from 'Containers/WorkPlan/WorkPlanTable/styles';
+
 import Spin from 'Components/Spin';
 import Select from 'Components/Select';
-import { TimePickerRange } from 'Containers/WorkPlan/WorkPlanTable/styles';
 
 import { StyledForm, SubmitButton } from './styles';
 
@@ -110,7 +112,7 @@ const CreateForm = ({ data, setData }: CreateFormProps) => {
               label="Day of week"
               rules={[{ required: true, message: 'Please input day of week' }]}
             >
-              <Select placeholder="Select day of week" customOptions={selectOptions} />
+              <Select placeholder="Select day of week" customOptions={selectOptions} optionLabelProp="children" />
             </StyledForm.Item>
             <StyledForm.Item
               name="time_range"

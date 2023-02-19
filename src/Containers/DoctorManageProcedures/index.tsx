@@ -131,9 +131,9 @@ const DoctorManageProcedures = () => {
     },
     {
       name: 'needed_time_min',
-      label: 'Procedure time (minutes)',
+      label: 'Procedure duration (in minutes)',
       type: 'number',
-      rules: [{ required: true, message: 'Please input procedure time' }],
+      rules: [{ required: true, message: 'Please input procedure duration' }],
     },
   ];
 
@@ -151,7 +151,7 @@ const DoctorManageProcedures = () => {
       filtered: true,
     },
     {
-      title: 'Procedure time',
+      title: 'Procedure duration',
       dataIndex: 'needed_time_min',
       key: 'needed_time_min',
       render: (text: number) => {
