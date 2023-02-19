@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { capitalize } from 'lodash';
-import { Col, Row } from 'antd';
 
 import pushNotification from 'pushNotification';
 import { API_URL } from 'api';
 import { getLocalStorageResource } from 'localStorageAPI';
 import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
 import Spin from 'Components/Spin';
+import { TimePickerRange } from 'Containers/WorkPlan/WorkPlanTable/styles';
+import { CenteredContainer } from 'Containers/DoctorManageProcedures/styles';
 
 import { StyledForm, SubmitButton } from './styles';
-import { TimePickerRange } from 'Containers/WorkPlan/WorkPlanTable/styles';
 
 interface FormData {
   time_range: any;
@@ -82,22 +82,18 @@ const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps
         requiredMark={false}
         colon={false}
       >
-        <Row>
-          <Col span={24}>
-            <StyledForm.Item
-              name="time_range"
-              label="Work hours"
-              rules={[{ required: true, message: 'Please select your work hours' }]}
-            >
-              <TimePickerRange format={'H'} allowClear={false} />
-            </StyledForm.Item>
-          </Col>
-          <Col span={24}>
-            <SubmitButton htmlType="submit" size="large" loading={loading}>
-              Submit
-            </SubmitButton>
-          </Col>
-        </Row>
+        <StyledForm.Item
+          name="time_range"
+          label="Work hours"
+          rules={[{ required: true, message: 'Please select your work hours' }]}
+        >
+          <TimePickerRange format={'H'} allowClear={false} />
+        </StyledForm.Item>
+        <CenteredContainer>
+          <SubmitButton htmlType="submit" size="large" loading={loading}>
+            Submit
+          </SubmitButton>
+        </CenteredContainer>
       </StyledForm>
     </Spin>
   );

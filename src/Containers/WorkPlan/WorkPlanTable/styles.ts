@@ -1,8 +1,8 @@
 import styled from 'styled-components';
+import { TimePicker } from 'antd';
 
 import Button from 'Components/Button';
 import palette from 'palette';
-import { TimePicker } from 'antd';
 
 export const EditButton = styled(Button)``;
 
