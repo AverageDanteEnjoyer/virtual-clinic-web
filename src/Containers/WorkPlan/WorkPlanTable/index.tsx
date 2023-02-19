@@ -143,7 +143,11 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
         }}
       />
       <Modal
-        title={<StyledTitle centered>Edit workday hours</StyledTitle>}
+        title={
+          <StyledTitle level={2} centered>
+            Edit workday hours
+          </StyledTitle>
+        }
         onCancel={closeEditModal}
         footer={null}
         open={isEditOpened}

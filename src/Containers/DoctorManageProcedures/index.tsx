@@ -228,7 +228,11 @@ const DoctorManageProcedures = () => {
         </StyledForm>
       </Col>
       <Modal
-        title={<StyledTitle centered>Edit procedure</StyledTitle>}
+        title={
+          <StyledTitle level={2} centered>
+            Edit procedure
+          </StyledTitle>
+        }
         onCancel={closeModal}
         footer={null}
         open={isOpened}
