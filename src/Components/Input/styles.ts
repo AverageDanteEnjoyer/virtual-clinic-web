@@ -10,7 +10,9 @@ const styles = css`
 
   &.ant-input-affix-wrapper:hover,
   &.ant-input-affix-wrapper:focus,
-  &.ant-input-affix-wrapper-focused {
+  &.ant-input-affix-wrapper-focused,
+  &:hover,
+  &:focus {
     border-color: ${palette.ultraViolet};
   }
 `;
