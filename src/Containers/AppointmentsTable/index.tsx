@@ -81,7 +81,7 @@ const AppointmentsTable = () => {
     const startTime = startTimeObject.format('HH:mm');
     const endTime = startTimeObject.add(record.procedure.needed_time_min, 'minutes').format('HH:mm');
 
-    return `${date} ${startTime} ${endTime}`;
+    return `${date} ${startTime}-${endTime}`;
   };
 
   const columns = [
@@ -110,6 +110,11 @@ const AppointmentsTable = () => {
       render: timeStampRender,
     },
     {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
       title: 'Cancel',
       dataIndex: 'cancel',
       key: 'cancel',
@@ -118,7 +123,7 @@ const AppointmentsTable = () => {
         <Row>
           <Col span={24}>
             <CenteredContainer>
-              <DeleteButton onClick={() => showConfirm(record)}>
+              <DeleteButton onClick={() => showConfirm(record)} disabled={record.status !== 'pending'}>
                 <CloseOutlined />
               </DeleteButton>
             </CenteredContainer>
