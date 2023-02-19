@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { ReactNode, useContext } from 'react';
 import { Col, Menu, MenuProps, Row } from 'antd';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
 
 import routes from 'routes';
@@ -25,7 +25,12 @@ function getItem(label: ReactNode, children?: MenuItem[], condition: () => boole
 }
 
 const Navbar = () => {
-  const { dispatch } = useContext(Store);
+  const { dispatch, state } = useContext(Store);
+  const [navbarState, setNavbarState] = useState(Date.now());
+
+  useEffect(() => {
+    setNavbarState(Date.now());
+  }, [state.accountType]);
 
   const logOut = async () => {
     const token = getLocalStorageResource('token');
@@ -69,7 +74,7 @@ const Navbar = () => {
   };
 
   return (
-    <Row align="middle" justify="end">
+    <Row align="middle" justify="end" key={navbarState}>
       <Col flex={1}>
         {/*A place for logo*/}
         <QuestionOutlined />
