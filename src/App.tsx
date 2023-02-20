@@ -1,6 +1,7 @@
 import { SessionProvider } from 'store';
-import 'App.css';
-import Application from 'Application';
+
+import './App.css';
+import Application from './Application';
 
 function App() {
   return (

@@ -1,4 +1,5 @@
 import { Carousel, Image } from 'antd';
+
 import CarouselStyles from './StyledCarousel.module.css';
 
 interface StyledCarouselProps {

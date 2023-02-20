@@ -1,8 +1,9 @@
 import { Form } from 'antd';
 import styled from 'styled-components';
 
-import Button from 'Components/Button';
 import palette from 'palette';
+
+import Button from 'Components/Button';
 
 export const DeleteButton = styled(Button)`
   background-color: ${palette.sovietRussia};
