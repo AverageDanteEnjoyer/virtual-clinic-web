@@ -51,14 +51,15 @@ export interface FormData {
 const DoctorManageProcedures = () => {
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [loading, setLoading] = useState(false);
-  const { isOpened, openModal, closeModal } = useModal();
   const [record, setRecord] = useState<DoctorProceduresType>({ id: 0, name: '', needed_time_min: 0 });
+  const [tableState, setTableState] = useState(Date.now());
+  const [modalState, setModalState] = useState(Date.now());
   const [form] = StyledForm.useForm();
   const { userID } = getDataFromToken();
   const { dispatch } = useContext(Store);
-  const navigate = useNavigate();
-  const [tableState, setTableState] = useState(Date.now());
+  const { isOpened, openModal, closeModal } = useModal();
   const { confirm } = Modal;
+  const navigate = useNavigate();
 
   const onFinish = async (values: FormData) => {
     setLoading(true);
@@ -121,6 +122,11 @@ const DoctorManageProcedures = () => {
         deleteOnClick(record);
       },
     });
+  };
+
+  const onClose = () => {
+    closeModal();
+    setTimeout(() => setModalState(Date.now()), 300);
   };
 
   const formItems: formItem[] = [
@@ -234,14 +240,15 @@ const DoctorManageProcedures = () => {
             Edit procedure
           </StyledTitle>
         }
-        onCancel={closeModal}
+        onCancel={onClose}
         footer={null}
+        key={modalState}
         open={isOpened}
         centered
       >
         <Row>
           <Col xs={{ span: 20, offset: 2 }}>
-            <EditForm setTableState={setTableState} procedure={record} closeEditModal={closeModal} />
+            <EditForm setTableState={setTableState} procedure={record} closeEditModal={onClose} />
           </Col>
         </Row>
       </Modal>

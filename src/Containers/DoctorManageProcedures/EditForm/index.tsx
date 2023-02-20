@@ -36,9 +36,13 @@ const EditForm = ({ setTableState, procedure, closeEditModal }: EditFormProps) =
       const response = await handleEdit({ id: procedure.id, ...values });
 
       if (response.ok) {
+        const { name, needed_time_min } = values;
         setTableState(Date.now());
         pushNotification('success', 'Success', 'Procedure has been updated');
-        form.resetFields();
+        form.setFieldsValue({
+          name,
+          needed_time_min,
+        });
 
         setTimeout(() => {
           closeEditModal();
@@ -67,19 +71,27 @@ const EditForm = ({ setTableState, procedure, closeEditModal }: EditFormProps) =
       name: 'name',
       label: 'Procedure name',
       type: 'text',
+      initialValue: procedure.name,
       rules: [{ required: true, message: 'Please input procedure name' }],
     },
     {
       name: 'needed_time_min',
       label: 'Procedure time (minutes)',
       type: 'number',
+      initialValue: procedure.needed_time_min,
       rules: [{ required: true, message: 'Please input procedure time' }],
     },
   ];
 
-  const formItemsJSX = formItems.map(({ name, label, type, rules }, idx) => (
-    <StyledForm.Item key={idx} label={label} name={name} rules={rules}>
-      <Input type={type} prefix={null} placeholder={`Enter your ${lowerCase(label as string)}`} min="1" />
+  const formItemsJSX = formItems.map(({ name, label, type, initialValue, rules }, idx) => (
+    <StyledForm.Item key={idx} label={label} name={name} rules={rules} initialValue={initialValue}>
+      <Input
+        type={type}
+        prefix={null}
+        placeholder={`Enter your ${lowerCase(label as string)}`}
+        min="1"
+        value={initialValue}
+      />
     </StyledForm.Item>
   ));
 
