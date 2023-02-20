@@ -98,7 +98,7 @@ const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps
           rules={[{ required: true, message: 'Please select your work hours' }]}
           initialValue={[workHourStart, workHourEnd]}
         >
-          <TimePickerRange format={'H:00'} allowClear={false} defaultValue={[workHourStart, workHourEnd]} />
+          <TimePickerRange format={'H:00'} allowClear={false} value={[workHourStart, workHourEnd]} />
         </StyledForm.Item>
         <CenteredContainer>
           <SubmitButton htmlType="submit" size="large" loading={loading}>
