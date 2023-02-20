@@ -11,7 +11,7 @@ const AppointmentsPage = () => {
   return (
     <>
       <Navbar />
-      <StyledTitle center>My appointments</StyledTitle>
+      <StyledTitle centered>My appointments</StyledTitle>
       <Row>
         <Col xs={{ span: 20, offset: 2 }} xl={{ span: 10, offset: 7 }}>
           <AppointmentsTable />

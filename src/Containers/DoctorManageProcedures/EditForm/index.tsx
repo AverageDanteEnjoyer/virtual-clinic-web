@@ -8,10 +8,9 @@ import { Store } from 'store';
 import pushNotification from 'pushNotification';
 
 import handleEdit from 'Containers/DoctorManageProcedures/editProcedure';
-import { CenteredContainer } from 'Containers/DoctorManageProcedures/styles';
+import { CenteredContainer, StyledForm, SubmitButton } from 'Components/DeleteButton';
 
 import Input from 'Components/Input';
-import { StyledForm, SubmitButton } from '../styles';
 
 import { DoctorProceduresType, FormData } from '../index';
 

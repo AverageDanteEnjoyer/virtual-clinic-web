@@ -7,11 +7,10 @@ import dayjs from 'dayjs';
 import PaginatedTable from 'Components/PaginatedTable';
 import getAppointments from 'Containers/AppointmentsTable/fetchAppointments';
 import { Store, userType } from 'store';
-import DeleteButton from 'Components/DeleteButton';
+import { DeleteButton, CenteredContainer } from 'Components/DeleteButton';
 import cancelAppointment from 'Containers/AppointmentsTable/cancelAppointment';
 import pushNotification from 'pushNotification';
 import routes from 'routes';
-import { CenteredContainer } from 'Containers/EditProfileForm/styles';
 import palette from 'palette';
 
 interface UserInfo {

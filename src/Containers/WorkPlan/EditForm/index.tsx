@@ -7,7 +7,7 @@ import { getLocalStorageResource } from 'localStorageAPI';
 import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
 import Spin from 'Components/Spin';
 import { TimePickerRange } from 'Containers/WorkPlan/WorkPlanTable/styles';
-import { CenteredContainer } from 'Containers/DoctorManageProcedures/styles';
+import { CenteredContainer } from 'Components/DeleteButton';
 
 import { StyledForm, SubmitButton } from './styles';
 
