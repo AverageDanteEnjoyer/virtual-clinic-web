@@ -55,8 +55,8 @@ const CreateForm = ({ data, setData }: CreateFormProps) => {
     const workPlan: WorkPlan = {
       id: 0,
       day_of_week: values.day_of_week,
-      work_hour_start: values.time_range[0].$H.toString(),
-      work_hour_end: values.time_range[1].$H.toString(),
+      work_hour_start: values.time_range[0].format('H'),
+      work_hour_end: values.time_range[1].format('H'),
     };
 
     return await fetch(`${API_URL}/api/v1/work_plans/`, {
