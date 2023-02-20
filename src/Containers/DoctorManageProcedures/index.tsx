@@ -17,9 +17,9 @@ import useModal from 'Hooks/useModal';
 
 import handleDelete from 'Containers/DoctorManageProcedures/deleteProcedure';
 import addProcedure from 'Containers/DoctorManageProcedures/EditForm/addProcedure';
+
 import { StyledForm, SubmitButton } from 'Components/DeleteButton';
 import { DeleteButton } from 'Components/DeleteButton';
-
 import Input from 'Components/Input';
 import { Title } from 'Components/Typography';
 import PaginatedTable from 'Components/PaginatedTable';

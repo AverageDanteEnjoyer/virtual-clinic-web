@@ -1,12 +1,13 @@
 import { Form } from 'antd';
-import palette from 'palette';
 import styled from 'styled-components';
+
+import palette from 'palette';
 
 import Button from 'Components/Button';
 
 export const StyledButton = styled(Button)`
   margin-top: 20px;
-  
+
   &.ant-btn {
     &.ant-btn-lg {
       min-width: 200px;

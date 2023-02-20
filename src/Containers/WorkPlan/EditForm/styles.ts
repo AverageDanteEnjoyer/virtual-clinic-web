@@ -1,7 +1,9 @@
 import { Form } from 'antd';
-import Button from 'Components/Button';
-import palette from 'palette';
 import styled from 'styled-components';
+
+import palette from 'palette';
+
+import Button from 'Components/Button';
 
 export const StyledForm = styled(Form)`
   &.ant-form label {

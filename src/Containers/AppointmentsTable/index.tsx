@@ -4,14 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { CloseOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
-import PaginatedTable from 'Components/PaginatedTable';
-import getAppointments from 'Containers/AppointmentsTable/fetchAppointments';
-import { Store, userType } from 'store';
-import { DeleteButton, CenteredContainer } from 'Components/DeleteButton';
-import cancelAppointment from 'Containers/AppointmentsTable/cancelAppointment';
 import pushNotification from 'pushNotification';
 import routes from 'routes';
 import palette from 'palette';
+import { Store, userType } from 'store';
+
+import PaginatedTable from 'Components/PaginatedTable';
+import { DeleteButton, CenteredContainer } from 'Components/DeleteButton';
+
+import getAppointments from 'Containers/AppointmentsTable/fetchAppointments';
+import cancelAppointment from 'Containers/AppointmentsTable/cancelAppointment';
 
 interface UserInfo {
   id: number;

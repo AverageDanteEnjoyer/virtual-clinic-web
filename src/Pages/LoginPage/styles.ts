@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { Row, Col } from 'antd';
 
-import Button from 'Components/Button';
 import palette from 'palette';
+
+import Button from 'Components/Button';
 import { Paragraph, Title } from 'Components/Typography';
 
 export const Container = styled.div`

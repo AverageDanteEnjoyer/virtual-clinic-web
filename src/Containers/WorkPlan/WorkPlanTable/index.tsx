@@ -7,17 +7,20 @@ import { DeleteOutlined, EditOutlined, ExclamationCircleTwoTone } from '@ant-des
 
 import { API_URL } from 'api';
 import { getAccountId } from 'localStorageAPI';
-import useModal from 'Hooks/useModal';
-import EditForm from 'Containers/WorkPlan/EditForm';
-import Table, { TableRecord } from 'Components/Table';
-import removeWorkDay from 'Containers/WorkPlan/WorkPlanTable/deleteWorkday';
 import pushNotification from 'pushNotification';
 import routes from 'routes';
 import { Store } from 'store';
+import palette from 'palette';
+
+import useModal from 'Hooks/useModal';
+
+import EditForm from 'Containers/WorkPlan/EditForm';
+import removeWorkDay from 'Containers/WorkPlan/WorkPlanTable/deleteWorkday';
+
+import Table, { TableRecord } from 'Components/Table';
+import { StyledTitle } from 'Components/Typography/styles';
 
 import { DeleteButton, EditButton } from './styles';
-import palette from 'palette';
-import { StyledTitle } from 'Components/Typography/styles';
 
 export interface WorkPlan extends TableRecord {
   day_of_week: string;

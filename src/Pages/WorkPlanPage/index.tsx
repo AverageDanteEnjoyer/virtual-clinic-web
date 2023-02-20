@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Col, Row } from 'antd';
 
 import { Title } from 'Components/Typography';
+import Navbar from 'Components/Navbar';
+
 import WorkPlanTable, { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
 import CreateForm from 'Containers/WorkPlan/CreateForm';
-import Navbar from 'Components/Navbar';
+
 import useTitle from 'Hooks/useTitle';
 
 import { PanelCol } from './styles';

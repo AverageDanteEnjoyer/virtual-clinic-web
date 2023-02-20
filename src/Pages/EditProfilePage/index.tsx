@@ -4,9 +4,10 @@ import useTitle from 'Hooks/useTitle';
 
 import ProfileEditForm from 'Containers/EditProfileForm';
 
-import { PanelCol } from './styles';
 import Navbar from 'Components/Navbar';
 import { Title } from 'Components/Typography';
+
+import { PanelCol } from './styles';
 
 const ProfileEditPage = () => {
   useTitle();

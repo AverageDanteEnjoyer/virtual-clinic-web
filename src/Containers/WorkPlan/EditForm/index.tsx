@@ -4,9 +4,11 @@ import { capitalize } from 'lodash';
 import pushNotification from 'pushNotification';
 import { API_URL } from 'api';
 import { getLocalStorageResource } from 'localStorageAPI';
+
 import { WorkPlan } from 'Containers/WorkPlan/WorkPlanTable';
-import Spin from 'Components/Spin';
 import { TimePickerRange } from 'Containers/WorkPlan/WorkPlanTable/styles';
+
+import Spin from 'Components/Spin';
 import { CenteredContainer } from 'Components/DeleteButton';
 
 import { StyledForm, SubmitButton } from './styles';

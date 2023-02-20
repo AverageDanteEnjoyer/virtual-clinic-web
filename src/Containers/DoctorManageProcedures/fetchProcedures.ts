@@ -1,6 +1,7 @@
-import { FetchParams, FetchResponse, TableRecord } from 'Components/PaginatedTable';
 import { getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';
+
+import { FetchParams, FetchResponse, TableRecord } from 'Components/PaginatedTable';
 
 export interface Procedure extends TableRecord {
   user_id: number;

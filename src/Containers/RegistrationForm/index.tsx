@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Row, Col, Space, FormItemProps } from 'antd';
 
+import { Store } from 'store';
 import routes from 'routes';
 import { API_URL } from 'api';
 import pushNotification from 'pushNotification';
@@ -12,7 +13,6 @@ import Radio from 'Components/Radio';
 import Input from 'Components/Input';
 
 import { StyledForm, StyledButton } from './styles';
-import { Store } from 'store';
 
 export interface formItem extends FormItemProps {
   type: string;

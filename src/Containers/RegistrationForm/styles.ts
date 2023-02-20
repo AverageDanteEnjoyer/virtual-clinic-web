@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { Form } from 'antd';
 
-import Button from 'Components/Button';
 import palette from 'palette';
+
+import Button from 'Components/Button';
 
 export const StyledButton = styled(Button)`
   margin-top: 75px;
