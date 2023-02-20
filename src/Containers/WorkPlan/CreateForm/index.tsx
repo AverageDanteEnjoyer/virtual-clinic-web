@@ -81,6 +81,7 @@ const CreateForm = ({ data, setData }: CreateFormProps) => {
       if (response.ok) {
         pushNotification('success', 'Success', `Work plan for ${values.day_of_week} has been created successfully`);
         setData([...data, responseBody.data as WorkPlan]);
+        form.resetFields();
       } else {
         Object.entries(responseBody.errors).forEach(([key, value]) => {
           const description = `${capitalize(key.replaceAll('_', ' '))} ${value}.`;
@@ -119,7 +120,7 @@ const CreateForm = ({ data, setData }: CreateFormProps) => {
               label="Work hours"
               rules={[{ required: true, message: 'Please select your work hours' }]}
             >
-              <TimePickerRange format="H" allowClear={false} />
+              <TimePickerRange format="H:00" allowClear={false} />
             </StyledForm.Item>
           </Col>
         </Row>

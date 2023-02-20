@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { capitalize } from 'lodash';
+import dayjs from 'dayjs';
 
 import pushNotification from 'pushNotification';
 import { API_URL } from 'api';
@@ -28,12 +29,15 @@ const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps
   const [loading, setLoading] = useState(false);
   const [form] = StyledForm.useForm();
 
+  let workHourStart = dayjs().hour(workPlan.work_hour_start);
+  let workHourEnd = dayjs().hour(workPlan.work_hour_end);
+
   const editWorkPlan = async (values: FormData) => {
     const body: WorkPlan = {
       id: workPlan.id,
       day_of_week: workPlan.day_of_week,
-      work_hour_start: values.time_range[0].$H.toString(),
-      work_hour_end: values.time_range[1].$H.toString(),
+      work_hour_start: values.time_range[0].format('H'),
+      work_hour_end: values.time_range[1].format('H'),
     };
 
     const token = getLocalStorageResource('token');
@@ -55,12 +59,16 @@ const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps
     try {
       const response = await editWorkPlan(values);
       const responseBody = await response.json();
-      setLoading(false);
 
       if (response.ok) {
+        workHourStart = dayjs().hour(responseBody.data.work_hour_start);
+        workHourEnd = dayjs().hour(responseBody.data.work_hour_end);
+
         pushNotification('success', 'Success', 'Work plan updated successfully');
         setData(data.map((item) => (item.id === workPlan.id ? responseBody.data : item)));
-        form.resetFields();
+        form.setFieldsValue({
+          time_range: [workHourStart, workHourEnd],
+        });
         setTimeout(closeEditModal, 5000);
       } else {
         const formItem = form.getFieldInstance('time_range');
@@ -88,8 +96,9 @@ const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps
           name="time_range"
           label="Work hours"
           rules={[{ required: true, message: 'Please select your work hours' }]}
+          initialValue={[workHourStart, workHourEnd]}
         >
-          <TimePickerRange format={'H'} allowClear={false} />
+          <TimePickerRange format={'H:00'} allowClear={false} defaultValue={[workHourStart, workHourEnd]} />
         </StyledForm.Item>
         <CenteredContainer>
           <SubmitButton htmlType="submit" size="large" loading={loading}>
