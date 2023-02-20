@@ -40,7 +40,7 @@ interface WorkPlanTableProps {
 
 const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
   const [record, setRecord] = useState<WorkPlan>({ id: 0, day_of_week: '', work_hour_start: 0, work_hour_end: 0 });
-  const [state, setState] = useState(Date.now());
+  const [formState, setFormState] = useState(Date.now());
   const { isOpened: isEditOpened, openModal: openEditModal, closeModal: closeEditModal } = useModal();
   const { dispatch } = useContext(Store);
   const { confirm } = Modal;
@@ -62,7 +62,7 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
 
   const onClose = () => {
     closeEditModal();
-    setTimeout(() => setState(Date.now()), 300);
+    setFormState(Date.now());
   };
 
   const showConfirm = async (record: WorkPlan) => {
@@ -159,13 +159,12 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
         }
         onCancel={onClose}
         footer={null}
-        key={state}
         open={isEditOpened}
         centered
       >
         <Row>
           <Col xs={{ span: 20, offset: 2 }}>
-            <EditForm data={data} setData={setData} workPlan={record} closeEditModal={onClose} />
+            <EditForm data={data} setData={setData} workPlan={record} closeEditModal={onClose} key={formState} />
           </Col>
         </Row>
       </Modal>
