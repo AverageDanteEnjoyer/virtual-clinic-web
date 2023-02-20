@@ -17,12 +17,7 @@ const AppointmentsPage = () => {
       <Navbar />
       <StyledTitle centered>My appointments</StyledTitle>
       <Row>
-        <PanelCol
-          xs={{ span: 22, offset: 1 }}
-          md={{ span: 16, offset: 4 }}
-          lg={{ span: 12, offset: 6 }}
-          xl={{ span: 10, offset: 7 }}
-        >
+        <PanelCol xs={{ span: 22, offset: 1 }} md={{ span: 16, offset: 4 }} xl={{ span: 12, offset: 6 }}>
           <Row>
             <Col xs={{ span: 22, offset: 1 }}>
               <StyledTitle level={2} centered>
