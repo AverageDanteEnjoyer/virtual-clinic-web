@@ -53,7 +53,7 @@ const DoctorManageProcedures = () => {
   const [loading, setLoading] = useState(false);
   const [record, setRecord] = useState<DoctorProceduresType>({ id: 0, name: '', needed_time_min: 0 });
   const [tableState, setTableState] = useState(Date.now());
-  const [modalState, setModalState] = useState(Date.now());
+  const [formState, setFormState] = useState(Date.now());
   const [form] = StyledForm.useForm();
   const { userID } = getDataFromToken();
   const { dispatch } = useContext(Store);
@@ -126,7 +126,7 @@ const DoctorManageProcedures = () => {
 
   const onClose = () => {
     closeModal();
-    setTimeout(() => setModalState(Date.now()), 300);
+    setFormState(Date.now());
   };
 
   const formItems: formItem[] = [
@@ -242,13 +242,12 @@ const DoctorManageProcedures = () => {
         }
         onCancel={onClose}
         footer={null}
-        key={modalState}
         open={isOpened}
         centered
       >
         <Row>
           <Col xs={{ span: 20, offset: 2 }}>
-            <EditForm setTableState={setTableState} procedure={record} closeEditModal={onClose} />
+            <EditForm setTableState={setTableState} procedure={record} closeEditModal={onClose} key={formState} />
           </Col>
         </Row>
       </Modal>

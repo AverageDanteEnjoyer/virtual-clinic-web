@@ -55,20 +55,13 @@ const EditForm = ({ data, setData, workPlan, closeEditModal }: EditWorkPlanProps
 
   const onFinish = async (values: FormData) => {
     setLoading(true);
-
     try {
       const response = await editWorkPlan(values);
       const responseBody = await response.json();
 
       if (response.ok) {
-        workHourStart = dayjs().hour(responseBody.data.work_hour_start);
-        workHourEnd = dayjs().hour(responseBody.data.work_hour_end);
-
         pushNotification('success', 'Success', 'Work plan updated successfully');
         setData(data.map((item) => (item.id === workPlan.id ? responseBody.data : item)));
-        form.setFieldsValue({
-          time_range: [workHourStart, workHourEnd],
-        });
         setTimeout(closeEditModal, 5000);
       } else {
         const formItem = form.getFieldInstance('time_range');

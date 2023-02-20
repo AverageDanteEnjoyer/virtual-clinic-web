@@ -36,13 +36,8 @@ const EditForm = ({ setTableState, procedure, closeEditModal }: EditFormProps) =
       const response = await handleEdit({ id: procedure.id, ...values });
 
       if (response.ok) {
-        const { name, needed_time_min } = values;
         setTableState(Date.now());
         pushNotification('success', 'Success', 'Procedure has been updated');
-        form.setFieldsValue({
-          name,
-          needed_time_min,
-        });
 
         setTimeout(() => {
           closeEditModal();
