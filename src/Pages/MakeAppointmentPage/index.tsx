@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
 import { Col, Row } from 'antd';
 import { useContext, useState } from 'react';
+import Duration from 'dayjs/plugin/duration';
 import { useNavigate } from 'react-router-dom';
+import RelativeTime from 'dayjs/plugin/relativeTime';
 
 import routes from 'routes';
 import { Store } from 'store';
@@ -20,6 +22,9 @@ import { Paragraph, Title } from 'Components/Typography';
 import fetchProcedures from './fetchProcedures';
 import makeAppointment from './makeAppointment';
 import { OptionCol, MainText, Info, Panel, WideDatePicker, SubmitBox } from './styles';
+
+dayjs.extend(Duration);
+dayjs.extend(RelativeTime);
 
 export interface Doctor {
   id: number;
@@ -69,16 +74,28 @@ const MakeAppointmentPage = () => {
     }
   };
 
-  const renderOption = ({ name, needed_time_min, doctor: { first_name, last_name } }: Procedure) => (
-    <Row>
-      <OptionCol>
-        <MainText>{name}</MainText>
-        <Info>
-          {needed_time_min} minutes | Doctor: {first_name} {last_name}
-        </Info>
-      </OptionCol>
-    </Row>
-  );
+  const renderOption = ({ name, needed_time_min, doctor: { first_name, last_name } }: Procedure) => {
+    const hours = dayjs.duration(needed_time_min, 'minutes').hours();
+    const minutes = dayjs.duration(needed_time_min, 'minutes').minutes();
+
+    const duration =
+      hours > 0 && minutes > 0
+        ? `${hours} hrs and ${minutes} min`
+        : hours > 0
+        ? `${hours} hours`
+        : `${minutes} minutes`;
+
+    return (
+      <Row>
+        <OptionCol>
+          <MainText>{name}</MainText>
+          <Info>
+            Doctor: {first_name} {last_name} | {duration}
+          </Info>
+        </OptionCol>
+      </Row>
+    );
+  };
 
   const selectProcedure = (
     <>
