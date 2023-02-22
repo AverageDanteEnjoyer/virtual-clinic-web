@@ -50,7 +50,6 @@ const Navbar = () => {
 
   const getMenuItems = (): MenuItem[] => {
     const items: MenuItem[] | null = [
-      getItem(<Link to={routes.components.path}>Components</Link>),
       getItem(<Link to={routes.home.path}>Home</Link>),
       getItem(<UserOutlined />, [
         getItem(<Link to={routes.editProfile.path}>Edit profile</Link>, [], () => notEquals(userType.GUEST)),
