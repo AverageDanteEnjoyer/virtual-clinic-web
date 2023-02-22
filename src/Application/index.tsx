@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 
 import routes from 'routes';
 import { getAccountType, getDataFromToken } from 'localStorageAPI';
@@ -25,14 +25,14 @@ const Application = () => {
   }, [dispatch]);
 
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <HashRouter>
       <Routes>
         <Route path={routes.home.path} element={<HomePage />} />
         <Route path={routes.components.path} element={<ComponentsPage />} />
         {mappedPrivateRoutes}
       </Routes>
       <AuthVerify />
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
