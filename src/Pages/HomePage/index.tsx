@@ -1,18 +1,22 @@
-import { StyledTitle } from 'Components/Typography/styles';
+import { useNavigate } from 'react-router-dom';
+import routes from 'routes';
+import { useContext } from 'react';
 import { Row, Col } from 'antd';
+
+import { Store, userType } from 'store';
 
 import useTitle from 'Hooks/useTitle';
 
 import Navbar from 'Components/Navbar';
 import Carousel from 'Components/Carousel';
-
+import { StyledTitle } from 'Components/Typography/styles';
 import { Paragraph, Title } from 'Components/Typography';
+
 import { CenteredContainer, PanelCol, StyledButton } from './styles';
-import { useNavigate } from 'react-router-dom';
-import routes from 'routes';
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const { state } = useContext(Store);
   useTitle();
 
   return (
@@ -44,9 +48,11 @@ const HomePage = () => {
                 </Col>
                 <Col xs={{ span: 21 }} lg={{ span: 16, offset: 4 }}>
                   <CenteredContainer>
-                    <StyledButton onClick={() => navigate(routes.register.path)} size={'large'}>
-                      Register now
-                    </StyledButton>
+                    {state.accountType === userType.GUEST && (
+                      <StyledButton onClick={() => navigate(routes.register.path)} size={'large'}>
+                        Register now
+                      </StyledButton>
+                    )}
                   </CenteredContainer>
                 </Col>
               </Row>
