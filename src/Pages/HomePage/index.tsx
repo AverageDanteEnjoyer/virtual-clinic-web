@@ -17,6 +17,24 @@ import { CenteredContainer, PanelCol, StyledButton } from './styles';
 const HomePage = () => {
   const navigate = useNavigate();
   const { state } = useContext(Store);
+  const guestButton = state.accountType === userType.GUEST && (
+    <Col xs={{ span: 21 }} lg={{ span: 16, offset: 4 }}>
+      <CenteredContainer>
+        <StyledButton onClick={() => navigate(routes.register.path)} size="large">
+          Register now
+        </StyledButton>
+      </CenteredContainer>
+    </Col>
+  );
+  const patientButton = state.accountType === userType.PATIENT && (
+    <Col xs={{ span: 21 }} lg={{ span: 16, offset: 4 }}>
+      <CenteredContainer>
+        <StyledButton onClick={() => navigate(routes.makeAppointment.path)} size="large">
+          Make an appointment
+        </StyledButton>
+      </CenteredContainer>
+    </Col>
+  );
   useTitle();
 
   return (
@@ -46,15 +64,8 @@ const HomePage = () => {
                     wellness.
                   </Paragraph>
                 </Col>
-                {state.accountType === userType.GUEST && (
-                  <Col xs={{ span: 21 }} lg={{ span: 16, offset: 4 }}>
-                    <CenteredContainer>
-                      <StyledButton onClick={() => navigate(routes.register.path)} size={'large'}>
-                        Register now
-                      </StyledButton>
-                    </CenteredContainer>
-                  </Col>
-                )}
+                {guestButton}
+                {patientButton}
               </Row>
             </Col>
           </Row>

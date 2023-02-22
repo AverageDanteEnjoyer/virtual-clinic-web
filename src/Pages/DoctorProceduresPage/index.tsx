@@ -24,7 +24,7 @@ const DoctorProcedures = () => {
           xl={{ span: 10, offset: 7 }}
         >
           <Row>
-            <Col xs={{ span: 22, offset: 1 }}>
+            <Col md={{ span: 22, offset: 1 }}>
               <Title centered level={2}>
                 My procedures
               </Title>

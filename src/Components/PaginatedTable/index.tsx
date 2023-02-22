@@ -1,4 +1,4 @@
-import { Space } from 'antd';
+import { Space, Col, Row } from 'antd';
 import { debounce } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
@@ -112,22 +112,26 @@ const PaginatedTable = <T extends TableRecord>({
   );
 
   return (
-    <StyledTable
-      columns={columns}
-      dataSource={data}
-      loading={loading}
-      pagination={{
-        current: page,
-        pageSize,
-        total,
-        pageSizeOptions,
-        position: ['bottomCenter'],
-        hideOnSinglePage: true,
-      }}
-      onChange={onTableChange}
-      rowKey={(record) => record.id}
-      locale={locale}
-    />
+    <Row>
+      <Col span={24} style={{ overflowX: 'auto' }}>
+        <StyledTable
+          columns={columns}
+          dataSource={data}
+          loading={loading}
+          pagination={{
+            current: page,
+            pageSize,
+            total,
+            pageSizeOptions,
+            position: ['bottomCenter'],
+            hideOnSinglePage: true,
+          }}
+          onChange={onTableChange}
+          rowKey={(record) => record.id}
+          locale={locale}
+        />
+      </Col>
+    </Row>
   );
 };
 
