@@ -23,7 +23,7 @@ import { DeleteButton } from 'Components/DeleteButton';
 import Input from 'Components/Input';
 import { Title } from 'Components/Typography';
 import PaginatedTable from 'Components/PaginatedTable';
-import { EditButton } from 'Containers/WorkPlan/WorkPlanTable/styles';
+import Button from 'Components/Button';
 import { StyledTitle } from 'Components/Typography/styles';
 
 import EditForm from './EditForm';
@@ -180,14 +180,14 @@ const DoctorManageProcedures = () => {
         return (
           <Row gutter={[5, 5]} justify="center" align="middle">
             <Col>
-              <EditButton
+              <Button
                 onClick={() => {
                   setRecord(record);
                   openModal();
                 }}
               >
                 <EditOutlined />
-              </EditButton>
+              </Button>
             </Col>
             <Col>
               <DeleteButton onClick={async () => await showConfirm(record)}>
