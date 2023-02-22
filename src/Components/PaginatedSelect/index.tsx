@@ -110,6 +110,7 @@ const PaginatedSelect = <T,>({
       mode={mode}
       size={size}
       placeholder={placeholder}
+      searchValue={searchInput}
       value={
         values.length > 0
           ? values.map((item) => ({ value: JSON.stringify(item), label: renderOption(item) }))
