@@ -120,7 +120,7 @@ const CreateForm = ({ data, setData }: CreateFormProps) => {
               label="Work hours"
               rules={[{ required: true, message: 'Please select your work hours' }]}
             >
-              <TimePickerRange format="H:00" allowClear={false} />
+              <TimePickerRange format="h A" allowClear={false} />
             </StyledForm.Item>
           </Col>
         </Row>

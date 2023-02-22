@@ -6,7 +6,7 @@ import palette from 'palette';
 export const TimeOption = styled.div<{ highlighted: boolean }>`
   cursor: pointer;
   height: 100%;
-  width: 50px;
+  width: 60px;
 
   display: flex;
   justify-content: center;

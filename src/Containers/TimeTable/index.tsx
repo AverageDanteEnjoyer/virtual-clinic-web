@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 
 import { Table, TimeOption } from './styles';
 import { fetchAvailableAppointmentHours, Status } from './fetchAvailableAppointmentHours';
+import dayjs from 'dayjs';
 
 interface RecordType {
   key: string;
@@ -51,8 +52,11 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
           <Row gutter={[8, 8]}>
             {record.map((time) => (
               <Col key={time}>
-                <TimeOption highlighted={selectedTime === time} onClick={() => setSelectedTime(time)}>
-                  {time}
+                <TimeOption
+                  highlighted={selectedTime === time}
+                  onClick={() => setSelectedTime(dayjs(time, 'HH:mm').format('h:mm A'))}
+                >
+                  {dayjs(time, 'HH:mm').format('h:mm A')}
                 </TimeOption>
               </Col>
             ))}

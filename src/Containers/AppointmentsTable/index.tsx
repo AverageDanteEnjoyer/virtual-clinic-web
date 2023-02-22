@@ -78,11 +78,11 @@ const AppointmentsTable = () => {
   const timeStampRender = (value: any, record: Appointment) => {
     const startTimeObject = dayjs(record.start_time);
 
-    const date = startTimeObject.format('DD/MM/YYYY');
-    const startTime = startTimeObject.format('HH:mm');
-    const endTime = startTimeObject.add(record.procedure.needed_time_min, 'minutes').format('HH:mm');
+    const date = startTimeObject.format('MM/DD/YYYY');
+    const startTime = startTimeObject.format('h:mm A');
+    const endTime = startTimeObject.add(record.procedure.needed_time_min, 'minutes').format('h:mm A');
 
-    return `${date} ${startTime}-${endTime}`;
+    return `${date} ${startTime} - ${endTime}`;
   };
 
   const columns = [

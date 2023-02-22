@@ -56,6 +56,7 @@ const MakeAppointmentPage = () => {
     try {
       const response = await makeAppointment(procedureId, date, selectedTime);
       if (response.ok) {
+        pushNotification('success', 'Success', 'Appointment has been made');
         setTimeTableState(Date.now());
       } else {
         pushNotification('error', 'Something went wrong', 'Please try again later');
@@ -119,7 +120,7 @@ const MakeAppointmentPage = () => {
           { label: 'Tomorrow', value: dayjs().add(1, 'day') },
           { label: 'Next week', value: dayjs().add(1, 'week') },
         ]}
-        format="YYYY-MM-DD"
+        format="MM-DD-YYYY"
         disabledDate={(current) => current && current < dayjs().startOf('day')}
         value={date ? dayjs(date) : undefined}
         onChange={(date) => {
@@ -157,7 +158,7 @@ const MakeAppointmentPage = () => {
           </Paragraph>
           <Paragraph>
             <b>Date:</b> {dayjs(date).format('D MMMM YYYY')} {selectedTime} -{' '}
-            {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('HH:mm')}
+            {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('h:mm A')}
           </Paragraph>
           <Button
             size="large"

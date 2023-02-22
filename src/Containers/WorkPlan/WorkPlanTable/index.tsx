@@ -21,6 +21,7 @@ import Table, { TableRecord } from 'Components/Table';
 import { StyledTitle } from 'Components/Typography/styles';
 
 import { DeleteButton, EditButton } from './styles';
+import dayjs from 'dayjs';
 
 export interface WorkPlan extends TableRecord {
   day_of_week: string;
@@ -85,6 +86,8 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
     });
   };
 
+  const renderHour = (hour: number) => dayjs().hour(hour).minute(0).format('h:mm A');
+
   const columns: ColumnsType<WorkPlan> = [
     {
       title: 'Day of week',
@@ -96,13 +99,13 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
       title: 'Work hour start',
       dataIndex: 'work_hour_start',
       key: 'work_hour_start',
-      render: (text: number) => `${text}:00`,
+      render: renderHour,
     },
     {
       title: 'Work hour end',
       dataIndex: 'work_hour_end',
       key: 'work_hour_end',
-      render: (text: number) => `${text}:00`,
+      render: renderHour,
     },
     {
       title: 'Actions',
