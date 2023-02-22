@@ -56,12 +56,6 @@ const MakeAppointmentPage = () => {
     try {
       const response = await makeAppointment(procedureId, date, selectedTime);
       if (response.ok) {
-        pushNotification(
-          'success',
-          'Appointment created',
-          'You have been scheduled for an appointment. Redirecting to your appointments...'
-        );
-
         setTimeTableState(Date.now());
       } else {
         pushNotification('error', 'Something went wrong', 'Please try again later');
