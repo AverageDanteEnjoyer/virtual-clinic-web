@@ -46,15 +46,15 @@ const HomePage = () => {
                     wellness.
                   </Paragraph>
                 </Col>
-                <Col xs={{ span: 21 }} lg={{ span: 16, offset: 4 }}>
-                  <CenteredContainer>
-                    {state.accountType === userType.GUEST && (
+                {state.accountType === userType.GUEST && (
+                  <Col xs={{ span: 21 }} lg={{ span: 16, offset: 4 }}>
+                    <CenteredContainer>
                       <StyledButton onClick={() => navigate(routes.register.path)} size={'large'}>
                         Register now
                       </StyledButton>
-                    )}
-                  </CenteredContainer>
-                </Col>
+                    </CenteredContainer>
+                  </Col>
+                )}
               </Row>
             </Col>
           </Row>
