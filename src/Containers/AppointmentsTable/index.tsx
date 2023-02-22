@@ -144,7 +144,7 @@ const AppointmentsTable = () => {
           fetchData={getAppointments}
           key={render}
           locale={{
-            emptyText: `You have no appointments so far`,
+            emptyText: 'You have no appointments so far',
           }}
         />
       </Col>

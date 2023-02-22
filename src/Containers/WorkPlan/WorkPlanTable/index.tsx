@@ -151,7 +151,7 @@ const WorkPlanTable = ({ data, setData }: WorkPlanTableProps) => {
         url={`${API_URL}/api/v1/doctors/${doctorId}/work_plans/?page=1&per_page=${perPage}`}
         extractData={(response: ResponseBodyType) => response.data}
         locale={{
-          emptyText: `You haven't added any workday yet`,
+          emptyText: "You haven't added any workday yet",
         }}
       />
       <Modal

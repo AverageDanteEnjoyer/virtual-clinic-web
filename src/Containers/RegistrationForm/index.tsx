@@ -58,8 +58,7 @@ const RegistrationForm = () => {
     setLoading(true);
     try {
       const response = await register(credentials);
-      const responseBody = await response.json();
-      const { id, email, first_name, last_name, account_type } = responseBody;
+      const { id, email, first_name, last_name, account_type, errors } = await response.json();
 
       if (response.ok) {
         pushNotification(
@@ -88,7 +87,7 @@ const RegistrationForm = () => {
           }, 3000)
         );
       } else {
-        Object.entries(responseBody.errors).forEach(([key, value]) => {
+        Object.entries(errors).forEach(([key, value]) => {
           const description = `${capitalize(key.replaceAll('_', ' '))} ${value}.`;
 
           formItems.forEach(({ name }) => {
