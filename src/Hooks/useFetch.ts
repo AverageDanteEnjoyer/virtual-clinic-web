@@ -9,7 +9,7 @@ type methodType = 'GET' | 'PUT' | 'POST' | 'DELETE';
 export const useFetch = <T>(url: string, initialValue: T, method: methodType = 'GET') => {
   const [responseData, setResponseData] = useState<T>(initialValue);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const ref = useRef(true);
 
   const token = getLocalStorageResource('token');
@@ -17,7 +17,6 @@ export const useFetch = <T>(url: string, initialValue: T, method: methodType = '
     if (ref.current) {
       (async () => {
         try {
-          setLoading(true);
           const response = await fetch(url, {
             method: method,
             headers: {

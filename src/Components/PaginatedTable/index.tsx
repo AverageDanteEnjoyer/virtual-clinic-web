@@ -51,7 +51,7 @@ const PaginatedTable = <T extends TableRecord>({
   pageSizeOptions = [5, 10, 50],
   locale,
 }: PaginatedTableProps<T>) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
   const [total, setTotal] = useState(0);
@@ -60,7 +60,6 @@ const PaginatedTable = <T extends TableRecord>({
 
   const debounceFetch = useMemo(() => {
     const loadData = async ({ page, perPage, filter }: FetchParams) => {
-      setLoading(true);
       fetchRef.current += 1;
       const fetchId = fetchRef.current;
 
