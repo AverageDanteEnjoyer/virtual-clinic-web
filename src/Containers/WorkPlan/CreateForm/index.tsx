@@ -16,7 +16,7 @@ import { StyledForm, SubmitButton } from './styles';
 
 interface FormData {
   day_of_week: string;
-  time_range: any;
+  work_hour_start: any;
 }
 
 interface CreateFormProps {
@@ -55,8 +55,8 @@ const CreateForm = ({ data, setData }: CreateFormProps) => {
     const workPlan: WorkPlan = {
       id: 0,
       day_of_week: values.day_of_week,
-      work_hour_start: values.time_range[0].format('H'),
-      work_hour_end: values.time_range[1].format('H'),
+      work_hour_start: values.work_hour_start[0].format('H'),
+      work_hour_end: values.work_hour_start[1].format('H'),
     };
 
     return await fetch(`${API_URL}/api/v1/work_plans/`, {
@@ -116,7 +116,7 @@ const CreateForm = ({ data, setData }: CreateFormProps) => {
               <Select placeholder="Select day of week" customOptions={selectOptions} optionLabelProp="children" />
             </StyledForm.Item>
             <StyledForm.Item
-              name="time_range"
+              name="work_hour_start"
               label="Work hours"
               rules={[{ required: true, message: 'Please select your work hours' }]}
             >
