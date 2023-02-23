@@ -1,5 +1,6 @@
 import { getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';
+
 import { FormData } from 'Containers/DoctorManageProcedures/index';
 
 const addProcedure = async ({ name, needed_time_min }: FormData) => {

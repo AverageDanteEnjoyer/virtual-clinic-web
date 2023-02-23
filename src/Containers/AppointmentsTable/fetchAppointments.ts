@@ -1,6 +1,7 @@
-import { FetchParams, FetchResponse } from 'Components/PaginatedTable';
 import { getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';
+
+import { FetchParams, FetchResponse } from 'Components/PaginatedTable';
 
 import { Appointment } from './index';
 

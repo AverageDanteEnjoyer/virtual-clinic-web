@@ -2,10 +2,9 @@ import { Row, Col } from 'antd';
 import { debounce } from 'lodash';
 import { useState, useEffect } from 'react';
 
-import pushNotification from 'pushNotification';
-
 import { Table, TimeOption } from './styles';
 import { fetchAvailableAppointmentHours, Status } from './fetchAvailableAppointmentHours';
+import dayjs from 'dayjs';
 
 interface RecordType {
   key: string;
@@ -31,6 +30,7 @@ interface TimeTableProps {
 const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTableProps) => {
   const [data, setData] = useState<RecordType[]>([]);
   const [loading, setLoading] = useState(false);
+  const [noContentMessage, setNoContentMessage] = useState('The doctor is not working on this day');
 
   useEffect(() => {
     fetchData();
@@ -52,8 +52,11 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
           <Row gutter={[8, 8]}>
             {record.map((time) => (
               <Col key={time}>
-                <TimeOption highlighted={selectedTime === time} onClick={() => setSelectedTime(time)}>
-                  {time}
+                <TimeOption
+                  highlighted={selectedTime === dayjs(time, 'HH:mm').format('h:mm A')}
+                  onClick={() => setSelectedTime(dayjs(time, 'HH:mm').format('h:mm A'))}
+                >
+                  {dayjs(time, 'HH:mm').format('h:mm A')}
                 </TimeOption>
               </Col>
             ))}
@@ -73,12 +76,12 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
     switch (status) {
       case Status.ERROR:
         setData([]);
-        pushNotification('error', 'Error', 'Something went wrong. Please try again later.', 10);
+        setNoContentMessage('Something went wrong. Please try again later');
         break;
 
       case Status.NON_WORKING_DAY:
         setData([]);
-        pushNotification('info', 'Info', 'The doctor is not working on this day.');
+        setNoContentMessage('The doctor is not working on this day');
         break;
 
       case Status.AVAILABLE: {
@@ -96,6 +99,10 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
         });
 
         setData(categorizedData.filter((data) => data.times.length > 0));
+
+        if (data.length === 0) {
+          setNoContentMessage('There are no available dates\nPlease choose a different day');
+        }
       }
     }
   }, 275);
@@ -107,7 +114,7 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
       columns={columns}
       pagination={false}
       locale={{
-        emptyText: 'There are no available dates\nPlease choose a different day',
+        emptyText: noContentMessage,
       }}
     />
   );

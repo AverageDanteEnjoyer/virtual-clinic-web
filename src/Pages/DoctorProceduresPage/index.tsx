@@ -1,22 +1,22 @@
-import { Row, Col } from 'antd';
+import { Col, Row } from 'antd';
 
-import useTitle from 'Hooks/useTitle';
-
-import ProfileEditForm from 'Containers/EditProfileForm';
+import DoctorManageProcedures from 'Containers/DoctorManageProcedures';
 
 import Navbar from 'Components/Navbar';
 import { Title } from 'Components/Typography';
 
+import useTitle from 'Hooks/useTitle';
+
 import { PanelCol } from './styles';
 
-const ProfileEditPage = () => {
+const DoctorProcedures = () => {
   useTitle();
 
   return (
     <>
       <Navbar />
-      <Title centered>Profile edit</Title>
-      <Row gutter={[0, 50]}>
+      <Title centered>Manage procedures</Title>
+      <Row>
         <PanelCol
           xs={{ span: 22, offset: 1 }}
           md={{ span: 16, offset: 4 }}
@@ -24,11 +24,11 @@ const ProfileEditPage = () => {
           xl={{ span: 10, offset: 7 }}
         >
           <Row>
-            <Col xs={{ span: 22, offset: 1 }}>
+            <Col md={{ span: 22, offset: 1 }}>
               <Title centered level={2}>
-                Edit detailed information
+                My procedures
               </Title>
-              <ProfileEditForm />
+              <DoctorManageProcedures />
             </Col>
           </Row>
         </PanelCol>
@@ -37,4 +37,4 @@ const ProfileEditPage = () => {
   );
 };
 
-export default ProfileEditPage;
+export default DoctorProcedures;

@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Space, Table } from 'antd';
-import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
+import { Space, Col, Row } from 'antd';
 import { debounce } from 'lodash';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { ColumnsType, ColumnType, TablePaginationConfig } from 'antd/es/table';
+import { TableLocale } from 'antd/es/table/interface';
 
-import { FilterDropdown, Input, SearchIcon } from './styles';
 import Button from 'Components/Button';
+
+import { FilterDropdown, Input, SearchIcon, StyledTable } from './styles';
 
 export interface FilterType {
   [field: string]: string;
@@ -38,6 +40,7 @@ interface PaginatedTableProps<T extends TableRecord> {
   columns: ColumnsType<T>;
   fetchData: ({ page, perPage, filter }: FetchParams) => Promise<FetchResponse<T>>;
   pageSizeOptions?: number[];
+  locale?: TableLocale;
 }
 
 const PaginatedTable = <T extends TableRecord>({
@@ -46,8 +49,9 @@ const PaginatedTable = <T extends TableRecord>({
   columns,
   fetchData,
   pageSizeOptions = [5, 10, 50],
+  locale,
 }: PaginatedTableProps<T>) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
   const [total, setTotal] = useState(0);
@@ -56,7 +60,6 @@ const PaginatedTable = <T extends TableRecord>({
 
   const debounceFetch = useMemo(() => {
     const loadData = async ({ page, perPage, filter }: FetchParams) => {
-      setLoading(true);
       fetchRef.current += 1;
       const fetchId = fetchRef.current;
 
@@ -109,20 +112,26 @@ const PaginatedTable = <T extends TableRecord>({
   );
 
   return (
-    <Table
-      columns={columns}
-      dataSource={data}
-      loading={loading}
-      pagination={{
-        current: page,
-        pageSize,
-        total,
-        pageSizeOptions,
-        position: ['bottomCenter'],
-      }}
-      onChange={onTableChange}
-      rowKey={(record) => record.id}
-    />
+    <Row>
+      <Col span={24} style={{ overflowX: 'auto' }}>
+        <StyledTable
+          columns={columns}
+          dataSource={data}
+          loading={loading}
+          pagination={{
+            current: page,
+            pageSize,
+            total,
+            pageSizeOptions,
+            position: ['bottomCenter'],
+            hideOnSinglePage: true,
+          }}
+          onChange={onTableChange}
+          rowKey={(record) => record.id}
+          locale={locale}
+        />
+      </Col>
+    </Row>
   );
 };
 

@@ -4,11 +4,11 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import routes from 'routes';
 import { getAccountType, getDataFromToken } from 'localStorageAPI';
 import { Store } from 'store';
+import AuthVerify from 'AuthVerify';
+import { mappedPrivateRoutes } from 'mappedPrivateRoutes';
 
 import ComponentsPage from 'Pages/ComponentsPage';
 import HomePage from 'Pages/HomePage';
-import AuthVerify from 'AuthVerify';
-import { mappedPrivateRoutes } from 'mappedPrivateRoutes';
 
 const Application = () => {
   const { dispatch } = useContext(Store);
@@ -28,7 +28,6 @@ const Application = () => {
     <HashRouter>
       <Routes>
         <Route path={routes.home.path} element={<HomePage />} />
-        <Route path={routes.components.path} element={<ComponentsPage />} />
         {mappedPrivateRoutes}
       </Routes>
       <AuthVerify />

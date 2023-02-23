@@ -1,9 +1,11 @@
-import { Form } from 'antd';
 import styled from 'styled-components';
+import { TimePicker } from 'antd';
 
 import palette from 'palette';
 
 import Button from 'Components/Button';
+
+export const EditButton = styled(Button)``;
 
 export const DeleteButton = styled(Button)`
   background-color: ${palette.sovietRussia};
@@ -23,29 +25,28 @@ export const DeleteButton = styled(Button)`
   }
 `;
 
-export const CenteredContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px 100%;
-`;
+export const TimePickerRange = styled(TimePicker.RangePicker)`
+  border-radius: 20px;
+  font-family: CircularStd, sans-serif;
+  width: 100%;
 
-export const SubmitButton = styled(Button)`
-  margin-top: 20px;
+  color: ${palette.russianViolet};
 
-  &.ant-btn {
-    &.ant-btn-lg {
-      min-width: 200px;
-      padding: 27px;
-    }
+  &:hover,
+  &:focus {
+    border-color: ${palette.tekhelet};
   }
-`;
 
-export const StyledForm = styled(Form)`
-  &.ant-form label {
-    font-size: 16px;
-    font-weight: 400;
+  .ant-picker-active-bar {
+    background-color: ${palette.ultraViolet};
+  }
+
+  &.ant-picker-focused {
+    border-color: ${palette.tekhelet};
+  }
+
+  .ant-picker-input input {
     color: ${palette.russianViolet};
+    font-size: 16px;
   }
-` as typeof Form;
+`;

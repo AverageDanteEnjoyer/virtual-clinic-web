@@ -2,8 +2,12 @@ import { Col, Row } from 'antd';
 
 import { StyledTitle } from 'Components/Typography/styles';
 import Navbar from 'Components/Navbar';
+
 import AppointmentsTable from 'Containers/AppointmentsTable';
+
 import useTitle from 'Hooks/useTitle';
+
+import { PanelCol } from './styles';
 
 const AppointmentsPage = () => {
   useTitle();
@@ -11,11 +15,18 @@ const AppointmentsPage = () => {
   return (
     <>
       <Navbar />
-      <StyledTitle center>My appointments</StyledTitle>
+      <StyledTitle centered>My appointments</StyledTitle>
       <Row>
-        <Col xs={{ span: 20, offset: 2 }} xl={{ span: 10, offset: 7 }}>
-          <AppointmentsTable />
-        </Col>
+        <PanelCol xs={{ span: 22, offset: 1 }} md={{ span: 16, offset: 4 }} xl={{ span: 12, offset: 6 }}>
+          <Row>
+            <Col xs={{ span: 22, offset: 1 }}>
+              <StyledTitle level={2} centered>
+                Appointments schedule
+              </StyledTitle>
+              <AppointmentsTable />
+            </Col>
+          </Row>
+        </PanelCol>
       </Row>
     </>
   );

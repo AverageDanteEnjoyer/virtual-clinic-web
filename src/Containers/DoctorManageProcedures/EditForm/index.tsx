@@ -1,18 +1,22 @@
-import React, { useContext, useState } from 'react';
-import { Col, Row, Form } from 'antd';
+import { FormItemProps } from 'antd';
+import { useContext, useState } from 'react';
 import { capitalize, lowerCase } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 
-import { CenteredContainer } from 'Containers/EditProfileForm/styles';
-import Button from 'Components/Button';
-import pushNotification from 'pushNotification';
-import Input from 'Components/Input';
-import { formItem } from 'Containers/EditProfileForm';
-import handleEdit from 'Containers/DoctorManageProcedures/editProcedure';
 import routes from 'routes';
 import { Store } from 'store';
+import pushNotification from 'pushNotification';
+
+import handleEdit from 'Containers/DoctorManageProcedures/editProcedure';
+
+import { CenteredContainer, StyledForm, SubmitButton } from 'Components/DeleteButton';
+import Input from 'Components/Input';
 
 import { DoctorProceduresType, FormData } from '../index';
+
+interface formItem extends FormItemProps {
+  type: string;
+}
 
 interface EditFormProps {
   setTableState: (date: number) => void;
@@ -22,7 +26,7 @@ interface EditFormProps {
 
 const EditForm = ({ setTableState, procedure, closeEditModal }: EditFormProps) => {
   const [loading, setLoading] = useState(false);
-  const [form] = Form.useForm();
+  const [form] = StyledForm.useForm();
   const navigate = useNavigate();
   const { dispatch } = useContext(Store);
 
@@ -34,7 +38,6 @@ const EditForm = ({ setTableState, procedure, closeEditModal }: EditFormProps) =
       if (response.ok) {
         setTableState(Date.now());
         pushNotification('success', 'Success', 'Procedure has been updated');
-        form.resetFields();
 
         setTimeout(() => {
           closeEditModal();
@@ -61,37 +64,41 @@ const EditForm = ({ setTableState, procedure, closeEditModal }: EditFormProps) =
   const formItems: formItem[] = [
     {
       name: 'name',
-      label: 'Procedure name:',
+      label: 'Procedure name',
       type: 'text',
+      initialValue: procedure.name,
       rules: [{ required: true, message: 'Please input procedure name' }],
     },
     {
       name: 'needed_time_min',
-      label: 'Procedure time:',
+      label: 'Procedure time (minutes)',
       type: 'number',
+      initialValue: procedure.needed_time_min,
       rules: [{ required: true, message: 'Please input procedure time' }],
     },
   ];
 
-  const formItemsJSX = formItems.map(({ name, label, type, rules }, idx) => (
-    <Form.Item key={idx} label={label} name={name} rules={rules}>
-      <Input type={type} prefix={null} placeholder={`Enter your ${lowerCase(label as string)}`} />
-    </Form.Item>
+  const formItemsJSX = formItems.map(({ name, label, type, initialValue, rules }, idx) => (
+    <StyledForm.Item key={idx} label={label} name={name} rules={rules} initialValue={initialValue}>
+      <Input
+        type={type}
+        prefix={null}
+        placeholder={`Enter your ${lowerCase(label as string)}`}
+        min="1"
+        value={initialValue}
+      />
+    </StyledForm.Item>
   ));
 
   return (
-    <Row>
-      <Col xs={{ span: 24 }} xl={{ span: 16, offset: 4 }}>
-        <Form form={form} onFinish={onFinish} autoComplete="off" layout="vertical">
-          {formItemsJSX}
-          <CenteredContainer>
-            <Button htmlType="submit" loading={loading}>
-              Submit
-            </Button>
-          </CenteredContainer>
-        </Form>
-      </Col>
-    </Row>
+    <StyledForm form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
+      {formItemsJSX}
+      <CenteredContainer>
+        <SubmitButton size="large" htmlType="submit" loading={loading}>
+          Submit
+        </SubmitButton>
+      </CenteredContainer>
+    </StyledForm>
   );
 };
 

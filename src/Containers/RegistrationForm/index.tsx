@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
-import { Row, Col, Space, FormItemProps } from 'antd';
-import { useNavigate } from 'react-router-dom';
 import { capitalize } from 'lodash';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Row, Col, Space, FormItemProps } from 'antd';
 
-import Input from 'Components/Input';
-import Spin from 'Components/Spin';
-import Radio from 'Components/Radio';
-
+import { Store } from 'store';
 import routes from 'routes';
 import { API_URL } from 'api';
-import { StyledForm, StyledButton } from './styles';
 import pushNotification from 'pushNotification';
+
+import Spin from 'Components/Spin';
+import Radio from 'Components/Radio';
+import Input from 'Components/Input';
+
+import { StyledForm, StyledButton } from './styles';
 
 export interface formItem extends FormItemProps {
   type: string;
@@ -25,6 +27,7 @@ type userInfo = {
 };
 
 const RegistrationForm = () => {
+  const { dispatch } = useContext(Store);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -55,22 +58,36 @@ const RegistrationForm = () => {
     setLoading(true);
     try {
       const response = await register(credentials);
-      const responseBody = await response.json();
+      const { id, email, first_name, last_name, account_type, errors } = await response.json();
 
       if (response.ok) {
         pushNotification(
           'success',
           'Registration Success',
-          `Your account has been created! Redirecting to the login page...`
+          `Your account has been created! Redirecting to the home page...`
         );
+
+        dispatch({
+          type: 'login',
+          payload: {
+            accountType: account_type,
+            localStorage: {
+              id,
+              token: response.headers.get('Authorization'),
+              first_name,
+              last_name,
+              email,
+            },
+          },
+        });
 
         setTimeoutId(
           setTimeout(() => {
-            navigate(routes.logIn.path);
+            navigate(routes.home.path);
           }, 3000)
         );
       } else {
-        Object.entries(responseBody.errors).forEach(([key, value]) => {
+        Object.entries(errors).forEach(([key, value]) => {
           const description = `${capitalize(key.replaceAll('_', ' '))} ${value}.`;
 
           formItems.forEach(({ name }) => {

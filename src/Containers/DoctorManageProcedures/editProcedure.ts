@@ -1,5 +1,6 @@
 import { getLocalStorageResource } from 'localStorageAPI';
 import { API_URL } from 'api';
+
 import { DoctorProceduresType } from 'Containers/DoctorManageProcedures/index';
 
 const handleEdit = async ({ id, name, needed_time_min }: DoctorProceduresType) => {

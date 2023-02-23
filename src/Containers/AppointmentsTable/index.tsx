@@ -4,15 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { CloseOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
-import PaginatedTable from 'Components/PaginatedTable';
-import getAppointments from 'Containers/AppointmentsTable/fetchAppointments';
-import { Store, userType } from 'store';
-import DeleteButton from 'Components/DeleteButton';
-import cancelAppointment from 'Containers/AppointmentsTable/cancelAppointment';
 import pushNotification from 'pushNotification';
 import routes from 'routes';
-import { CenteredContainer } from 'Containers/EditProfileForm/styles';
 import palette from 'palette';
+import { Store, userType } from 'store';
+
+import PaginatedTable from 'Components/PaginatedTable';
+import { DeleteButton, CenteredContainer } from 'Components/DeleteButton';
+
+import getAppointments from 'Containers/AppointmentsTable/fetchAppointments';
+import cancelAppointment from 'Containers/AppointmentsTable/cancelAppointment';
 
 interface UserInfo {
   id: number;
@@ -77,11 +78,11 @@ const AppointmentsTable = () => {
   const timeStampRender = (value: any, record: Appointment) => {
     const startTimeObject = dayjs(record.start_time);
 
-    const date = startTimeObject.format('DD/MM/YYYY');
-    const startTime = startTimeObject.format('HH:mm');
-    const endTime = startTimeObject.add(record.procedure.needed_time_min, 'minutes').format('HH:mm');
+    const date = startTimeObject.format('MM/DD/YYYY');
+    const startTime = startTimeObject.format('h:mm A');
+    const endTime = startTimeObject.add(record.procedure.needed_time_min, 'minutes').format('h:mm A');
 
-    return `${date} ${startTime}-${endTime}`;
+    return `${date} ${startTime} - ${endTime}`;
   };
 
   const columns = [
@@ -142,6 +143,9 @@ const AppointmentsTable = () => {
           columns={columns}
           fetchData={getAppointments}
           key={render}
+          locale={{
+            emptyText: 'You have no appointments so far',
+          }}
         />
       </Col>
     </Row>

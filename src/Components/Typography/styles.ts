@@ -13,8 +13,8 @@ export const StyledTypography = styled(Typography)`
   padding-right: 10px;
 `;
 
-export const StyledTitle = styled(Title)<{ center?: boolean }>`
-  text-align: ${({ center }) => (center ? 'center' : 'left')};
+export const StyledTitle = styled(Title)<{ centered: boolean }>`
+  text-align: ${({ centered }) => (centered ? 'center' : 'left')};
   font-size: 24px;
   font-weight: 600;
 

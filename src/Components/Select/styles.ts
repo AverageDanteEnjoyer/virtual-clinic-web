@@ -1,20 +1,28 @@
-import styled from 'styled-components';
 import { Select } from 'antd';
+import styled from 'styled-components';
 
-import colors from 'palette';
+import palette from 'palette';
 
 export const StyledSelect = styled(Select)`
-  border-radius: 20px;
   width: 100%;
   font-family: CircularStd, sans-serif;
-  font-size: 16px;
+  border-radius: 20px;
+
+  &.ant-select:hover .ant-select-selector {
+    border-color: ${palette.russianViolet} !important;
+  }
+
+  &.ant-select-focused .ant-select-selector {
+    border-color: ${palette.tekhelet} !important;
+  }
 
   .ant-select-selector {
     border-radius: 20px;
-    color: ${colors.dodgerBlue};
+    color: ${palette.russianViolet};
   }
 
   .ant-select-selection-item {
     border-radius: 20px;
+    font-size: 16px;
   }
 `;

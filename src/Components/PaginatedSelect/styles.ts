@@ -2,6 +2,7 @@ import { Divider, Pagination } from 'antd';
 import styled from 'styled-components';
 
 import palette from 'palette';
+
 import Select from 'Components/Select';
 
 export const PaginationFrame = styled.div`
