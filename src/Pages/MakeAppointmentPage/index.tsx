@@ -7,6 +7,7 @@ import RelativeTime from 'dayjs/plugin/relativeTime';
 
 import routes from 'routes';
 import { Store } from 'store';
+import { getDurationFormatted } from 'helpers';
 import pushNotification from 'pushNotification';
 
 import useTitle from 'Hooks/useTitle';
@@ -73,19 +74,12 @@ const MakeAppointmentPage = () => {
     const hours = dayjs.duration(needed_time_min, 'minutes').hours();
     const minutes = dayjs.duration(needed_time_min, 'minutes').minutes();
 
-    const duration =
-      hours > 0 && minutes > 0
-        ? `${hours} hrs and ${minutes} min`
-        : hours > 0
-        ? `${hours} hours`
-        : `${minutes} minutes`;
-
     return (
       <Row>
         <OptionCol>
           <MainText>{name}</MainText>
           <Info>
-            Doctor: {first_name} {last_name} | {duration}
+            Doctor: {first_name} {last_name} | {getDurationFormatted(hours, minutes)}
           </Info>
         </OptionCol>
       </Row>

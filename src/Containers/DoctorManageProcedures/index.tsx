@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import RelativeTime from 'dayjs/plugin/relativeTime';
 import { Spin, Col, Row, Modal, FormItemProps } from 'antd';
 import { DeleteOutlined, EditOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
-
 import routes from 'routes';
+
 import { Store } from 'store';
+import { getDurationFormatted } from 'helpers';
 import pushNotification from 'pushNotification';
 import { getDataFromToken } from 'localStorageAPI';
 import palette from 'palette';
@@ -165,11 +166,7 @@ const DoctorManageProcedures = () => {
         const hours = dayjs.duration(text, 'minutes').hours();
         const minutes = dayjs.duration(text, 'minutes').minutes();
 
-        return hours > 0 && minutes > 0
-          ? `${hours} hours and ${minutes} minutes`
-          : hours > 0
-          ? `${hours} hours`
-          : `${minutes} minutes`;
+        return getDurationFormatted(hours, minutes);
       },
     },
     {

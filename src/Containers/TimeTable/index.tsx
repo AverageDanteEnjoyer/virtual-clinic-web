@@ -53,7 +53,7 @@ const TimeTable = ({ selectedTime, setSelectedTime, procedureId, date }: TimeTab
             {record.map((time) => (
               <Col key={time}>
                 <TimeOption
-                  highlighted={selectedTime === time}
+                  highlighted={selectedTime === dayjs(time, 'HH:mm').format('h:mm A')}
                   onClick={() => setSelectedTime(dayjs(time, 'HH:mm').format('h:mm A'))}
                 >
                   {dayjs(time, 'HH:mm').format('h:mm A')}
