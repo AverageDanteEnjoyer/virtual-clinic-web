@@ -12,10 +12,10 @@ interface StyledCarouselProps {
 
 const Carousel = ({ autoplay = true, effect = 'fade', dotPosition, dots, easing }: StyledCarouselProps) => {
   const CarouselData = [
-    'projekt-innowacja-2023-web/assets/Carousel/img1.jpg',
-    'projekt-innowacja-2023-web/assets/Carousel/img2.jpg',
-    'projekt-innowacja-2023-web/assets/Carousel/img3.jpg',
-    'projekt-innowacja-2023-web/assets/Carousel/img4.jpg',
+    'assets/Carousel/img1.jpg',
+    'assets/Carousel/img2.jpg',
+    'assets/Carousel/img3.jpg',
+    'assets/Carousel/img4.jpg',
   ];
 
   return (
