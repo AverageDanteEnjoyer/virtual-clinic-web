@@ -16,7 +16,6 @@ export const Container = styled.div`
 export const FullHeightRow = styled(Row)`
   height: 100%;
   max-width: 100vw;
-  overflow: hidden;
 `;
 
 export const EndCol = styled(Col)`
