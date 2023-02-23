@@ -10,14 +10,14 @@ import RegistrationForm from 'Containers/RegistrationForm';
 import Navbar from 'Components/Navbar';
 import Button from 'Components/Button';
 
-import { Container, FullHeightRow, Panel, CardRow, CardTitle, Note, Divider } from './styles';
+import { FullHeightRow, Panel, CardRow, CardTitle, Note, Divider } from './styles';
 
 const RegistrationPage = () => {
   useTitle();
   const navigate = useNavigate();
 
   return (
-    <Container>
+    <>
       <Navbar />
       <FullHeightRow justify="center" align="middle">
         <Panel>
@@ -41,7 +41,7 @@ const RegistrationPage = () => {
           </CardRow>
         </Panel>
       </FullHeightRow>
-    </Container>
+    </>
   );
 };
 

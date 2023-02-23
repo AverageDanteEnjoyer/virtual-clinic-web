@@ -5,13 +5,6 @@ import palette from 'palette';
 
 import { Paragraph, Title } from 'Components/Typography';
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-`;
-
 export const FullHeightRow = styled(Row)`
   height: 100%;
   max-width: 100vw;
