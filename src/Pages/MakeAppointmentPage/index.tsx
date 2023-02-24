@@ -152,11 +152,11 @@ const MakeAppointmentPage = () => {
           </Paragraph>
           <Paragraph>
             <b>Date:</b> {dayjs(date).format('D MMMM YYYY')} {selectedTime} -{' '}
-            {dayjs(selectedTime, 'HH:mm').add(procedures[0].needed_time_min, 'minute').format('h:mm A')}
+            {dayjs(selectedTime, 'h:mm A').add(procedures[0].needed_time_min, 'minute').format('h:mm A')}
           </Paragraph>
           <Button
             size="large"
-            disabled={dayjs(selectedTime, 'HH:mm').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
+            disabled={dayjs(selectedTime, 'h:mm A').isBefore(dayjs()) && dayjs(date).isSame(dayjs(), 'day')}
             onClick={() => onSubmit(procedures[0].id)}
             loading={loading}
           >
