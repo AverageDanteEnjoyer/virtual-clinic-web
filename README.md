@@ -1,4 +1,4 @@
-# View in [Github Pages](https://htd-health.github.io/projekt-innowacja-2023-web/)
+# View in [Github Pages](https://averagedanteenjoyer.github.io/virtual-clinic-web/)
 
 # Getting Started with Create React App
 
