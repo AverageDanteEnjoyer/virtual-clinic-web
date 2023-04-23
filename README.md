@@ -1,6 +1,6 @@
 # View in [Github Pages](https://averagedanteenjoyer.github.io/virtual-clinic-web/)
 
-### this client app use REST service: 
+### this client app uses REST service: 
 https://github.com/MendelDamian/virtual-clinic-api
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
