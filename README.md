@@ -1,9 +1,13 @@
-# View in [Github Pages](https://averagedanteenjoyer.github.io/virtual-clinic-web/)
+# Virtual Clinic
 
-### this client app uses REST service: 
-https://github.com/MendelDamian/virtual-clinic-api
+Project of a virtual clinic web application enabling clinics to
+automate interactions with their patients.</br>
+Created under [HTD Health](https://github.com/HTD-Health)’s guidance.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### This client app uses REST service:
+https://github.com/MendelDamian/virtual-clinic-api</br>
+## Actions
+The [website](https://averagedanteenjoyer.github.io/virtual-clinic-web/) gets built automatically through [```Deploy site to github pages```](.github/workflows/deploy-on-merge.yml) action on every push to `main` branch
 
 ## Available Scripts
 
