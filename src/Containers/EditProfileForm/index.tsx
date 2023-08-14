@@ -1,5 +1,5 @@
 import { capitalize } from 'lodash';
-import {Row, Col, FormItemProps, Avatar} from 'antd';
+import {Row, Col, FormItemProps, Avatar, Upload} from 'antd';
 import { useContext, useState, ReactNode } from 'react';
 import { PlusOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 
@@ -169,7 +169,9 @@ const ProfileEditForm = () => {
           <Col span={24}>
             <CenteredRow>
               <Col>
-                <Avatar size={128} icon={<UserOutlined />} alt="profile picture" />
+                <Upload accept=".jpg,.png,.gif" showUploadList={false}>
+                  <Avatar size={128} icon={<UserOutlined />} alt="profile picture" />
+                </Upload>
               </Col>
             </CenteredRow>
             {formItemsJSX}
