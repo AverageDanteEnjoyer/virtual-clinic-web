@@ -1,4 +1,4 @@
-import { Form } from 'antd';
+import {Form, Row} from 'antd';
 import styled from 'styled-components';
 
 import palette from 'palette';
@@ -23,3 +23,8 @@ export const StyledForm = styled(Form)`
     color: ${palette.russianViolet};
   }
 ` as typeof Form;
+
+export const CenteredRow = styled(Row)`
+  display: flex;
+  justify-content: center;
+`;

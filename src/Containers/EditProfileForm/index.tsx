@@ -1,5 +1,5 @@
 import { capitalize } from 'lodash';
-import { Row, Col, FormItemProps } from 'antd';
+import {Row, Col, FormItemProps, Avatar} from 'antd';
 import { useContext, useState, ReactNode } from 'react';
 import { PlusOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 
@@ -14,7 +14,7 @@ import { Paragraph } from 'Components/Typography';
 import PaginatedSelect from 'Components/PaginatedSelect';
 
 import updateUser from './updateUser';
-import { StyledButton, StyledForm } from './styles';
+import {CenteredRow, StyledButton, StyledForm} from './styles';
 import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
 
 interface FormItem extends FormItemProps {
@@ -167,6 +167,11 @@ const ProfileEditForm = () => {
       <StyledForm form={form} onFinish={onFinish} layout="vertical">
         <Row>
           <Col span={24}>
+            <CenteredRow>
+              <Col>
+                <Avatar size={128} icon={<UserOutlined />} alt="profile picture" />
+              </Col>
+            </CenteredRow>
             {formItemsJSX}
             {selectProfessions}
             <Row>
