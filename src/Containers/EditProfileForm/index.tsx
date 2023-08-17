@@ -1,11 +1,13 @@
 import { capitalize } from 'lodash';
-import {Row, Col, FormItemProps, Avatar, Upload} from 'antd';
+import { Row, Col, FormItemProps, Avatar, Upload } from 'antd';
+import { RcFile, UploadChangeParam } from 'antd/es/upload';
 import { useContext, useState, ReactNode } from 'react';
 import { PlusOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 
 import { Store, userType } from 'store';
 import pushNotification from 'pushNotification';
 import { getLocalStorageResource, setLocalStorageResources } from 'localStorageAPI';
+import { getBase64 } from 'helpers';
 
 import Spin from 'Components/Spin';
 import Input from 'Components/Input';
@@ -14,8 +16,9 @@ import { Paragraph } from 'Components/Typography';
 import PaginatedSelect from 'Components/PaginatedSelect';
 
 import updateUser from './updateUser';
-import {CenteredRow, StyledButton, StyledForm} from './styles';
+import { CenteredRow, StyledButton, StyledForm } from './styles';
 import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from './fetchProfessions';
+import ImgCrop from 'antd-img-crop';
 
 interface FormItem extends FormItemProps {
   type: string;
@@ -40,6 +43,7 @@ const ProfileEditForm = () => {
   const [form] = StyledForm.useForm();
 
   const [professions, setProfessions] = useState<Profession[]>([]);
+  const [imageUrl, setImageUrl] = useState('');
   const [loading, setLoading] = useState(false);
 
   const onFinish = async (values: UserInfo) => {
@@ -162,6 +166,12 @@ const ProfileEditForm = () => {
     </StyledForm.Item>
   );
 
+  const handleChange = (info: UploadChangeParam) => {
+    getBase64(info.file.originFileObj as RcFile, (url) => {
+      setImageUrl(url);
+    });
+  };
+
   return (
     <Spin spinning={loading} tip="waiting for server response...">
       <StyledForm form={form} onFinish={onFinish} layout="vertical">
@@ -169,9 +179,11 @@ const ProfileEditForm = () => {
           <Col span={24}>
             <CenteredRow>
               <Col>
-                <Upload accept=".jpg,.png,.gif" showUploadList={false}>
-                  <Avatar size={128} icon={<UserOutlined />} alt="profile picture" />
-                </Upload>
+                <ImgCrop>
+                  <Upload accept=".jpg,.png,.gif" onChange={handleChange} showUploadList={false}>
+                    <Avatar size={128} icon={<UserOutlined />} alt="profile picture" src={imageUrl} />
+                  </Upload>
+                </ImgCrop>
               </Col>
             </CenteredRow>
             {formItemsJSX}
