@@ -12,3 +12,9 @@ export const PanelCol = styled(Col)`
     margin-bottom: 50px;
   }
 `;
+
+export const CalendarContainer = styled.div`
+  .rbc-allday-cell {
+    display: none !important;
+  }
+`;
