@@ -17,4 +17,15 @@ export const CalendarContainer = styled.div`
   .rbc-allday-cell {
     display: none !important;
   }
+
+  .rbc-event {
+    background-color: ${palette.ultraViolet};
+    border: 1px solid ${palette.tekhelet};
+  }
+
+  .rbc-event-label {
+    // wrap
+    white-space: normal;
+    word-break: break-word;
+  }
 `;

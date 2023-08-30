@@ -1,22 +1,23 @@
-import { getAccountId } from 'localStorageAPI';
-import { capitalize } from 'lodash';
-import deleteWorkPlan from './deleteWorkPlan';
-import pushNotification from 'pushNotification';
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import { useEffect, useState } from 'react';
+import { capitalize } from 'lodash';
 import { Col, Row } from 'antd';
 import moment from 'moment';
-import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 
-import Spin from 'Components/Spin';
+import pushNotification from 'pushNotification';
+import { getAccountId } from 'localStorageAPI';
 import { Title } from 'Components/Typography';
 import Navbar from 'Components/Navbar';
-import fetchWorkPlans from './fetchWorkPlans';
-import WorkPlanType, { daysOfWeek } from './workPlanType';
 import useTitle from 'Hooks/useTitle';
+import Spin from 'Components/Spin';
+
+import createWorkPlan, { CreateWorkPlanProps } from './createWorkPlan';
+import WorkPlanType, { daysOfWeek } from './workPlanType';
+import fetchWorkPlans from './fetchWorkPlans';
+import deleteWorkPlan from './deleteWorkPlan';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { CalendarContainer, PanelCol } from './styles';
-import createWorkPlan, { CreateWorkPlanProps } from './createWorkPlan';
 
 const localizer = momentLocalizer(moment);
 
@@ -35,7 +36,7 @@ const WorkPlanPage = () => {
 
   useEffect(() => {
     fetchWorkPlan();
-  }, [setEvents]);
+  }, []);
 
   const fetchWorkPlan = async () => {
     setLoading(true);
@@ -110,9 +111,9 @@ const WorkPlanPage = () => {
       <Navbar />
       <Title centered>Work plan</Title>
       <Row>
-        <PanelCol xs={{ span: 22, offset: 1 }} md={{ span: 16, offset: 4 }} lg={{ span: 12, offset: 6 }}>
+        <PanelCol xs={{ span: 22, offset: 1 }} lg={{ span: 16, offset: 4 }} xl={{ span: 12, offset: 6 }}>
           <Row>
-            <Col md={{ span: 22, offset: 1 }}>
+            <Col span={22} offset={1}>
               <Title centered level={2}>
                 Work plan schedule
               </Title>
