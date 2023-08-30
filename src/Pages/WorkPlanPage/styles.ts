@@ -24,7 +24,6 @@ export const CalendarContainer = styled.div`
   }
 
   .rbc-event-label {
-    // wrap
     white-space: normal;
     word-break: break-word;
   }
