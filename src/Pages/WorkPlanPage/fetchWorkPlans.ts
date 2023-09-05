@@ -7,7 +7,8 @@ const fetchWorkPlans = async (doctorId?: number) => {
   const token = getLocalStorageResource('token');
   if (!token) return { data: [], error: 'Token not found' };
 
-  const res = await fetch(`${API_URL}/api/v1/doctors/${doctorId}/work_plans?per_page=1000`, {
+  const perPage = 1000;
+  const res = await fetch(`${API_URL}/api/v1/doctors/${doctorId}/work_plans?per_page=${perPage}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
