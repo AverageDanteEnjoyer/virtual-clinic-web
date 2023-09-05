@@ -128,7 +128,7 @@ const WorkPlanPage = () => {
                     views={['week']}
                     step={60}
                     timeslots={1}
-                    defaultDate={new Date(2023, 0, 1)} // HACK: we don't need to show the date, and 1st of January 2023 is a Sunday and it makes calculations easier.
+                    defaultDate={new Date(2023, 0, 1)}
                     components={{ toolbar: CustomToolbar }}
                     showMultiDayTimes={false}
                     formats={{
