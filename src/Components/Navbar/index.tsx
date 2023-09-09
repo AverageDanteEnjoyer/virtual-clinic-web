@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Col, Menu, MenuProps, Row } from 'antd';
 import { ReactNode, useContext, useEffect, useState } from 'react';
-import { QuestionOutlined, UserOutlined } from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 
 import routes from 'routes';
 import { API_URL } from 'api';
@@ -9,6 +9,7 @@ import { Store, userType } from 'store';
 import pushNotification from 'pushNotification';
 import { equals, notEquals } from 'privateRoute';
 import { getLocalStorageResource } from 'localStorageAPI';
+import logo from 'logo.svg';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -75,8 +76,7 @@ const Navbar = () => {
   return (
     <Row align="middle" justify="end" key={navbarState}>
       <Col flex={1}>
-        {/*A place for logo*/}
-        <QuestionOutlined />
+        <img src={logo} alt="Logo" height="40x" style={{ margin: '1px 0 0 1px' }} />
       </Col>
       <Col>
         <nav>
