@@ -1,6 +1,5 @@
 {
   "name": "virtual-clinic-web",
-  "homepage": "https://averagedanteenjoyer.github.io/virtual-clinic-web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
