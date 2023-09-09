@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import routes from 'routes';
 import { getAccountType, getDataFromToken } from 'localStorageAPI';
@@ -7,7 +7,6 @@ import { Store } from 'store';
 import AuthVerify from 'AuthVerify';
 import { mappedPrivateRoutes } from 'mappedPrivateRoutes';
 
-import ComponentsPage from 'Pages/ComponentsPage';
 import HomePage from 'Pages/HomePage';
 
 const Application = () => {
@@ -25,13 +24,13 @@ const Application = () => {
   }, [dispatch]);
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route path={routes.home.path} element={<HomePage />} />
         {mappedPrivateRoutes}
       </Routes>
       <AuthVerify />
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
