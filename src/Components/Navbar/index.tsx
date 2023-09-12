@@ -76,7 +76,7 @@ const Navbar = () => {
   return (
     <Row align="middle" justify="end" key={navbarState}>
       <Col flex={1}>
-        <img src={logo} alt="Logo" height="40x" style={{ margin: '1px 0 0 1px' }} />
+        <img src={logo} alt="Logo" height="40" width="40" style={{ margin: '1px 0 0 1px' }} />
       </Col>
       <Col>
         <nav>
