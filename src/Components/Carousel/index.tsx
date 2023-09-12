@@ -21,7 +21,7 @@ const Carousel = ({ autoplay = true, effect = 'fade', dotPosition, dots, easing 
   return (
     <StyledCarousel autoplay={autoplay} dotPosition={dotPosition} dots={dots} easing={easing} effect={effect}>
       {CarouselData.map((img, idx) => {
-        return <Image key={idx} src={img} preview={false} alt="carousel" />;
+        return <Image key={idx} src={img} preview={false} alt="carousel" width="100%" height="100%" />;
       })}
     </StyledCarousel>
   );
