@@ -5,6 +5,7 @@ import routes from 'routes';
 import { equals, notEquals, PrivateRoute } from 'privateRoute';
 import { userType } from 'store';
 
+import FullPageLoader from 'Components/FullPageLoader';
 const LoginPage = lazy(() => import('Pages/LoginPage'));
 const RegistrationPage = lazy(() => import('Pages/RegistrationPage'));
 const ProfileEditPage = lazy(() => import('Pages/EditProfilePage'));
@@ -71,7 +72,7 @@ export const mappedPrivateRoutes = privateRouteItems.map(({ path, children, redi
     path={path}
     element={
       <PrivateRoute redirectPath={redirectPath} condition={condition}>
-        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+        <Suspense fallback={<FullPageLoader />}>{children}</Suspense>
       </PrivateRoute>
     }
   />

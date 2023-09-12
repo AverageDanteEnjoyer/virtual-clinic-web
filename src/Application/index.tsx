@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import routes from 'routes';
@@ -7,7 +7,9 @@ import { Store } from 'store';
 import AuthVerify from 'AuthVerify';
 import { mappedPrivateRoutes } from 'mappedPrivateRoutes';
 
-import HomePage from 'Pages/HomePage';
+import FullPageLoader from 'Components/FullPageLoader';
+
+const HomePage = lazy(() => import('Pages/HomePage'));
 
 const Application = () => {
   const { dispatch } = useContext(Store);
@@ -26,7 +28,14 @@ const Application = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={routes.home.path} element={<HomePage />} />
+        <Route
+          path={routes.home.path}
+          element={
+            <Suspense fallback={<FullPageLoader />}>
+              <HomePage />
+            </Suspense>
+          }
+        />
         {mappedPrivateRoutes}
       </Routes>
       <AuthVerify />
