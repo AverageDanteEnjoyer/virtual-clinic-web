@@ -1,16 +1,17 @@
+import { lazy } from 'react';
 import { Route } from 'react-router-dom';
 
 import routes from 'routes';
 import { equals, notEquals, PrivateRoute } from 'privateRoute';
 import { userType } from 'store';
 
-import LoginPage from 'Pages/LoginPage';
-import RegistrationPage from 'Pages/RegistrationPage';
-import ProfileEditPage from 'Pages/EditProfilePage';
-import MakeAppointmentPage from 'Pages/MakeAppointmentPage';
-import DoctorProcedures from 'Pages/DoctorProceduresPage';
-import AppointmentsPage from 'Pages/AppointmentsPage';
-import WorkPlanPage from 'Pages/WorkPlanPage';
+const LoginPage = lazy(() => import('Pages/LoginPage'));
+const RegistrationPage = lazy(() => import('Pages/RegistrationPage'));
+const ProfileEditPage = lazy(() => import('Pages/EditProfilePage'));
+const MakeAppointmentPage = lazy(() => import('Pages/MakeAppointmentPage'));
+const DoctorProcedures = lazy(() => import('Pages/DoctorProceduresPage'));
+const AppointmentsPage = lazy(() => import('Pages/AppointmentsPage'));
+const WorkPlanPage = lazy(() => import('Pages/WorkPlanPage'));
 
 interface privateRouteItem {
   path: string;
