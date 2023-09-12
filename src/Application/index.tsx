@@ -37,6 +37,14 @@ const Application = () => {
           }
         />
         {mappedPrivateRoutes}
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<FullPageLoader />}>
+              <HomePage />
+            </Suspense>
+          }
+        />
       </Routes>
       <AuthVerify />
     </BrowserRouter>
