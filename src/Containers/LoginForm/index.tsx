@@ -107,7 +107,13 @@ const LoginForm = () => {
 
   const formItemsJSX = formItems.map(({ label, name, rules, type, icon }, idx) => (
     <StyledForm.Item key={idx} label={label} name={name} rules={rules}>
-      <Input type={type} placeholder={`Enter your ${label}`} password={name === 'password'} prefix={icon} />
+      <Input
+        type={type}
+        placeholder={`Enter your ${label}`}
+        password={name === 'password'}
+        autoComplete={type}
+        prefix={icon}
+      />
     </StyledForm.Item>
   ));
 

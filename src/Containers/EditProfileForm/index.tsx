@@ -19,6 +19,7 @@ import { fetchAllProfessions, fetchDoctorProfessions, createNewProfession } from
 
 interface FormItem extends FormItemProps {
   type: string;
+  autoComplete?: string;
   icon?: ReactNode;
 }
 
@@ -81,6 +82,7 @@ const ProfileEditForm = () => {
       label: 'First name',
       name: 'first_name',
       type: 'text',
+      autoComplete: 'given-name',
       icon: <UserOutlined />,
       rules: [{ required: true, message: 'Please input your first name' }],
     },
@@ -88,6 +90,7 @@ const ProfileEditForm = () => {
       label: 'Last name',
       name: 'last_name',
       type: 'text',
+      autoComplete: 'family-name',
       icon: <UserOutlined />,
       rules: [{ required: true, message: 'Please input your last name' }],
     },
@@ -95,6 +98,7 @@ const ProfileEditForm = () => {
       label: 'Email',
       name: 'email',
       type: 'email',
+      autoComplete: 'email',
       icon: <MailOutlined />,
       rules: [{ required: true, message: 'Please input your email' }],
     },
@@ -102,12 +106,13 @@ const ProfileEditForm = () => {
       label: 'Current password',
       name: 'current_password',
       type: 'password',
+      autoComplete: 'current-password',
       rules: [{ required: true, message: 'Please input your current password' }],
     },
-    { label: 'New password', name: 'password', type: 'password' },
+    { label: 'New password', name: 'password', type: 'password', autoComplete: 'new-password' },
   ];
 
-  const formItemsJSX = formItems.map(({ label, name, rules, type, icon }, idx) => (
+  const formItemsJSX = formItems.map(({ label, name, rules, type, icon, autoComplete }, idx) => (
     <StyledForm.Item
       key={idx}
       label={label}
@@ -121,6 +126,7 @@ const ProfileEditForm = () => {
         password={type === 'password'}
         prefix={icon}
         value={name && getLocalStorageResource(name as string)}
+        autoComplete={autoComplete}
       />
     </StyledForm.Item>
   ));

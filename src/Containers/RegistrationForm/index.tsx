@@ -16,6 +16,7 @@ import { StyledForm, StyledButton } from './styles';
 
 export interface formItem extends FormItemProps {
   type: string;
+  autoComplete?: string;
 }
 
 type userInfo = {
@@ -107,25 +108,39 @@ const RegistrationForm = () => {
       label: 'First name',
       name: 'first_name',
       type: 'text',
+      autoComplete: 'given-name',
       rules: [{ required: true, message: 'Please input your first name' }],
     },
     {
       label: 'Last name',
       name: 'last_name',
       type: 'text',
+      autoComplete: 'family-name',
       rules: [{ required: true, message: 'Please input your last name' }],
     },
-    { label: 'E-mail', name: 'email', type: 'email', rules: [{ required: true, message: 'Please input your email' }] },
+    {
+      label: 'E-mail',
+      name: 'email',
+      type: 'email',
+      autoComplete: 'email',
+      rules: [{ required: true, message: 'Please input your email' }],
+    },
     {
       label: 'Password',
       name: 'password',
       type: 'password',
+      autoComplete: 'new-password',
       rules: [{ required: true, message: 'Please input your password' }],
     },
   ];
-  const formItemsJSX = formItems.map(({ label, name, rules, type }, idx) => (
+  const formItemsJSX = formItems.map(({ label, name, rules, type, autoComplete }, idx) => (
     <StyledForm.Item key={idx} label={label} name={name} rules={rules}>
-      <Input type={type} placeholder={`Enter your ${label}`} password={name === 'password'} />
+      <Input
+        type={type}
+        placeholder={`Enter your ${label}`}
+        password={name === 'password'}
+        autoComplete={autoComplete}
+      />
     </StyledForm.Item>
   ));
 
