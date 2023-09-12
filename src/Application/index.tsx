@@ -1,4 +1,4 @@
-import { useContext, useEffect, lazy } from 'react';
+import { useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import routes from 'routes';
@@ -7,7 +7,7 @@ import { Store } from 'store';
 import AuthVerify from 'AuthVerify';
 import { mappedPrivateRoutes } from 'mappedPrivateRoutes';
 
-const HomePage = lazy(() => import('Pages/HomePage'));
+import HomePage from 'Pages/HomePage';
 
 const Application = () => {
   const { dispatch } = useContext(Store);

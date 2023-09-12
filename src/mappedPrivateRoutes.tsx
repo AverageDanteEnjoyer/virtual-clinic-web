@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import { Route } from 'react-router-dom';
 
 import routes from 'routes';
@@ -71,7 +71,7 @@ export const mappedPrivateRoutes = privateRouteItems.map(({ path, children, redi
     path={path}
     element={
       <PrivateRoute redirectPath={redirectPath} condition={condition}>
-        {children}
+        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
       </PrivateRoute>
     }
   />
